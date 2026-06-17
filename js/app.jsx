@@ -73,7 +73,7 @@ function PartnerCard({ name, photo, initials, title = [], contacts = [], style, 
         {title.map((line, i) => <Fragment key={i}>{line}{i < title.length - 1 && <br />}</Fragment>)}
       </div>
       <div style={{ display: 'flex', gap: '5px', justifyContent: 'center' }}>
-        {contacts.map((c, i) => <ContactIcon key={i} icon={c.icon} label={c.label} href={c.href} />)}
+        {contacts.map((c, i) => <ContactIcon key={i} icon={c.icon} label={c.label} href={c.href} target={c.target} rel={c.target === '_blank' ? 'noopener noreferrer' : undefined} />)}
       </div>
     </div>
   );
@@ -139,7 +139,65 @@ window.FiedlerRieDesignSystem_490d4c = { Button, Card, ContactIcon, PracticeCard
    Composes NavRail from the design-system bundle.
    ============================================ */
 const { useState, useEffect } = React;
-// components defined inline
+/* inline */
+
+/* Shared responsive hook — mobile when viewport <= 760px. Exposed on window
+   so screens.jsx and app.jsx (separate Babel scopes in dev) can use it too. */
+function frUseIsMobile(bp) {
+  bp = bp || 760;
+  const [m, setM] = useState(typeof window !== 'undefined' && window.innerWidth <= bp);
+  useEffect(() => {
+    const on = () => setM(window.innerWidth <= bp);
+    window.addEventListener('resize', on);
+    on();
+    return () => window.removeEventListener('resize', on);
+  }, [bp]);
+  return m;
+}
+window.frUseIsMobile = frUseIsMobile;
+
+/* ---- Mobile navigation: hamburger + accordion (touch friendly) ---- */
+function MobileNavItem({ item, depth, onNavigate }) {
+  const hasKids = item.children && item.children.length > 0;
+  const [open, setOpen] = useState(depth === 0 && !!item.active);
+  const pad = 18 + depth * 18;
+  const labelClick = (e) => {
+    e.preventDefault();
+    if (item.onClick) { item.onClick(e); onNavigate(); }
+    else if (hasKids) setOpen((o) => !o);
+  };
+  return (
+    <li style={{ listStyle: 'none' }}>
+      <div style={{ display: 'flex', alignItems: 'stretch', borderBottom: '1px solid rgba(255,255,255,.08)' }}>
+        <a href={item.href || '#'} onClick={labelClick}
+          style={{ flex: 1, padding: `15px ${pad}px`, color: item.active ? 'var(--green)' : '#fff', fontFamily: 'var(--font-sans)', fontSize: depth === 0 ? '16px' : '15px', fontWeight: 'var(--fw-semibold)', letterSpacing: '.05em', textTransform: 'uppercase', textDecoration: 'none' }}>
+          {item.label}
+        </a>
+        {hasKids && (
+          <button onClick={() => setOpen((o) => !o)} aria-label="Untermenü"
+            style={{ width: 52, background: 'none', border: 'none', borderLeft: '1px solid rgba(255,255,255,.08)', color: 'var(--green)', fontSize: 20, cursor: 'pointer', transition: 'transform var(--ease)', transform: open ? 'rotate(90deg)' : 'none' }}>
+            ›
+          </button>
+        )}
+      </div>
+      {hasKids && open && (
+        <ul style={{ margin: 0, padding: 0, background: 'rgba(0,0,0,.18)' }}>
+          {item.children.map((c, i) => <MobileNavItem key={i} item={c} depth={depth + 1} onNavigate={onNavigate} />)}
+        </ul>
+      )}
+    </li>
+  );
+}
+
+function MobileNav({ items, open, onNavigate }) {
+  return (
+    <div style={{ overflow: 'hidden', maxHeight: open ? '80vh' : 0, transition: 'max-height .3s ease', background: 'var(--charcoal)', borderTop: open ? '3px solid var(--green)' : 'none' }}>
+      <ul style={{ margin: 0, padding: 0, listStyle: 'none', overflowY: 'auto', maxHeight: '80vh' }}>
+        {items.map((it, i) => <MobileNavItem key={i} item={it} depth={0} onNavigate={onNavigate} />)}
+      </ul>
+    </div>
+  );
+}
 
 const NAV_ITEMS = (go, current) => ([
   { label: 'Start', href: '#', active: current === 'home', onClick: (e) => { e.preventDefault(); go('home'); } },
@@ -153,20 +211,29 @@ const NAV_ITEMS = (go, current) => ([
   { label: 'Anfahrt', href: '#', active: current === 'anfahrt', onClick: (e) => { e.preventDefault(); go('anfahrt'); } },
 ]);
 
-function HeaderBrand({ go }) {
+function HeaderBrand({ go, isMobile, menuOpen, onToggle }) {
   return (
     <header style={{ background: 'var(--white)' }}>
-      <div style={{ maxWidth: 'var(--max-w)', margin: '0 auto', padding: '44px 20px 40px' }}>
-        <div style={{ display: 'inline-block', textAlign: 'left', borderLeft: '1px solid var(--border)', paddingLeft: 22, cursor: 'pointer' }} onClick={() => go('home')}>
-          <span style={{ font: '300 42px/1.18 var(--font-sans)', color: 'var(--green)', display: 'block' }}>Fiedler &amp; Rieß</span>
-          <span style={{ font: '300 18px/1.3 var(--font-sans)', color: 'var(--green)', display: 'block', marginTop: 2 }}>Rechtsanwälte PartGmbB</span>
+      <div style={{ maxWidth: 'var(--max-w)', margin: '0 auto', padding: isMobile ? '20px 16px 18px' : '44px 20px 40px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
+        <div style={{ textAlign: 'left', borderLeft: '1px solid var(--border)', paddingLeft: isMobile ? 14 : 22, cursor: 'pointer' }} onClick={() => go('home')}>
+          <span style={{ font: `300 ${isMobile ? '25px' : '42px'}/1.18 var(--font-sans)`, color: 'var(--green)', display: 'block' }}>Fiedler &amp; Rieß</span>
+          <span style={{ font: `300 ${isMobile ? '13px' : '18px'}/1.3 var(--font-sans)`, color: 'var(--green)', display: 'block', marginTop: 2 }}>Rechtsanwälte PartGmbB</span>
         </div>
+        {isMobile && (
+          <button onClick={onToggle} aria-label="Menü öffnen" aria-expanded={menuOpen}
+            style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 10, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 5, flexShrink: 0 }}>
+            <span style={{ display: 'block', width: 26, height: 3, background: 'var(--green)', transition: 'transform var(--ease), opacity var(--ease)', transform: menuOpen ? 'translateY(8px) rotate(45deg)' : 'none' }} />
+            <span style={{ display: 'block', width: 26, height: 3, background: 'var(--green)', transition: 'opacity var(--ease)', opacity: menuOpen ? 0 : 1 }} />
+            <span style={{ display: 'block', width: 26, height: 3, background: 'var(--green)', transition: 'transform var(--ease)', transform: menuOpen ? 'translateY(-8px) rotate(-45deg)' : 'none' }} />
+          </button>
+        )}
       </div>
     </header>
   );
 }
 
 function Hero({ children }) {
+  const isMobile = frUseIsMobile();
   const [cur, setCur] = useState(0);
   const slides = ['img/hero1.png', 'img/hero2.png'];
   useEffect(() => {
@@ -176,7 +243,7 @@ function Hero({ children }) {
   return (
     <div style={{ position: 'relative' }}>
       {children}
-      <div style={{ height: 310, position: 'relative', overflow: 'hidden', background: '#4a4a4a' }}>
+      <div style={{ height: isMobile ? 180 : 310, position: 'relative', overflow: 'hidden', background: '#4a4a4a' }}>
         {slides.map((s, i) => (
           <div key={i} style={{
             position: 'absolute', inset: 0, backgroundImage: `url('${s}')`,
@@ -200,22 +267,26 @@ function KanzleiBox({ style }) {
 }
 
 function PageHeader({ title, tagline }) {
+  const isMobile = frUseIsMobile();
   return (
     <div style={{ background: 'var(--white)' }}>
-      <div style={{ maxWidth: 'var(--max-w)', margin: '0 auto', padding: '34px 20px 8px', display: 'flex', alignItems: 'flex-start', gap: 50 }}>
+      <div style={{ maxWidth: 'var(--max-w)', margin: '0 auto', padding: isMobile ? '26px 16px 4px' : '34px 20px 8px', display: 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: 'flex-start', gap: isMobile ? 18 : 50 }}>
         <div style={{ maxWidth: 760, flex: 1 }}>
-          <h1 style={{ font: '300 30px var(--font-sans)', color: 'var(--text)', display: 'inline-block', paddingBottom: 8, borderBottom: '2px solid var(--green)' }}>{title}</h1>
+          <h1 style={{ font: `300 ${isMobile ? '26px' : '30px'} var(--font-sans)`, color: 'var(--text)', display: 'inline-block', paddingBottom: 8, borderBottom: '2px solid var(--green)' }}>{title}</h1>
           {tagline && <p style={{ font: '400 14px var(--font-sans)', color: 'var(--text-light)', marginTop: 12 }}>{tagline}</p>}
         </div>
-        <aside style={{ flex: '0 0 220px', borderLeft: '1px solid var(--border)', paddingLeft: 24, textAlign: 'center' }}>
-          <KanzleiBox style={{ border: 'none', padding: 0, textAlign: 'center' }} />
-        </aside>
+        {!isMobile && (
+          <aside style={{ flex: '0 0 220px', borderLeft: '1px solid var(--border)', paddingLeft: 24, textAlign: 'center' }}>
+            <KanzleiBox style={{ border: 'none', padding: 0, textAlign: 'center' }} />
+          </aside>
+        )}
       </div>
     </div>
   );
 }
 
-function Footer() {
+function Footer({ go }) {
+  const nav = (r) => (e) => { e.preventDefault(); if (go) go(r); };
   return (
     <footer style={{ background: 'var(--white)', borderTop: '1px solid var(--border)', padding: '15px 0' }}>
       <div style={{ maxWidth: 'var(--max-w)', margin: '0 auto', padding: '0 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 10 }}>
@@ -224,8 +295,8 @@ function Footer() {
           <span style={{ color: 'var(--text-light)', font: '400 12px var(--font-sans)' }}>Rotenburger Str. 17 · 36199 Rotenburg a.d. Fulda</span>
         </div>
         <nav style={{ display: 'flex', gap: 20 }}>
-          <a href="#" style={{ color: 'var(--green)', font: '400 13px var(--font-sans)' }}>Impressum</a>
-          <a href="#" style={{ color: 'var(--green)', font: '400 13px var(--font-sans)' }}>Datenschutz</a>
+          <a href="#" onClick={nav('impressum')} style={{ color: 'var(--green)', font: '400 13px var(--font-sans)' }}>Impressum</a>
+          <a href="#" onClick={nav('datenschutz')} style={{ color: 'var(--green)', font: '400 13px var(--font-sans)' }}>Datenschutz</a>
         </nav>
       </div>
     </footer>
@@ -253,7 +324,7 @@ function CookieBanner({ onClose }) {
   );
 }
 
-Object.assign(window, { HeaderBrand, Hero, PageHeader, KanzleiBox, Footer, CookieBanner, NAV_ITEMS, NavRail });
+Object.assign(window, { HeaderBrand, Hero, PageHeader, KanzleiBox, Footer, CookieBanner, NAV_ITEMS, NavRail, MobileNav, frUseIsMobile });
 
 
 /* ===== SCREENS ===== */
@@ -262,29 +333,32 @@ Object.assign(window, { HeaderBrand, Hero, PageHeader, KanzleiBox, Footer, Cooki
    Home, Practice (Arbeitsrecht), Fragebogen, Anfahrt, Karriere.
    Composes DS components: PracticeCard, PartnerCard, Card, Button.
    ============================================ */
-// components defined inline
+/* inline */
 const FRBox = window.KanzleiBox;
 
 const CONTAINER = { maxWidth: 'var(--max-w)', margin: '0 auto', padding: '0 20px' };
 
 /* ---------- HOME ---------- */
 function HomeScreen({ go }) {
+  const isMobile = window.frUseIsMobile();
   return (
     <div>
       {/* Intro */}
-      <section style={{ background: 'var(--white)', padding: '40px 0 30px' }}>
-        <div style={{ maxWidth: 'var(--max-w)', margin: '0 auto', padding: '0 20px', display: 'flex', alignItems: 'flex-start', gap: 50 }}>
-          <h1 style={{ font: '300 30px/1.35 var(--font-sans)', color: 'var(--text)', maxWidth: 760, flex: 1 }}>Fokussiert<br />auf Struktur und Lösung.</h1>
-          <aside style={{ flex: '0 0 220px', borderLeft: '1px solid var(--border)', paddingLeft: 24, textAlign: 'center' }}>
-            <FRBox style={{ border: 'none', padding: 0, textAlign: 'center' }} />
-          </aside>
+      <section style={{ background: 'var(--white)', padding: isMobile ? '26px 0 22px' : '40px 0 30px' }}>
+        <div style={{ maxWidth: 'var(--max-w)', margin: '0 auto', padding: '0 20px', display: 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: 'flex-start', gap: isMobile ? 20 : 50 }}>
+          <h1 style={{ font: `300 ${isMobile ? '26px' : '30px'}/1.35 var(--font-sans)`, color: 'var(--text)', maxWidth: 760, flex: 1 }}>Fokussiert<br />auf Struktur und Lösung.</h1>
+          {!isMobile && (
+            <aside style={{ flex: '0 0 220px', borderLeft: '1px solid var(--border)', paddingLeft: 24, textAlign: 'center' }}>
+              <FRBox style={{ border: 'none', padding: 0, textAlign: 'center' }} />
+            </aside>
+          )}
         </div>
       </section>
 
       {/* Practice grid */}
-      <section style={{ background: 'var(--light)', padding: '32px 0 38px' }}>
+      <section style={{ background: 'var(--light)', padding: isMobile ? '24px 0 30px' : '32px 0 38px' }}>
         <div style={{ maxWidth: 'var(--max-w)', margin: '0 auto', padding: '0 20px' }}>
-          <div style={{ maxWidth: 760, display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 16 }}>
+          <div style={{ maxWidth: 760, display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3,1fr)', gap: 16 }}>
           <PracticeCard area="Arbeitsrecht" href="#" moreLabel=">> mehr erfahren"
             items={['Verhandlungen', 'Konfliktlösung, Schlichtung und Einigungsstellen', 'Arbeitszeit', 'Vergütungssysteme', 'Umstrukturierungen']}
             onClick={(e) => { if (e.target.tagName === 'A') { e.preventDefault(); go('practice'); } }} />
@@ -299,13 +373,13 @@ function HomeScreen({ go }) {
       </section>
 
       {/* Partners */}
-      <section style={{ background: 'var(--white)', padding: '40px 0 50px' }}>
-        <div style={{ ...CONTAINER, display: 'flex', justifyContent: 'flex-start', gap: 50, flexWrap: 'wrap' }}>
+      <section style={{ background: 'var(--white)', padding: isMobile ? '32px 0 40px' : '40px 0 50px' }}>
+        <div style={{ ...CONTAINER, display: 'flex', justifyContent: isMobile ? 'center' : 'flex-start', gap: isMobile ? 36 : 50, flexWrap: 'wrap' }}>
           <PartnerCard name="Dr. Dominik Fiedler" photo="img/fiedler.png" initials="DF"
             title={['Rechtsanwalt | Fachanwalt für Arbeitsrecht | Partner']}
             contacts={[
               { icon: 'mail', label: 'E-Mail', href: 'mailto:d.fiedler@fiedler-riess.de' },
-              { icon: 'linkedin', label: 'LinkedIn', href: '#' },
+              { icon: 'linkedin', label: 'LinkedIn', href: 'https://www.linkedin.com/public-profile/settings?trk=d_flagship3_profile_self_view_public_profile', target: '_blank' },
               { icon: 'phone', label: 'Telefon', href: 'tel:+4917476936860' },
             ]} />
           <PartnerCard name="Stephan Rieß" photo="img/riess.png" initials="SR"
@@ -361,12 +435,13 @@ function SectionHead({ children }) {
   );
 }
 
-function VerkehrsrechtScreen() {
+function VerkehrsrechtScreen({ go }) {
+  const isMobile = window.frUseIsMobile();
   return (
-    <main style={{ padding: '40px 0 60px' }}>
-      <div style={{ ...CONTAINER, display: 'flex', alignItems: 'flex-start', gap: 50 }}>
+    <main style={{ padding: isMobile ? '28px 0 48px' : '40px 0 60px' }}>
+      <div style={{ ...CONTAINER, display: 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: 'flex-start', gap: isMobile ? 36 : 50 }}>
         <div style={{ maxWidth: 760, flex: 1 }}>
-          <h1 style={{ font: '300 30px var(--font-sans)', color: 'var(--text)', display: 'inline-block', paddingBottom: 8, borderBottom: '2px solid var(--green)', marginBottom: 28 }}>Verkehrsrecht von A – Z</h1>
+          <h1 style={{ font: `300 ${isMobile ? '26px' : '30px'} var(--font-sans)`, color: 'var(--text)', display: 'inline-block', paddingBottom: 8, borderBottom: '2px solid var(--green)', marginBottom: 28 }}>Verkehrsrecht von A – Z</h1>
           <h2 style={{ font: '300 22px var(--font-sans)', color: 'var(--text)', marginBottom: 18 }}>Handwerklich präzise – Exzellent</h2>
           <p style={{ font: '400 14px/1.75 var(--font-sans)', color: 'var(--text)', marginBottom: 16 }}>Ob Unfall, Fahrzeugkauf oder Bußgeldbescheid – Rechtsanwalt Stephan Rieß beherrscht als Fachanwalt alle Facetten des Verkehrsrechts.</p>
           <p style={{ font: '400 14px/1.75 var(--font-sans)', color: 'var(--text)' }}>Wir sind bundesweit tätig und nachgefragt.</p>
@@ -384,7 +459,7 @@ function VerkehrsrechtScreen() {
 
           <SectionHead>Recht &amp; Psychologie</SectionHead>
           <p style={{ font: '400 14px/1.75 var(--font-sans)', color: 'var(--text)', marginBottom: 16 }}>Wurde die Fahrerlaubnis bereits entzogen, klären wir die Möglichkeiten, diese wiederzuerlangen. Das tun wir in enger Zusammenarbeit mit Diana Voigt-Hohoff, Inhaberin der DVH-Praxis für Organisationsberatung, Coaching, Supervision und MPU-Schulung, die auf fachliche Stellungnahmen und Begutachtungen zur persönlichen Eignung und Zuverlässigkeit im Rahmen behördlicher Verfahren (z. B. MPU-Kontext) spezialisiert ist.</p>
-          <p style={{ font: '400 14px/1.75 var(--font-sans)', color: 'var(--text)' }}>Das Ziel ist, die MPU-Prüfung zu bestehen und künftige Gesetzeskonflikte zu vermeiden. Die MPU ist kein Wissenstest, sondern ein komplexer Vorgang zur Überprüfung der persönlichen Eignung zum Führen von Kfz im Straßenverkehr – dasselbe gilt auch für den Jagdschein bzw. die Waffenbesitzkarte.</p>
+          <p style={{ font: '400 14px/1.75 var(--font-sans)', color: 'var(--text)' }}>Das Ziel ist, die MPU-Prüfung zu bestehen und künftige Gesetzeskonflikte zu vermeiden. Die MPU ist kein Wissenstest, sondern ein komplexer Vorgang zur Überprüfung der persönlichen Eignung zum Führen von Kfz im Straßenverkehr – dasselbe gilt auch für den <a href="#" onClick={(e) => { e.preventDefault(); go && go('jagdrecht'); }} style={{ color: 'var(--green)' }}>Jagdschein bzw. die Waffenbesitzkarte</a>.</p>
 
           <div style={{ margin: '24px 0 8px', textAlign: 'center' }}>
             <a href="https://www.dvhpraxis.de/" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block', textDecoration: 'none' }}>
@@ -394,7 +469,7 @@ function VerkehrsrechtScreen() {
           </div>
         </div>
 
-        <aside style={{ flex: '0 0 220px', textAlign: 'center', borderLeft: '1px solid var(--border)', paddingLeft: 24, marginTop: 4 }}>
+        <aside style={{ flex: isMobile ? '1 1 auto' : '0 0 220px', alignSelf: isMobile ? 'center' : 'auto', textAlign: 'center', borderLeft: isMobile ? 'none' : '1px solid var(--border)', borderTop: isMobile ? '1px solid var(--border)' : 'none', paddingLeft: isMobile ? 0 : 24, paddingTop: isMobile ? 28 : 0, marginTop: 4 }}>
           <FRBox style={{ border: 'none', padding: 0, textAlign: 'center', marginBottom: 28 }} />
           <h3 style={{ font: '700 15px/1.35 var(--font-sans)', color: 'var(--green)', textTransform: 'uppercase', letterSpacing: '.02em', marginBottom: 18 }}>Auf Spur – im<br />Verkehrsrecht</h3>
           <img src="img/riess.png" alt="Stephan Rieß" style={{ width: 150, height: 150, borderRadius: '50%', objectFit: 'cover', display: 'block', margin: '0 auto 16px' }} />
@@ -408,13 +483,14 @@ function VerkehrsrechtScreen() {
 
 /* ---------- JAGDRECHT ---------- */
 function JagdrechtScreen() {
+  const isMobile = window.frUseIsMobile();
   const head = { font: '700 16px var(--font-sans)', color: 'var(--green)', marginTop: 32, marginBottom: 12 };
   const para = { font: '400 14px/1.75 var(--font-sans)', color: 'var(--text)', marginBottom: 16 };
   return (
-    <main style={{ padding: '40px 0 60px' }}>
-      <div style={{ ...CONTAINER, display: 'flex', alignItems: 'flex-start', gap: 50 }}>
+    <main style={{ padding: isMobile ? '28px 0 48px' : '40px 0 60px' }}>
+      <div style={{ ...CONTAINER, display: 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: 'flex-start', gap: isMobile ? 36 : 50 }}>
         <div style={{ maxWidth: 760, flex: 1 }}>
-          <h1 style={{ font: '300 30px var(--font-sans)', color: 'var(--text)', display: 'inline-block', paddingBottom: 8, borderBottom: '2px solid var(--green)', marginBottom: 28 }}>Jagdrecht</h1>
+          <h1 style={{ font: `300 ${isMobile ? '26px' : '30px'} var(--font-sans)`, color: 'var(--text)', display: 'inline-block', paddingBottom: 8, borderBottom: '2px solid var(--green)', marginBottom: 28 }}>Jagdrecht</h1>
           <h2 style={{ font: '300 22px var(--font-sans)', color: 'var(--text)', marginBottom: 18 }}>Handwerklich präzise – Treffsicher</h2>
           <p style={para}>Als passionierter Jäger berät und vertritt Stephan Rieß Sie umfassend im Jagd- und Waffenrecht, insbesondere bei der Erteilung, dem Erhalt und der Wiedererlangung von Jagdschein und Waffenbesitzkarte (WBK).</p>
           <p style={para}>Gerade nach bußgeld- oder strafrechtlichen Vorfällen drohen der Entzug des Jagdscheins oder der Widerruf der WBK. Ein Schwerpunkt liegt auf der Prüfung von Zuverlässigkeit und persönlicher Eignung nach §§ 5, 6 WaffG.</p>
@@ -437,7 +513,7 @@ function JagdrechtScreen() {
           <p style={para}>Gemeinsam sind wir Ihre Ansprechpartner im Jagd- und Waffenrecht in Nordhessen, Osthessen und Westthüringen, insbesondere in Rotenburg a. d. Fulda, Bad Hersfeld, Fulda, Kassel, Eisenach und Gotha.</p>
         </div>
 
-        <aside style={{ flex: '0 0 220px', textAlign: 'center', borderLeft: '1px solid var(--border)', paddingLeft: 24, marginTop: 4 }}>
+        <aside style={{ flex: isMobile ? '1 1 auto' : '0 0 220px', alignSelf: isMobile ? 'center' : 'auto', textAlign: 'center', borderLeft: isMobile ? 'none' : '1px solid var(--border)', borderTop: isMobile ? '1px solid var(--border)' : 'none', paddingLeft: isMobile ? 0 : 24, paddingTop: isMobile ? 28 : 0, marginTop: 4 }}>
           <FRBox style={{ border: 'none', padding: 0, textAlign: 'center', marginBottom: 28 }} />
           <h3 style={{ font: '700 15px/1.35 var(--font-sans)', color: 'var(--green)', textTransform: 'uppercase', letterSpacing: '.02em', marginBottom: 18 }}>Zielsicher – im Jagd-<br />und Waffenrecht</h3>
           <img src="img/riess.png" alt="Stephan Rieß" style={{ width: 150, height: 150, borderRadius: '50%', objectFit: 'cover', display: 'block', margin: '0 auto 16px' }} />
@@ -451,26 +527,29 @@ function JagdrechtScreen() {
 
 /* ---------- FRAGEBOGEN ---------- */
 function FragebogenScreen() {
+  const isMobile = window.frUseIsMobile();
   const rows = [
-    { text: <>Sie möchten uns Angaben zur Mandatsaufnahme machen? Hier gehte es zu unserem Mandantenbogen.</>, cta: 'Mandantenbogen' },
-    { text: <>Sie hatten einen Unfall und Sie möchten uns schildern, was passiert ist? Hier geht zu unserem Fragebogen zum Unfallgeschehen:</>, cta: 'Unfallfragebogen' },
-    { text: <>Sie haben einen Bußgeldbescheid oder einen Strafbefehl erhalten und Ihnen droht ein Fahrverbot? Hier geht es zu unserem Fragebogen zum Fahrverbot:</>, cta: 'Fahrverbotfragebogen' },
-    { text: <>Sie möchten uns Unterlagen (Fotos, Gutachten, Rechnungen, …) zukommen lassen?</>, cta: 'Unterlagen Upload' },
+    { text: <>Sie möchten uns Angaben zur Mandatsaufnahme machen? Hier gehte es zu unserem Mandantenbogen.</>, cta: 'Mandantenbogen', href: 'https://app.jupus.de/client/portal/external/questionnaires/zBn2LNWXVWzzSASw1qVtlKzejSxZHnnuGx3Jgj_4gu1w7qVt/h27HPVxm2Jk2H8anijxVAO39-TlqatGve1LtMb9Q6LjxDLLY' },
+    { text: <>Sie hatten einen Unfall und Sie möchten uns schildern, was passiert ist? Hier geht zu unserem Fragebogen zum Unfallgeschehen:</>, cta: 'Unfallfragebogen', href: 'https://app.jupus.de/client/portal/external/questionnaires/zBn2LNWXVWzzSASw1qVtlKzejSxZHnnuGx3Jgj_4gu1w7qVt/Yhl75XEoDhLu888x1AyiXSMNCcNLeMbkE8z1qeV2o2dgnDh_' },
+    { text: <>Sie haben einen Bußgeldbescheid oder einen Strafbefehl erhalten und Ihnen droht ein Fahrverbot? Hier geht es zu unserem Fragebogen zum Fahrverbot:</>, cta: 'Fahrverbotfragebogen', href: 'https://app.jupus.de/client/portal/external/questionnaires/zBn2LNWXVWzzSASw1qVtlKzejSxZHnnuGx3Jgj_4gu1w7qVt/rhH9W26ns6rV_C_A0OPnWfPHgf7IBh_4HSYeRGe8z18lM-aB' },
+    { text: <>Sie möchten uns Unterlagen (Fotos, Gutachten, Rechnungen, …) zukommen lassen?</>, cta: 'Unterlagen Upload', href: 'https://app.jupus.de/client/portal/external/questionnaires/zBn2LNWXVWzzSASw1qVtlKzejSxZHnnuGx3Jgj_4gu1w7qVt/5lomOa4HwnxEHkFl3u6iLC5jT50weh2U6iI1kF_lotyIS8GH' },
   ];
   return (
     <main style={{ padding: '34px 0 60px' }}>
       <div style={CONTAINER}>
-        <div style={{ display: 'flex', alignItems: 'flex-start', gap: 50, marginBottom: 40 }}>
-          <h1 style={{ font: '300 30px var(--font-sans)', color: 'var(--crimson)', maxWidth: 760, flex: 1 }}>Sie haben ein Anliegen - wir kümmern uns.</h1>
-          <aside style={{ flex: '0 0 220px', borderLeft: '1px solid var(--border)', paddingLeft: 24, textAlign: 'center' }}>
-            <FRBox style={{ border: 'none', padding: 0, textAlign: 'center' }} />
-          </aside>
+        <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: 'flex-start', gap: isMobile ? 18 : 50, marginBottom: 40 }}>
+          <h1 style={{ font: `300 ${isMobile ? '26px' : '30px'} var(--font-sans)`, color: 'var(--text)', display: 'inline-block', paddingBottom: 8, borderBottom: '2px solid var(--green)', maxWidth: 760, flex: 1 }}>Sie haben ein Anliegen - wir kümmern uns.</h1>
+          {!isMobile && (
+            <aside style={{ flex: '0 0 220px', borderLeft: '1px solid var(--border)', paddingLeft: 24, textAlign: 'center' }}>
+              <FRBox style={{ border: 'none', padding: 0, textAlign: 'center' }} />
+            </aside>
+          )}
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 36, maxWidth: 760 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: isMobile ? 24 : 36, maxWidth: 760 }}>
           {rows.map((r, i) => (
-            <div key={i} style={{ display: 'grid', gridTemplateColumns: '1fr 280px', gap: 40, alignItems: 'center' }}>
+            <div key={i} style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 280px', gap: isMobile ? 14 : 40, alignItems: 'center' }}>
               <p style={{ font: '400 15px/1.6 var(--font-sans)', color: 'var(--text-light)' }}>{r.text}</p>
-              <a href="#" onClick={(e) => e.preventDefault()} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--crimson)', color: 'var(--white)', font: '400 16px var(--font-sans)', padding: '16px 20px', textDecoration: 'none', transition: 'background var(--ease)' }} onMouseEnter={(e) => e.currentTarget.style.background = 'var(--crimson-dark)'} onMouseLeave={(e) => e.currentTarget.style.background = 'var(--crimson)'}>{r.cta}</a>
+              <a href={r.href || '#'} target={r.href ? '_blank' : undefined} rel={r.href ? 'noopener noreferrer' : undefined} onClick={r.href ? undefined : (e) => e.preventDefault()} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--green)', color: 'var(--white)', font: '600 15px var(--font-sans)', padding: '16px 20px', textDecoration: 'none', transition: 'background var(--ease)' }} onMouseEnter={(e) => e.currentTarget.style.background = 'var(--green-dark)'} onMouseLeave={(e) => e.currentTarget.style.background = 'var(--green)'}>{r.cta}</a>
             </div>
           ))}
         </div>
@@ -481,12 +560,13 @@ function FragebogenScreen() {
 
 /* ---------- ANFAHRT ---------- */
 function AnfahrtScreen() {
+  const isMobile = window.frUseIsMobile();
   const [active, setActive] = React.useState(false);
   const mapSrc = 'https://www.google.com/maps?q=Rotenburger+Str.+17,+36199+Rotenburg+an+der+Fulda&output=embed';
   return (
-    <main style={{ padding: '24px 0 60px' }}>
+    <main style={{ padding: isMobile ? '20px 0 48px' : '24px 0 60px' }}>
       <div style={CONTAINER}>
-        <div style={{ maxWidth: 760, border: '1px solid var(--border)', height: 460 }}>
+        <div style={{ maxWidth: 760, border: '1px solid var(--border)', height: isMobile ? 340 : 460 }}>
           {active ? (
             <iframe
               title="Google Maps – Fiedler & Rieß"
@@ -529,7 +609,157 @@ function KarriereScreen() {
   );
 }
 
-Object.assign(window, { HomeScreen, PracticeScreen, VerkehrsrechtScreen, JagdrechtScreen, FragebogenScreen, AnfahrtScreen, KarriereScreen });
+/* ---------- IMPRESSUM ---------- */
+function ImpressumScreen() {
+  const isMobile = window.frUseIsMobile();
+  const h2 = { font: '700 17px var(--font-sans)', color: 'var(--text)', margin: '34px 0 12px', paddingBottom: 6, borderBottom: '2px solid var(--green)', display: 'inline-block' };
+  const p = { font: '400 14px/1.75 var(--font-sans)', color: 'var(--text)', marginBottom: 12 };
+  const lbl = { font: '700 13px var(--font-sans)', color: 'var(--text-light)' };
+  const val = { font: '400 13px/1.6 var(--font-sans)', color: 'var(--text)' };
+  const rowGrid = { display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '180px 1fr', gap: isMobile ? '2px 0' : '10px 24px', marginBottom: 8, alignItems: 'baseline' };
+  return (
+    <main style={{ padding: isMobile ? '28px 0 48px' : '40px 0 60px' }}>
+      <div style={CONTAINER}>
+        <div style={{ maxWidth: 760 }}>
+          <h1 style={{ font: `300 ${isMobile ? '26px' : '30px'} var(--font-sans)`, color: 'var(--text)', display: 'inline-block', paddingBottom: 8, borderBottom: '2px solid var(--green)', marginBottom: 28 }}>Impressum</h1>
+
+          <p style={{ font: '700 15px var(--font-sans)', color: 'var(--green)', marginBottom: 2 }}>Fiedler &amp; Rieß Rechtsanwälte PartGmbB</p>
+          <p style={{ ...p, marginBottom: 24 }}>Rotenburger Str. 17, 36199 Rotenburg a.d. Fulda</p>
+
+          <div style={rowGrid}>
+            <span style={lbl}>Registergericht:</span><span style={val}>Amtsgericht Frankfurt, PR-Nr.: 2872</span>
+            <span style={lbl}>Sitz:</span><span style={val}>Rotenburg a.d. Fulda</span>
+            <span style={lbl}>Partner:</span><span style={val}>Dr. Dominik Fiedler, Rechtsanwalt und Fachanwalt für Arbeitsrecht<br />Stephan Rieß, Rechtsanwalt und Fachanwalt für Verkehrsrecht</span>
+          </div>
+
+          <div style={{ ...rowGrid, marginTop: 16 }}>
+            <span style={lbl}>Telefon:</span><span style={val}>06623 300 812 0</span>
+            <span style={lbl}>Mobilnummer:</span><span style={val}>0174 7693686</span>
+            <span style={lbl}>Telefax:</span><span style={val}>06623 300 812 2</span>
+            <span style={lbl}>E-Mail:</span><span style={val}><a href="mailto:d.fiedler@fiedler-riess.de" style={{ color: 'var(--green)' }}>d.fiedler@fiedler-riess.de</a><br /><a href="mailto:s.riess@fiedler-riess.de" style={{ color: 'var(--green)' }}>s.riess@fiedler-riess.de</a></span>
+          </div>
+
+          <h2 style={h2}>Berufsbezeichnung und zuständige Rechtsanwaltskammer</h2>
+          <p style={p}>Dr. Dominik Fiedler, Stephan Rieß und Mona Broghammer sind nach dem Recht der Bundesrepublik Deutschland als Rechtsanwälte zugelassen. Frau Rechtsanwältin Broghammer ist angestellt.</p>
+          <p style={p}>Alle Rechtsanwälte sind Mitglieder der Rechtsanwaltskammer Kassel, Karthäuserstraße 5, 34117 Kassel, <a href="https://www.rechtsanwaltskammer-kassel.de" style={{ color: 'var(--green)' }}>www.rechtsanwaltskammer-kassel.de</a>.</p>
+
+          <h2 style={h2}>Umsatzsteuer-Identifikationsnummer</h2>
+          <p style={p}>DE 343 424 147</p>
+
+          <h2 style={h2}>Vermögensschaden-Haftpflichtversicherung</h2>
+          <p style={p}>Fiedler &amp; Rieß Rechtsanwälte PartGmbB unterhält eine Vermögensschaden-Haftpflichtversicherung bei der Markel International Insurance Company Limited, Niederlassung für Deutschland, Luisenstrasse 14, 80333 München.</p>
+          <p style={p}>Räumlicher Geltungsbereich ist jeweils das Gebiet der Europäischen Union und den Staaten des Abkommens über den Europäischen Wirtschaftsraum. Die Partnerschaftgesellschaft mit beschränkter Berufshaftung ist nach § 51 a Bundesrechtsanwaltsordnung (BRAO) verpflichtet, eine Vermögensschaden-Haftpflichtversicherung mit einer Mindestversicherungssumme von 2.500.000,00 Euro zu unterhalten.</p>
+
+          <h2 style={h2}>Berufsrechtliche Regelungen</h2>
+          <p style={p}>Die geltenden berufsrechtlichen Regelungen sind die Bundesrechtsanwaltsordnung (BRAO), die Berufsordnung für Rechtsanwälte (BORA), die Fachanwaltsordnung (FAO), das Rechtsanwaltsvergütungsgesetz (RVG) und die Berufsregeln der Rechtsanwälte der Europäischen Union (CCBE). Sie können über die Internetseite der Bundesrechtsanwaltskammer (<a href="https://www.brak.de" style={{ color: 'var(--green)' }}>www.brak.de</a>) in der Rubrik „Berufsrecht" in deutscher und englischer Sprache eingesehen und abgerufen werden.</p>
+
+          <h2 style={h2}>Außergerichtliche Streitschlichtung</h2>
+          <p style={p}>Streitigkeiten zwischen Rechtsanwälten und ihren Auftraggebern können auf Antrag außergerichtlich durch Streitschlichtung bei der zuständigen Rechtsanwaltskammer nach § 73 Abs. 2 Nr. 3 in Verbindung mit § 73 Abs. 5 Bundesrechtsanwaltsordnung oder bei der Schlichtungsstelle der Rechtsanwaltschaft bei der Bundesrechtsanwaltskammer nach § 191 f. Bundesrechtsanwaltsordnung beigelegt werden.</p>
+          <p style={p}>Fiedler &amp; Rieß Rechtsanwälte PartGmbB nimmt an der vorgenannten Streitschlichtung teil.</p>
+          <p style={p}>Die Internet-Adresse der Rechtsanwaltskammer Kassel lautet: <a href="https://www.rechtsanwaltskammer-kassel.de" style={{ color: 'var(--green)' }}>www.rechtsanwaltskammer-kassel.de</a>.<br />Die Internet-Adresse der Bundesrechtsanwaltskammer lautet: <a href="https://www.brak.de" style={{ color: 'var(--green)' }}>www.brak.de</a>.<br />Die Schlichtungsstelle der Rechtsanwaltschaft kann über folgende E-Mail-Adresse erreicht werden: <a href="mailto:Schlichtungsstelle@brak.de" style={{ color: 'var(--green)' }}>Schlichtungsstelle@brak.de</a>.</p>
+
+          <h2 style={h2}>Informationen und Haftung</h2>
+          <p style={p}>Eine Richtigkeit der auf diesen Internetseiten enthaltenen Informationen und verbundenen Internetseiten ("Links") wird nicht gewährleistet. Jegliche Haftung im Zusammenhang mit der Nutzung der auf diesen Internetseiten oder den Links enthaltenen Informationen ist ausgeschlossen; auf eine Richtigkeit kann nicht vertraut werden. Dominik Fiedler distanziert sich ausdrücklich von den Inhalten der verbundenen Internetseiten. Die auf dieser Internetseite enthaltenen Informationen sind keine Rechtsberatung.</p>
+
+          <h2 style={h2}>Bilder</h2>
+          <p style={p}>Die Bilder von unserem Team wurden von Florian Krämer angefertigt.</p>
+
+          <h2 style={h2}>Anwendbares Recht</h2>
+          <p style={p}>Die Informationen auf dieser Internet-Seite sowie alle Fragen und Streitigkeiten im Zusammenhang mit dieser Internet-Seite unterliegen dem Recht der Bundesrepublik Deutschland.</p>
+        </div>
+      </div>
+    </main>
+  );
+}
+
+/* ---------- DATENSCHUTZ ---------- */
+function DatenschutzScreen() {
+  const isMobile = window.frUseIsMobile();
+  const h2 = { font: '700 17px var(--font-sans)', color: 'var(--text)', margin: '34px 0 12px', paddingBottom: 6, borderBottom: '2px solid var(--green)', display: 'inline-block' };
+  const h3 = { font: '700 14px var(--font-sans)', color: 'var(--green)', margin: '20px 0 10px' };
+  const p = { font: '400 14px/1.75 var(--font-sans)', color: 'var(--text)', marginBottom: 12 };
+  const lbl = { font: '700 13px var(--font-sans)', color: 'var(--text-light)' };
+  const val = { font: '400 13px/1.6 var(--font-sans)', color: 'var(--text)' };
+  const rowGrid = { display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '200px 1fr', gap: isMobile ? '2px 0' : '8px 24px', marginBottom: 6, alignItems: 'baseline' };
+  const li = { font: '400 14px/1.7 var(--font-sans)', color: 'var(--text)', marginBottom: 10 };
+  return (
+    <main style={{ padding: isMobile ? '28px 0 48px' : '40px 0 60px' }}>
+      <div style={CONTAINER}>
+        <div style={{ maxWidth: 760 }}>
+          <h1 style={{ font: `300 ${isMobile ? '26px' : '30px'} var(--font-sans)`, color: 'var(--text)', display: 'inline-block', paddingBottom: 8, borderBottom: '2px solid var(--green)', marginBottom: 28 }}>Datenschutz</h1>
+
+          <h2 style={h2}>1. Name und Kontaktdaten des Verantwortlichen für die Datenverarbeitung</h2>
+          <p style={p}>Diese Datenschutz-Information gilt für die Datenverarbeitung durch:</p>
+          <p style={{ font: '700 15px var(--font-sans)', color: 'var(--green)', marginBottom: 2 }}>Fiedler &amp; Rieß Rechtsanwälte PartGmbB</p>
+          <p style={{ ...p, marginBottom: 20 }}>Rotenburger Str. 17, 36199 Rotenburg a.d. Fulda</p>
+          <div style={rowGrid}>
+            <span style={lbl}>Partner:</span><span style={val}>Dr. Dominik Fiedler, Rechtsanwalt und Fachanwalt für Arbeitsrecht<br />Stephan Rieß, Rechtsanwalt und Fachanwalt für Verkehrsrecht</span>
+            <span style={lbl}>Sitz der Gesellschaft:</span><span style={val}>Rotenburg a.d. Fulda</span>
+            <span style={lbl}>Partnerschaftsregister:</span><span style={val}>Amtsgericht Frankfurt a.M., PR Nr.: 2872</span>
+            <span style={lbl}>Telefon:</span><span style={val}>06623 300 8120</span>
+            <span style={lbl}>Telefax:</span><span style={val}>06623 300 8122</span>
+            <span style={lbl}>Verantwortliche:</span><span style={val}>Dr. Dominik Fiedler, Rechtsanwalt und Fachanwalt für Arbeitsrecht<br />Stephan Rieß, Rechtsanwalt und Fachanwalt für Verkehrsrecht</span>
+          </div>
+
+          <h2 style={h2}>2. Erhebung und Speicherung personenbezogener Daten sowie Art und Zweck von deren Verwendung</h2>
+          <h3 style={h3}>a) Beim Besuch der Website</h3>
+          <p style={p}>Beim Aufrufen unserer Website www.fiedler-riess.de werden durch den auf Ihrem Endgerät zum Einsatz kommenden Browser automatisch Informationen an den Server unserer Website gesendet. Diese Informationen werden temporär in einem sog. Logfile gespeichert. Folgende Informationen werden dabei ohne Ihr Zutun erfasst und bis zur automatisierten Löschung gespeichert: IP-Adresse des anfragenden Rechners, Datum und Uhrzeit des Zugriffs, Name und URL der abgerufenen Datei, Website, von der aus der Zugriff erfolgt (Referrer-URL), verwendeter Browser und ggf. das Betriebssystem Ihres Rechners sowie der Name Ihres Access-Providers. Die genannten Daten werden durch uns zu folgenden Zwecken verarbeitet: Gewährleistung eines reibungslosen Verbindungsaufbaus der Website, Gewährleistung einer komfortablen Nutzung unserer Website, Auswertung der Systemsicherheit und -stabilität sowie zu weiteren administrativen Zwecken.</p>
+          <p style={p}>Die Rechtsgrundlage für die Datenverarbeitung ist Art. 6 Abs. 1 S. 1 lit. f DSGVO. Unser berechtigtes Interesse folgt aus oben aufgelisteten Zwecken zur Datenerhebung. In keinem Fall verwenden wir die erhobenen Daten zu dem Zweck, Rückschlüsse auf Ihre Person zu ziehen. Darüber hinaus setzen wir beim Besuch unserer Website Cookies sowie Analysedienste ein. Nähere Erläuterungen dazu erhalten Sie unter den Ziff. 4 und 5 dieser Datenschutzerklärung.</p>
+          <h3 style={h3}>b) Bei Nutzung unseres E-Mail-Adresse(n) und Telefonnummer(n)</h3>
+          <p style={p}>Bei Fragen jeglicher Art bieten wir Ihnen die Möglichkeit, mit uns über eine auf unserer Website angegebene(n) E-Mail-Adresse(n) und Telefonnummer(n) Kontakt aufzunehmen. Dabei ist die Angabe einer gültigen E-Mail-Adresse erforderlich, damit wir wissen, von wem die Anfrage stammt und um diese beantworten zu können. Telefonnummern können unterdrückt werden. Weitere Angaben können freiwillig getätigt werden.</p>
+          <p style={p}>Die Datenverarbeitung zum Zwecke der Kontaktaufnahme mit uns erfolgt nach Art. 6 Abs. 1 S. 1 lit. a DSGVO auf Grundlage Ihrer freiwillig erteilten Einwilligung. Die von uns erhobenen personenbezogenen Daten werden nach Erledigung der von Ihnen gestellten Anfrage nach den gesetzlichen Vorschriften gelöscht.</p>
+
+          <h2 style={h2}>3. Weitergabe von Daten</h2>
+          <p style={p}>Eine Übermittlung Ihrer persönlichen Daten an Dritte zu anderen als den im Folgenden aufgeführten Zwecken findet nicht statt.</p>
+          <p style={p}>Wir geben Ihre persönlichen Daten nur an Dritte weiter, wenn:</p>
+          <ul style={{ listStyle: 'disc', paddingLeft: 20 }}>
+            <li style={li}>Sie Ihre nach Art. 6 Abs. 1 S. 1 lit. a DSGVO ausdrückliche Einwilligung dazu erteilt haben,</li>
+            <li style={li}>die Weitergabe nach Art. 6 Abs. 1 S. 1 lit. f DSGVO zur Geltendmachung, Ausübung oder Verteidigung von Rechtsansprüchen erforderlich ist und kein Grund zur Annahme besteht, dass Sie ein überwiegendes schutzwürdiges Interesse an der Nichtweitergabe Ihrer Daten haben,</li>
+            <li style={li}>für den Fall, dass für die Weitergabe nach Art. 6 Abs. 1 S. 1 lit. c DSGVO eine gesetzliche Verpflichtung besteht, sowie</li>
+            <li style={li}>dies gesetzlich zulässig und nach Art. 6 Abs. 1 S. 1 lit. b DSGVO für die Abwicklung von Vertragsverhältnissen mit Ihnen erforderlich ist.</li>
+          </ul>
+
+          <h2 style={h2}>4. Cookies</h2>
+          <p style={p}>Wir setzen auf unserer Seite Cookies ein. Hierbei handelt es sich um kleine Dateien, die Ihr Browser automatisch erstellt und die auf Ihrem Endgerät (Laptop, Tablet, Smartphone o.ä.) gespeichert werden, wenn Sie unsere Seite besuchen. Cookies richten auf Ihrem Endgerät keinen Schaden an, enthalten keine Viren, Trojaner oder sonstige Schadsoftware. In dem Cookie werden Informationen abgelegt, die sich jeweils im Zusammenhang mit dem spezifisch eingesetzten Endgerät ergeben. Dies bedeutet jedoch nicht, dass wir dadurch unmittelbar Kenntnis von Ihrer Identität erhalten. Der Einsatz von Cookies dient dazu, die Nutzung unseres Angebots für Sie angenehmer zu gestalten. So setzen wir sogenannte Session-Cookies ein, um zu erkennen, dass Sie einzelne Seiten unserer Website bereits besucht haben. Diese werden nach Verlassen unserer Seite automatisch gelöscht.</p>
+          <p style={p}>Unsere Webseite wurde über den Webseiten-Baukasten der Firma Strato AG, Pascalstraße 10, 10587 Berlin, erstellt. Welche Cookies verwendet werden, finden Sie insofern auf der folgenden Webseite: <a href="https://strato.de/blog/dsgvo-cookies/" style={{ color: 'var(--green)' }}>https://strato.de/blog/dsgvo-cookies/</a>. Die durch Cookies verarbeiteten Daten sind für die genannten Zwecke zur Wahrung unserer berechtigten Interessen sowie der Dritter nach Art. 6 Abs. 1 S. 1 lit. f DSGVO erforderlich.</p>
+          <p style={p}>Die meisten Browser akzeptieren Cookies automatisch. Sie können Ihren Browser jedoch so konfigurieren, dass keine Cookies auf Ihrem Computer gespeichert werden oder stets ein Hinweis erscheint, bevor ein neuer Cookie angelegt wird. Die vollständige Deaktivierung von Cookies kann jedoch dazu führen, dass Sie nicht alle Funktionen unserer Website nutzen können.</p>
+
+          <h2 style={h2}>5. Analyse-Tools</h2>
+          <p style={p}>Analyse-Tools (z.B. Google Analytics) werden von uns nicht verwendet. Über den Baukasten der Strato AG - mit dem diese Webseite erstellt wurde - ist jedoch statistisch erhoben, über welchen Weg der Nutzer auf die Webseite kam (z.B. über eine Suchmaschine) und welche Seite bzw. Unterseite aufgerufen wurde.</p>
+
+          <h2 style={h2}>6. Social Media Plug-ins</h2>
+          <p style={p}>Social Plug-ins der sozialen Netzwerke wie Facebook, Twitter und Instagram werden von uns nicht verwendet.</p>
+
+          <h2 style={h2}>7. Betroffenenrechte</h2>
+          <p style={p}>Sie haben das Recht:</p>
+          <ul style={{ listStyle: 'disc', paddingLeft: 20 }}>
+            <li style={li}>gemäß Art. 15 DSGVO Auskunft über Ihre von uns verarbeiteten personenbezogenen Daten zu verlangen. Insbesondere können Sie Auskunft über die Verarbeitungszwecke, die Kategorie der personenbezogenen Daten, die Kategorien von Empfängern, gegenüber denen Ihre Daten offengelegt wurden oder werden, die geplante Speicherdauer, das Bestehen eines Rechts auf Berichtigung, Löschung, Einschränkung der Verarbeitung oder Widerspruch, das Bestehen eines Beschwerderechts, die Herkunft ihrer Daten, sofern diese nicht bei uns erhoben wurden, sowie über das Bestehen einer automatisierten Entscheidungsfindung einschließlich Profiling und ggf. aussagekräftigen Informationen zu deren Einzelheiten verlangen;</li>
+            <li style={li}>gemäß Art. 16 DSGVO unverzüglich die Berichtigung unrichtiger oder Vervollständigung Ihrer bei uns gespeicherten personenbezogenen Daten zu verlangen;</li>
+            <li style={li}>gemäß Art. 17 DSGVO die Löschung Ihrer bei uns gespeicherten personenbezogenen Daten zu verlangen, soweit nicht die Verarbeitung zur Ausübung des Rechts auf freie Meinungsäußerung und Information, zur Erfüllung einer rechtlichen Verpflichtung, aus Gründen des öffentlichen Interesses oder zur Geltendmachung, Ausübung oder Verteidigung von Rechtsansprüchen erforderlich ist;</li>
+            <li style={li}>gemäß Art. 18 DSGVO die Einschränkung der Verarbeitung Ihrer personenbezogenen Daten zu verlangen, soweit die Richtigkeit der Daten von Ihnen bestritten wird, die Verarbeitung unrechtmäßig ist, Sie aber deren Löschung ablehnen und wir die Daten nicht mehr benötigen, Sie jedoch diese zur Geltendmachung, Ausübung oder Verteidigung von Rechtsansprüchen benötigen oder Sie gemäß Art. 21 DSGVO Widerspruch gegen die Verarbeitung eingelegt haben;</li>
+            <li style={li}>gemäß Art. 20 DSGVO Ihre personenbezogenen Daten, die Sie uns bereitgestellt haben, in einem strukturierten, gängigen und maschinenlesebaren Format zu erhalten oder die Übermittlung an einen anderen Verantwortlichen zu verlangen;</li>
+            <li style={li}>gemäß Art. 7 Abs. 3 DSGVO Ihre einmal erteilte Einwilligung jederzeit gegenüber uns zu widerrufen. Dies hat zur Folge, dass wir die Datenverarbeitung, die auf dieser Einwilligung beruhte, für die Zukunft nicht mehr fortführen dürfen und</li>
+            <li style={li}>gemäß Art. 77 DSGVO sich bei einer Aufsichtsbehörde zu beschweren. In der Regel können Sie sich hierfür an die Aufsichtsbehörde Ihres üblichen Aufenthaltsortes oder Arbeitsplatzes oder unseres Kanzleisitzes wenden.</li>
+          </ul>
+
+          <h2 style={h2}>8. Widerspruchsrecht</h2>
+          <p style={p}>Sofern Ihre personenbezogenen Daten auf Grundlage von berechtigten Interessen gemäß Art. 6 Abs. 1 S. 1 lit. f DSGVO verarbeitet werden, haben Sie das Recht, gemäß Art. 21 DSGVO Widerspruch gegen die Verarbeitung Ihrer personenbezogenen Daten einzulegen, soweit dafür Gründe vorliegen, die sich aus Ihrer besonderen Situation ergeben oder sich der Widerspruch gegen Direktwerbung richtet. Im letzteren Fall haben Sie ein generelles Widerspruchsrecht, das ohne Angabe einer besonderen Situation von uns umgesetzt wird.</p>
+          <p style={p}>Möchten Sie von Ihrem Widerrufs- oder Widerspruchsrecht Gebrauch machen, genügt eine E-Mail an <a href="mailto:d.fiedler@drfiedler-rechtsanwaelte.de" style={{ color: 'var(--green)' }}>d.fiedler@drfiedler-rechtsanwaelte.de</a></p>
+
+          <h2 style={h2}>9. Datensicherheit</h2>
+          <p style={p}>Wir verwenden innerhalb des Website-Besuchs das verbreitete SSL-Verfahren (Secure Socket Layer) in Verbindung mit der jeweils höchsten Verschlüsselungsstufe, die von Ihrem Browser unterstützt wird. In der Regel handelt es sich dabei um eine 256 Bit Verschlüsselung. Ob eine einzelne Seite unseres Internetauftrittes verschlüsselt übertragen wird, erkennen Sie an der geschlossenen Darstellung des Schüssel- beziehungsweise Schloss-Symbols in der unteren Statusleiste Ihres Browsers.</p>
+          <p style={p}>Wir bedienen uns im Übrigen geeigneter technischer und organisatorischer Sicherheitsmaßnahmen, um Ihre Daten gegen zufällige oder vorsätzliche Manipulationen, teilweisen oder vollständigen Verlust, Zerstörung oder gegen den unbefugten Zugriff Dritter zu schützen. Unsere Sicherheitsmaßnahmen werden entsprechend der technologischen Entwicklung fortlaufend verbessert.</p>
+
+          <h2 style={h2}>10. Aktualität und Änderung dieser Datenschutzerklärung</h2>
+          <p style={p}>Diese Datenschutzerklärung ist aktuell gültig und hat den Stand April 2022.</p>
+          <p style={p}>Durch die Weiterentwicklung unserer Website und Angebote darüber oder aufgrund geänderter gesetzlicher beziehungsweise behördlicher Vorgaben kann es notwendig werden, diese Datenschutzerklärung zu ändern. Die jeweils aktuelle Datenschutzerklärung kann jederzeit auf der Website unter <a href="https://www.fiedler-riess.de" style={{ color: 'var(--green)' }}>https://www.fiedler-riess.de</a> von Ihnen abgerufen und ausgedruckt werden.</p>
+        </div>
+      </div>
+    </main>
+  );
+}
+
+Object.assign(window, { HomeScreen, PracticeScreen, VerkehrsrechtScreen, JagdrechtScreen, FragebogenScreen, AnfahrtScreen, KarriereScreen, ImpressumScreen, DatenschutzScreen });
 
 
 /* ===== APP ===== */
@@ -547,12 +777,16 @@ const PAGE_META = {
   fragebogen:   { title: 'Sie haben ein Anliegen – wir kümmern uns', tagline: 'Bitte laden Sie das passende Formular herunter und senden Sie es ausgefüllt zurück.' },
   anfahrt:      { title: 'Anfahrt' },
   karriere:     { title: 'Karriere' },
+  impressum:    { title: 'Impressum' },
+  datenschutz:  { title: 'Datenschutz' },
 };
 
 function App() {
   const [route, setRoute] = useAppState('home');
   const [cookie, setCookie] = useAppState(true);
-  const go = (r) => { setRoute(r); window.scrollTo({ top: 0 }); };
+  const [menuOpen, setMenuOpen] = useAppState(false);
+  const isMobile = window.frUseIsMobile();
+  const go = (r) => { setRoute(r); setMenuOpen(false); window.scrollTo({ top: 0 }); };
 
   // nav: Arbeitsrecht -> practice, Verkehrsrecht -> fragebogen, Jagdrecht -> practice
   const navItems = [
@@ -574,28 +808,34 @@ function App() {
 
   return (
     <div style={{ position: 'relative', minHeight: '100%', background: 'var(--white)', display: 'flex', flexDirection: 'column' }}>
-      <HeaderBrand go={go} />
+      <HeaderBrand go={go} isMobile={isMobile} menuOpen={menuOpen} onToggle={() => setMenuOpen((o) => !o)} />
+
+      {isMobile && <MobileNav items={navItems} open={menuOpen} onNavigate={() => setMenuOpen(false)} />}
 
       <div style={{ position: 'relative' }}>
-        <div style={{ position: 'absolute', top: 0, bottom: 0, left: 210, zIndex: 200, background: 'rgba(245,245,243,0.62)' }}>
-          <NavRail items={navItems} variant="transparent" />
-        </div>
+        {!isMobile && (
+          <div style={{ position: 'absolute', top: 0, bottom: 0, left: 210, zIndex: 200, background: 'rgba(245,245,243,0.62)' }}>
+            <NavRail items={navItems} variant="transparent" />
+          </div>
+        )}
         <Hero />
       </div>
 
-      {route !== 'home' && route !== 'fragebogen' && route !== 'verkehrsrecht' && route !== 'jagdrecht' && <PageHeader title={meta.title} tagline={meta.tagline} />}
+      {route !== 'home' && route !== 'fragebogen' && route !== 'verkehrsrecht' && route !== 'jagdrecht' && route !== 'impressum' && route !== 'datenschutz' && <PageHeader title={meta.title} tagline={meta.tagline} />}
 
       <div style={{ flex: 1 }}>
         {route === 'home' && <HomeScreen go={go} />}
         {route === 'practice' && <PracticeScreen />}
-        {route === 'verkehrsrecht' && <VerkehrsrechtScreen />}
+        {route === 'verkehrsrecht' && <VerkehrsrechtScreen go={go} />}
         {route === 'jagdrecht' && <JagdrechtScreen />}
         {route === 'fragebogen' && <FragebogenScreen />}
         {route === 'anfahrt' && <AnfahrtScreen />}
         {route === 'karriere' && <KarriereScreen />}
+        {route === 'impressum' && <ImpressumScreen />}
+        {route === 'datenschutz' && <DatenschutzScreen />}
       </div>
 
-      <Footer />
+      <Footer go={go} />
       {cookie && <CookieBanner onClose={() => setCookie(false)} />}
     </div>
   );

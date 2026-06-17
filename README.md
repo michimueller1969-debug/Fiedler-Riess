@@ -1,6 +1,7 @@
 # Fiedler & Rieß – Website (Deploy-Paket)
 
 Statische Website, fertig zum Hochladen auf einen Webserver.
+Responsiv – optimiert für Desktop, Tablet und Smartphone (Hamburger-Menü unter 760px).
 
 ## Inhalt
 ```
