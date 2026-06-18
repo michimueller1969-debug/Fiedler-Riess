@@ -2,6 +2,7 @@
 
 Statische Website, fertig zum Hochladen auf einen Webserver.
 Responsiv – optimiert für Desktop, Tablet und Smartphone (Hamburger-Menü unter 760px).
+**Keine externen Aufrufe** (kein Google, kein CDN) – datenschutzfreundlich.
 
 ## Inhalt
 ```
@@ -10,9 +11,13 @@ website-dist/
 ├── css/
 │   └── styles.css     ← komplettes Stylesheet (Tokens, Komponenten, Basis)
 ├── js/
-│   └── app.jsx        ← gesamte Seitenlogik (React)
+│   ├── app.js         ← gesamte Seitenlogik, fertig kompiliert (wird geladen)
+│   ├── app.jsx        ← Quellcode dazu (nur zur Pflege, wird NICHT geladen)
+│   └── vendor/
+│       ├── react.production.min.js       ← React, lokal
+│       └── react-dom.production.min.js    ← ReactDOM, lokal
 ├── img/               ← Bilder (Hero, Anwaltsfotos, DVH-Logo)
-└── fonts/             ← Open Sans (woff2)
+└── fonts/             ← Open Sans (woff2) + LICENSE.txt (SIL OFL 1.1)
 ```
 
 ## Veröffentlichen
@@ -21,20 +26,20 @@ des Servers kopieren (z. B. `/var/www/html/` oder `htdocs/`). Die Seite läuft
 dann unter der Domain. Es ist **kein Build-Schritt** nötig.
 
 > Wichtig: Die Seite muss über **http(s)** ausgeliefert werden (also über einen
-> Webserver), nicht per Doppelklick als `file://` geöffnet werden – sonst kann
-> der Browser `js/app.jsx` aus Sicherheitsgründen nicht laden.
+> Webserver), nicht per Doppelklick als `file://` geöffnet werden – sonst können
+> die `js/`-Dateien aus Sicherheitsgründen nicht geladen werden.
 
-## Hinweis zu React/Babel
-`index.html` lädt React und den Babel-Transformer aktuell vom CDN (unpkg.com).
-Das funktioniert auf jedem Server mit Internetzugang sofort.
+## Datenschutz / Urheberrecht
+- **Schrift:** Open Sans wird lokal aus `fonts/` geladen (kein Google-Fonts-Server).
+  Lizenz: SIL Open Font License 1.1 – siehe `fonts/LICENSE.txt`. Kommerzielle
+  Nutzung, Selbst-Hosting und Einbetten sind ausdrücklich erlaubt.
+- **React:** wird lokal aus `js/vendor/` geladen (kein CDN). React steht unter der
+  MIT-Lizenz (frei für kommerzielle Nutzung).
+- Beim Aufruf der Seite werden somit **keine Daten an Dritte (Google, unpkg, …)**
+  übertragen. (Externe Links wie LinkedIn oder die jupus-Fragebögen öffnen
+  natürlich erst nach Klick die jeweilige fremde Seite.)
 
-Für einen **vollständig internen Betrieb ohne externe Abhängigkeiten** können die
-drei Bibliotheken lokal abgelegt werden:
-1. `react.production.min.js`, `react-dom.production.min.js` und `babel.min.js`
-   herunterladen und z. B. unter `js/vendor/` ablegen.
-2. In `index.html` die drei `src="https://unpkg.com/..."`-Pfade auf die lokalen
-   Dateien umstellen.
-
-Für höhere Performance kann `app.jsx` zusätzlich vorab kompiliert werden, sodass
-der Babel-Transformer im Browser entfällt – für den normalen Betrieb ist das
-aber nicht erforderlich.
+## Code ändern
+`js/app.jsx` ist der lesbare Quellcode. Wird er geändert, muss er neu zu
+`js/app.js` kompiliert werden (das ist die Datei, die der Browser lädt).
+Sagen Sie uns einfach Bescheid – wir liefern das aktualisierte Paket.
