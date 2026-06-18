@@ -1001,7 +1001,7 @@ function HomeScreen({
   return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("section", {
     style: {
       background: 'var(--white)',
-      padding: isMobile ? '26px 0 18px' : '40px 0 14px'
+      padding: isMobile ? '26px 0 30px' : '40px 0 44px'
     }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
@@ -1013,76 +1013,19 @@ function HomeScreen({
       alignItems: 'flex-start',
       gap: isMobile ? 20 : 50
     }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      flex: 1,
+      maxWidth: 760
+    }
   }, /*#__PURE__*/React.createElement("h1", {
     style: {
       font: `300 ${isMobile ? '26px' : '30px'}/1.35 var(--font-sans)`,
-      color: 'var(--text)',
-      maxWidth: 760,
-      flex: 1
+      color: 'var(--text)'
     }
-  }, "Fokussiert", /*#__PURE__*/React.createElement("br", null), "auf Struktur und L\xF6sung."), !isMobile && /*#__PURE__*/React.createElement("aside", {
+  }, "Fokussiert", /*#__PURE__*/React.createElement("br", null), "auf Struktur und L\xF6sung."), /*#__PURE__*/React.createElement("div", {
     style: {
-      flex: '0 0 220px',
-      borderLeft: '1px solid var(--border)',
-      paddingLeft: 24,
-      textAlign: 'center'
-    }
-  }, /*#__PURE__*/React.createElement(FRBox, {
-    style: {
-      border: 'none',
-      padding: 0,
-      textAlign: 'center'
-    }
-  }), /*#__PURE__*/React.createElement("div", {
-    style: {
-      borderTop: '1px solid var(--border)',
-      marginTop: 20,
-      paddingTop: 18,
-      display: 'flex',
-      flexDirection: 'column',
-      gap: 10
-    }
-  }, /*#__PURE__*/React.createElement("a", {
-    href: "https://anwaltverein.de/",
-    target: "_blank",
-    rel: "noopener noreferrer",
-    style: {
-      font: '400 13px/1.4 var(--font-sans)',
-      color: 'var(--green)',
-      textDecoration: 'none'
-    }
-  }, "Deutscher Anwaltverein"), /*#__PURE__*/React.createElement("a", {
-    href: "https://anwaltverein.de/mitgliedschaft/arbeitsgemeinschaften/verkehrsrecht",
-    target: "_blank",
-    rel: "noopener noreferrer",
-    style: {
-      font: '400 13px/1.4 var(--font-sans)',
-      color: 'var(--green)',
-      textDecoration: 'none'
-    }
-  }, "Arbeitsgemeinschaft Verkehrsrecht"), /*#__PURE__*/React.createElement("a", {
-    href: "https://www.anwalt.de/riess-stephan",
-    target: "_blank",
-    rel: "noopener noreferrer",
-    style: {
-      font: '400 13px/1.4 var(--font-sans)',
-      color: 'var(--green)',
-      textDecoration: 'none'
-    }
-  }, "Stephan Rie\xDF auf anwalt.de"))))), /*#__PURE__*/React.createElement("section", {
-    style: {
-      background: 'var(--white)',
-      padding: isMobile ? '8px 0 30px' : '0 0 44px'
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      maxWidth: 'var(--max-w)',
-      margin: '0 auto',
-      padding: '0 20px'
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      maxWidth: 760,
+      marginTop: isMobile ? 22 : 26,
       display: 'grid',
       gridTemplateColumns: isMobile ? '1fr' : 'repeat(3,1fr)',
       gap: 16
@@ -1120,7 +1063,58 @@ function HomeScreen({
         go('jagdrecht');
       }
     }
-  })))), /*#__PURE__*/React.createElement("section", {
+  }))), /*#__PURE__*/React.createElement("aside", {
+    style: isMobile ? {
+      display: 'none'
+    } : {
+      flex: '0 0 220px',
+      borderLeft: '1px solid var(--border)',
+      paddingLeft: 24,
+      textAlign: 'center'
+    }
+  }, /*#__PURE__*/React.createElement(FRBox, {
+    style: {
+      border: 'none',
+      padding: 0,
+      textAlign: 'center'
+    }
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      borderTop: '1px solid var(--border)',
+      marginTop: 63,
+      paddingTop: 18,
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 10
+    }
+  }, /*#__PURE__*/React.createElement("a", {
+    href: "https://anwaltverein.de/",
+    target: "_blank",
+    rel: "noopener noreferrer",
+    style: {
+      font: '400 13px/1.4 var(--font-sans)',
+      color: 'var(--green)',
+      textDecoration: 'none'
+    }
+  }, "Deutscher Anwaltverein"), /*#__PURE__*/React.createElement("a", {
+    href: "https://anwaltverein.de/mitgliedschaft/arbeitsgemeinschaften/verkehrsrecht",
+    target: "_blank",
+    rel: "noopener noreferrer",
+    style: {
+      font: '400 13px/1.4 var(--font-sans)',
+      color: 'var(--green)',
+      textDecoration: 'none'
+    }
+  }, "Arbeitsgemeinschaft Verkehrsrecht"), /*#__PURE__*/React.createElement("a", {
+    href: "https://www.anwalt.de/riess-stephan",
+    target: "_blank",
+    rel: "noopener noreferrer",
+    style: {
+      font: '400 13px/1.4 var(--font-sans)',
+      color: 'var(--green)',
+      textDecoration: 'none'
+    }
+  }, "Stephan Rie\xDF auf anwalt.de"))))), /*#__PURE__*/React.createElement("section", {
     style: {
       background: 'var(--white)',
       padding: isMobile ? '32px 0 40px' : '40px 0 50px'
@@ -1171,7 +1165,62 @@ function HomeScreen({
       label: 'Telefon',
       href: 'tel:+4966233008120'
     }]
-  }))));
+  }))), isMobile && /*#__PURE__*/React.createElement("section", {
+    style: {
+      background: 'var(--white)',
+      padding: '0 0 44px'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      ...CONTAINER
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      borderTop: '1px solid var(--border)',
+      paddingTop: 24,
+      textAlign: 'center'
+    }
+  }, /*#__PURE__*/React.createElement(FRBox, {
+    style: {
+      border: 'none',
+      padding: 0,
+      textAlign: 'center'
+    }
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 20,
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 12
+    }
+  }, /*#__PURE__*/React.createElement("a", {
+    href: "https://anwaltverein.de/",
+    target: "_blank",
+    rel: "noopener noreferrer",
+    style: {
+      font: '400 14px/1.4 var(--font-sans)',
+      color: 'var(--green)',
+      textDecoration: 'none'
+    }
+  }, "Deutscher Anwaltverein"), /*#__PURE__*/React.createElement("a", {
+    href: "https://anwaltverein.de/mitgliedschaft/arbeitsgemeinschaften/verkehrsrecht",
+    target: "_blank",
+    rel: "noopener noreferrer",
+    style: {
+      font: '400 14px/1.4 var(--font-sans)',
+      color: 'var(--green)',
+      textDecoration: 'none'
+    }
+  }, "Arbeitsgemeinschaft Verkehrsrecht"), /*#__PURE__*/React.createElement("a", {
+    href: "https://www.anwalt.de/riess-stephan",
+    target: "_blank",
+    rel: "noopener noreferrer",
+    style: {
+      font: '400 14px/1.4 var(--font-sans)',
+      color: 'var(--green)',
+      textDecoration: 'none'
+    }
+  }, "Stephan Rie\xDF auf anwalt.de"))))));
 }
 
 /* ---------- PRACTICE DETAIL (Arbeitsrecht) ---------- */
