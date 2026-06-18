@@ -1001,7 +1001,7 @@ function HomeScreen({
   return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("section", {
     style: {
       background: 'var(--white)',
-      padding: isMobile ? '26px 0 22px' : '40px 0 30px'
+      padding: isMobile ? '26px 0 18px' : '40px 0 14px'
     }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
@@ -1033,10 +1033,46 @@ function HomeScreen({
       padding: 0,
       textAlign: 'center'
     }
-  })))), /*#__PURE__*/React.createElement("section", {
+  }), /*#__PURE__*/React.createElement("div", {
     style: {
-      background: 'var(--light)',
-      padding: isMobile ? '24px 0 30px' : '32px 0 38px'
+      borderTop: '1px solid var(--border)',
+      marginTop: 20,
+      paddingTop: 18,
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 10
+    }
+  }, /*#__PURE__*/React.createElement("a", {
+    href: "https://anwaltverein.de/",
+    target: "_blank",
+    rel: "noopener noreferrer",
+    style: {
+      font: '400 13px/1.4 var(--font-sans)',
+      color: 'var(--green)',
+      textDecoration: 'none'
+    }
+  }, "Deutscher Anwaltverein"), /*#__PURE__*/React.createElement("a", {
+    href: "https://anwaltverein.de/mitgliedschaft/arbeitsgemeinschaften/verkehrsrecht",
+    target: "_blank",
+    rel: "noopener noreferrer",
+    style: {
+      font: '400 13px/1.4 var(--font-sans)',
+      color: 'var(--green)',
+      textDecoration: 'none'
+    }
+  }, "Arbeitsgemeinschaft Verkehrsrecht"), /*#__PURE__*/React.createElement("a", {
+    href: "https://www.anwalt.de/riess-stephan",
+    target: "_blank",
+    rel: "noopener noreferrer",
+    style: {
+      font: '400 13px/1.4 var(--font-sans)',
+      color: 'var(--green)',
+      textDecoration: 'none'
+    }
+  }, "Stephan Rie\xDF auf anwalt.de"))))), /*#__PURE__*/React.createElement("section", {
+    style: {
+      background: 'var(--white)',
+      padding: isMobile ? '8px 0 30px' : '0 0 44px'
     }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
@@ -1070,7 +1106,7 @@ function HomeScreen({
     onClick: e => {
       if (e.target.tagName === 'A') {
         e.preventDefault();
-        go('practice');
+        go('verkehrsrecht');
       }
     }
   }), /*#__PURE__*/React.createElement(PracticeCard, {
@@ -1081,7 +1117,7 @@ function HomeScreen({
     onClick: e => {
       if (e.target.tagName === 'A') {
         e.preventDefault();
-        go('practice');
+        go('jagdrecht');
       }
     }
   })))), /*#__PURE__*/React.createElement("section", {
@@ -1125,6 +1161,11 @@ function HomeScreen({
       icon: 'mail',
       label: 'E-Mail',
       href: 'mailto:s.riess@fiedler-riess.de'
+    }, {
+      icon: 'linkedin',
+      label: 'LinkedIn',
+      href: 'https://www.linkedin.com/in/stephan-rieß-a46576416',
+      target: '_blank'
     }, {
       icon: 'phone',
       label: 'Telefon',
@@ -1571,15 +1612,15 @@ function FragebogenScreen() {
   const rows = [{
     text: /*#__PURE__*/React.createElement(React.Fragment, null, "Sie m\xF6chten uns Angaben zur Mandatsaufnahme machen? Hier gehte es zu unserem Mandantenbogen."),
     cta: 'Mandantenbogen',
-    href: 'https://app.jupus.de/client/portal/external/questionnaires/zBn2LNWXVWzzSASw1qVtlKzejSxZHnnuGx3Jgj_4gu1w7qVt/h27HPVxm2Jk2H8anijxVAO39-TlqatGve1LtMb9Q6LjxDLLY'
+    href: 'docs/mandantenbogen.pdf'
   }, {
     text: /*#__PURE__*/React.createElement(React.Fragment, null, "Sie hatten einen Unfall und Sie m\xF6chten uns schildern, was passiert ist? Hier geht zu unserem Fragebogen zum Unfallgeschehen:"),
     cta: 'Unfallfragebogen',
-    href: 'https://app.jupus.de/client/portal/external/questionnaires/zBn2LNWXVWzzSASw1qVtlKzejSxZHnnuGx3Jgj_4gu1w7qVt/Yhl75XEoDhLu888x1AyiXSMNCcNLeMbkE8z1qeV2o2dgnDh_'
+    href: 'docs/unfallfragebogen.pdf'
   }, {
     text: /*#__PURE__*/React.createElement(React.Fragment, null, "Sie haben einen Bu\xDFgeldbescheid oder einen Strafbefehl erhalten und Ihnen droht ein Fahrverbot? Hier geht es zu unserem Fragebogen zum Fahrverbot:"),
     cta: 'Fahrverbotfragebogen',
-    href: 'https://app.jupus.de/client/portal/external/questionnaires/zBn2LNWXVWzzSASw1qVtlKzejSxZHnnuGx3Jgj_4gu1w7qVt/rhH9W26ns6rV_C_A0OPnWfPHgf7IBh_4HSYeRGe8z18lM-aB'
+    href: 'docs/fahrverbotfragebogen.pdf'
   }, {
     text: /*#__PURE__*/React.createElement(React.Fragment, null, "Sie m\xF6chten uns Unterlagen (Fotos, Gutachten, Rechnungen, \u2026) zukommen lassen?"),
     cta: 'Unterlagen Upload',
@@ -1629,38 +1670,90 @@ function FragebogenScreen() {
       gap: isMobile ? 24 : 36,
       maxWidth: 760
     }
-  }, rows.map((r, i) => /*#__PURE__*/React.createElement("div", {
-    key: i,
-    style: {
-      display: 'grid',
-      gridTemplateColumns: isMobile ? '1fr' : '1fr 280px',
-      gap: isMobile ? 14 : 40,
-      alignItems: 'center'
-    }
-  }, /*#__PURE__*/React.createElement("p", {
-    style: {
-      font: '400 15px/1.6 var(--font-sans)',
-      color: 'var(--text-light)'
-    }
-  }, r.text), /*#__PURE__*/React.createElement("a", {
-    href: r.href || '#',
-    target: r.href ? '_blank' : undefined,
-    rel: r.href ? 'noopener noreferrer' : undefined,
-    onClick: r.href ? undefined : e => e.preventDefault(),
-    style: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      background: 'var(--green)',
-      color: 'var(--white)',
-      font: '600 15px var(--font-sans)',
-      padding: '16px 20px',
-      textDecoration: 'none',
-      transition: 'background var(--ease)'
-    },
-    onMouseEnter: e => e.currentTarget.style.background = 'var(--green-dark)',
-    onMouseLeave: e => e.currentTarget.style.background = 'var(--green)'
-  }, r.cta))))));
+  }, rows.map((r, i) => {
+    const isPdf = (r.href || '').endsWith('.pdf');
+    const icon = isPdf ? /*#__PURE__*/React.createElement("svg", {
+      width: "20",
+      height: "20",
+      viewBox: "0 0 24 24",
+      fill: "none",
+      stroke: "currentColor",
+      strokeWidth: "2",
+      strokeLinecap: "round",
+      strokeLinejoin: "round",
+      style: {
+        flexShrink: 0
+      }
+    }, /*#__PURE__*/React.createElement("path", {
+      d: "M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+    }), /*#__PURE__*/React.createElement("polyline", {
+      points: "14 2 14 8 20 8"
+    }), /*#__PURE__*/React.createElement("line", {
+      x1: "8",
+      y1: "13",
+      x2: "16",
+      y2: "13"
+    }), /*#__PURE__*/React.createElement("line", {
+      x1: "8",
+      y1: "17",
+      x2: "13",
+      y2: "17"
+    })) : /*#__PURE__*/React.createElement("svg", {
+      width: "20",
+      height: "20",
+      viewBox: "0 0 24 24",
+      fill: "none",
+      stroke: "currentColor",
+      strokeWidth: "2",
+      strokeLinecap: "round",
+      strokeLinejoin: "round",
+      style: {
+        flexShrink: 0
+      }
+    }, /*#__PURE__*/React.createElement("path", {
+      d: "M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"
+    }), /*#__PURE__*/React.createElement("polyline", {
+      points: "17 8 12 3 7 8"
+    }), /*#__PURE__*/React.createElement("line", {
+      x1: "12",
+      y1: "3",
+      x2: "12",
+      y2: "15"
+    }));
+    return /*#__PURE__*/React.createElement("div", {
+      key: i,
+      style: {
+        display: 'grid',
+        gridTemplateColumns: isMobile ? '1fr' : '1fr 280px',
+        gap: isMobile ? 14 : 40,
+        alignItems: 'center'
+      }
+    }, /*#__PURE__*/React.createElement("p", {
+      style: {
+        font: '400 15px/1.6 var(--font-sans)',
+        color: 'var(--text-light)'
+      }
+    }, r.text), /*#__PURE__*/React.createElement("a", {
+      href: r.href || '#',
+      target: r.href ? '_blank' : undefined,
+      rel: r.href ? 'noopener noreferrer' : undefined,
+      onClick: r.href ? undefined : e => e.preventDefault(),
+      style: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        gap: 12,
+        background: 'var(--green)',
+        color: 'var(--white)',
+        font: '600 15px var(--font-sans)',
+        padding: '16px 22px',
+        textDecoration: 'none',
+        transition: 'background var(--ease)'
+      },
+      onMouseEnter: e => e.currentTarget.style.background = 'var(--green-dark)',
+      onMouseLeave: e => e.currentTarget.style.background = 'var(--green)'
+    }, icon, r.cta));
+  }))));
 }
 
 /* ---------- ANFAHRT ---------- */

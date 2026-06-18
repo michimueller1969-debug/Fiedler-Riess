@@ -344,19 +344,24 @@ function HomeScreen({ go }) {
   return (
     <div>
       {/* Intro */}
-      <section style={{ background: 'var(--white)', padding: isMobile ? '26px 0 22px' : '40px 0 30px' }}>
+      <section style={{ background: 'var(--white)', padding: isMobile ? '26px 0 18px' : '40px 0 14px' }}>
         <div style={{ maxWidth: 'var(--max-w)', margin: '0 auto', padding: '0 20px', display: 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: 'flex-start', gap: isMobile ? 20 : 50 }}>
           <h1 style={{ font: `300 ${isMobile ? '26px' : '30px'}/1.35 var(--font-sans)`, color: 'var(--text)', maxWidth: 760, flex: 1 }}>Fokussiert<br />auf Struktur und Lösung.</h1>
           {!isMobile && (
             <aside style={{ flex: '0 0 220px', borderLeft: '1px solid var(--border)', paddingLeft: 24, textAlign: 'center' }}>
               <FRBox style={{ border: 'none', padding: 0, textAlign: 'center' }} />
+              <div style={{ borderTop: '1px solid var(--border)', marginTop: 20, paddingTop: 18, display: 'flex', flexDirection: 'column', gap: 10 }}>
+                <a href="https://anwaltverein.de/" target="_blank" rel="noopener noreferrer" style={{ font: '400 13px/1.4 var(--font-sans)', color: 'var(--green)', textDecoration: 'none' }}>Deutscher Anwaltverein</a>
+                <a href="https://anwaltverein.de/mitgliedschaft/arbeitsgemeinschaften/verkehrsrecht" target="_blank" rel="noopener noreferrer" style={{ font: '400 13px/1.4 var(--font-sans)', color: 'var(--green)', textDecoration: 'none' }}>Arbeitsgemeinschaft Verkehrsrecht</a>
+                <a href="https://www.anwalt.de/riess-stephan" target="_blank" rel="noopener noreferrer" style={{ font: '400 13px/1.4 var(--font-sans)', color: 'var(--green)', textDecoration: 'none' }}>Stephan Rieß auf anwalt.de</a>
+              </div>
             </aside>
           )}
         </div>
       </section>
 
       {/* Practice grid */}
-      <section style={{ background: 'var(--light)', padding: isMobile ? '24px 0 30px' : '32px 0 38px' }}>
+      <section style={{ background: 'var(--white)', padding: isMobile ? '8px 0 30px' : '0 0 44px' }}>
         <div style={{ maxWidth: 'var(--max-w)', margin: '0 auto', padding: '0 20px' }}>
           <div style={{ maxWidth: 760, display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3,1fr)', gap: 16 }}>
           <PracticeCard area="Arbeitsrecht" href="#" moreLabel=">> mehr erfahren"
@@ -364,10 +369,10 @@ function HomeScreen({ go }) {
             onClick={(e) => { if (e.target.tagName === 'A') { e.preventDefault(); go('practice'); } }} />
           <PracticeCard area="Verkehrsrecht" href="#" moreLabel=">> mehr erfahren"
             items={['Unfallregulierung', 'Personen- und Sachschäden', 'Bußgeld', 'Verkehrsstrafsachen', 'Ordnungswidrigkeiten', 'Führerscheinsachen']}
-            onClick={(e) => { if (e.target.tagName === 'A') { e.preventDefault(); go('practice'); } }} />
+            onClick={(e) => { if (e.target.tagName === 'A') { e.preventDefault(); go('verkehrsrecht'); } }} />
           <PracticeCard area="Jagdrecht" href="#" moreLabel=">> mehr erfahren"
             items={['Beratung im Jagd- und Waffenrecht', 'Jagdschein-/WBK-Sachen', 'Ordnungswidrigkeiten- und Strafsachen mit jagdrechtlichem Bezug', 'Jagdpacht- und Revierangelegenheiten']}
-            onClick={(e) => { if (e.target.tagName === 'A') { e.preventDefault(); go('practice'); } }} />
+            onClick={(e) => { if (e.target.tagName === 'A') { e.preventDefault(); go('jagdrecht'); } }} />
           </div>
         </div>
       </section>
@@ -386,6 +391,7 @@ function HomeScreen({ go }) {
             title={['Rechtsanwalt | Fachanwalt für Verkehrsrecht | Partner']}
             contacts={[
               { icon: 'mail', label: 'E-Mail', href: 'mailto:s.riess@fiedler-riess.de' },
+              { icon: 'linkedin', label: 'LinkedIn', href: 'https://www.linkedin.com/in/stephan-rieß-a46576416', target: '_blank' },
               { icon: 'phone', label: 'Telefon', href: 'tel:+4966233008120' },
             ]} />
         </div>
@@ -529,9 +535,9 @@ function JagdrechtScreen() {
 function FragebogenScreen() {
   const isMobile = window.frUseIsMobile();
   const rows = [
-    { text: <>Sie möchten uns Angaben zur Mandatsaufnahme machen? Hier gehte es zu unserem Mandantenbogen.</>, cta: 'Mandantenbogen', href: 'https://app.jupus.de/client/portal/external/questionnaires/zBn2LNWXVWzzSASw1qVtlKzejSxZHnnuGx3Jgj_4gu1w7qVt/h27HPVxm2Jk2H8anijxVAO39-TlqatGve1LtMb9Q6LjxDLLY' },
-    { text: <>Sie hatten einen Unfall und Sie möchten uns schildern, was passiert ist? Hier geht zu unserem Fragebogen zum Unfallgeschehen:</>, cta: 'Unfallfragebogen', href: 'https://app.jupus.de/client/portal/external/questionnaires/zBn2LNWXVWzzSASw1qVtlKzejSxZHnnuGx3Jgj_4gu1w7qVt/Yhl75XEoDhLu888x1AyiXSMNCcNLeMbkE8z1qeV2o2dgnDh_' },
-    { text: <>Sie haben einen Bußgeldbescheid oder einen Strafbefehl erhalten und Ihnen droht ein Fahrverbot? Hier geht es zu unserem Fragebogen zum Fahrverbot:</>, cta: 'Fahrverbotfragebogen', href: 'https://app.jupus.de/client/portal/external/questionnaires/zBn2LNWXVWzzSASw1qVtlKzejSxZHnnuGx3Jgj_4gu1w7qVt/rhH9W26ns6rV_C_A0OPnWfPHgf7IBh_4HSYeRGe8z18lM-aB' },
+    { text: <>Sie möchten uns Angaben zur Mandatsaufnahme machen? Hier gehte es zu unserem Mandantenbogen.</>, cta: 'Mandantenbogen', href: 'docs/mandantenbogen.pdf' },
+    { text: <>Sie hatten einen Unfall und Sie möchten uns schildern, was passiert ist? Hier geht zu unserem Fragebogen zum Unfallgeschehen:</>, cta: 'Unfallfragebogen', href: 'docs/unfallfragebogen.pdf' },
+    { text: <>Sie haben einen Bußgeldbescheid oder einen Strafbefehl erhalten und Ihnen droht ein Fahrverbot? Hier geht es zu unserem Fragebogen zum Fahrverbot:</>, cta: 'Fahrverbotfragebogen', href: 'docs/fahrverbotfragebogen.pdf' },
     { text: <>Sie möchten uns Unterlagen (Fotos, Gutachten, Rechnungen, …) zukommen lassen?</>, cta: 'Unterlagen Upload', href: 'https://app.jupus.de/client/portal/external/questionnaires/zBn2LNWXVWzzSASw1qVtlKzejSxZHnnuGx3Jgj_4gu1w7qVt/5lomOa4HwnxEHkFl3u6iLC5jT50weh2U6iI1kF_lotyIS8GH' },
   ];
   return (
@@ -546,12 +552,20 @@ function FragebogenScreen() {
           )}
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: isMobile ? 24 : 36, maxWidth: 760 }}>
-          {rows.map((r, i) => (
+          {rows.map((r, i) => {
+            const isPdf = (r.href || '').endsWith('.pdf');
+            const icon = isPdf ? (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
+            ) : (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            );
+            return (
             <div key={i} style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 280px', gap: isMobile ? 14 : 40, alignItems: 'center' }}>
               <p style={{ font: '400 15px/1.6 var(--font-sans)', color: 'var(--text-light)' }}>{r.text}</p>
-              <a href={r.href || '#'} target={r.href ? '_blank' : undefined} rel={r.href ? 'noopener noreferrer' : undefined} onClick={r.href ? undefined : (e) => e.preventDefault()} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--green)', color: 'var(--white)', font: '600 15px var(--font-sans)', padding: '16px 20px', textDecoration: 'none', transition: 'background var(--ease)' }} onMouseEnter={(e) => e.currentTarget.style.background = 'var(--green-dark)'} onMouseLeave={(e) => e.currentTarget.style.background = 'var(--green)'}>{r.cta}</a>
+              <a href={r.href || '#'} target={r.href ? '_blank' : undefined} rel={r.href ? 'noopener noreferrer' : undefined} onClick={r.href ? undefined : (e) => e.preventDefault()} style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: 12, background: 'var(--green)', color: 'var(--white)', font: '600 15px var(--font-sans)', padding: '16px 22px', textDecoration: 'none', transition: 'background var(--ease)' }} onMouseEnter={(e) => e.currentTarget.style.background = 'var(--green-dark)'} onMouseLeave={(e) => e.currentTarget.style.background = 'var(--green)'}>{icon}{r.cta}</a>
             </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </main>
