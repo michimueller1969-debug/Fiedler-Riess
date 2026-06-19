@@ -1,0 +1,27 @@
+EINGÄNGE DER ONLINE-FRAGEBÖGEN
+================================
+
+In diesem Ordner legen die Skripte unfallfragebogen.php und
+fahrverbotfragebogen.php jeden abgesendeten Fragebogen als Datei ab:
+
+  eingaenge/unfall/      ← Unfall-Fragebögen
+  eingaenge/fahrverbot/  ← Fahrverbot-Fragebögen
+
+Pro Eingang werden zwei Dateien geschrieben:
+  JJJJ-MM-TT_HHMMSS_Name_xxxxx.txt   ← gut lesbare Fassung
+  JJJJ-MM-TT_HHMMSS_Name_xxxxx.json  ← alle Felder maschinenlesbar
+
+ABRUFEN: Die Dateien per FTP/SFTP herunterladen.
+
+WICHTIG – DATENSCHUTZ
+---------------------
+Die Eingänge enthalten personenbezogene Daten (inkl. IBAN) und dürfen NICHT
+öffentlich abrufbar sein. Die mitgelieferte .htaccess sperrt den Zugriff auf
+Apache-Servern. Bei nginx greift .htaccess NICHT – dort bitte serverseitig
+sperren, z. B.:
+
+    location ^~ /eingaenge/ { deny all; return 403; }
+
+Bitte nach dem Hochladen einmal testen: Der Aufruf von
+  https://IHRE-DOMAIN/eingaenge/unfall/
+im Browser muss "Forbidden" (403) ergeben – NICHT den Ordnerinhalt.

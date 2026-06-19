@@ -993,6 +993,29 @@ const CONTAINER = {
   padding: '0 20px'
 };
 
+/* anwalt.de Mitgliedssiegel — loader script must run AFTER the target div is mounted,
+   so we inject it in an effect (React does not execute <script> tags rendered as JSX). */
+function AnwaltSiegel() {
+  React.useEffect(() => {
+    const s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://widget.anwalt.de/mitgliedssiegel/31/id/149420/get.js?v=2';
+    document.body.appendChild(s);
+    return () => {
+      try {
+        document.body.removeChild(s);
+      } catch (e) {}
+    };
+  }, []);
+  return /*#__PURE__*/React.createElement("div", {
+    "data-anw-widget": "31",
+    style: {
+      display: 'flex',
+      justifyContent: 'center'
+    }
+  });
+}
+
 /* ---------- HOME ---------- */
 function HomeScreen({
   go
@@ -1085,7 +1108,7 @@ function HomeScreen({
       paddingTop: 18,
       display: 'flex',
       flexDirection: 'column',
-      gap: 10
+      gap: 14
     }
   }, /*#__PURE__*/React.createElement("a", {
     href: "https://anwaltverein.de/",
@@ -1094,7 +1117,12 @@ function HomeScreen({
     style: {
       font: '400 13px/1.4 var(--font-sans)',
       color: 'var(--green)',
-      textDecoration: 'none'
+      textDecoration: 'none',
+      padding: '12px',
+      border: '1px solid var(--border)',
+      borderRadius: '4px',
+      textAlign: 'center',
+      display: 'block'
     }
   }, "Deutscher Anwaltverein"), /*#__PURE__*/React.createElement("a", {
     href: "https://anwaltverein.de/mitgliedschaft/arbeitsgemeinschaften/verkehrsrecht",
@@ -1103,9 +1131,33 @@ function HomeScreen({
     style: {
       font: '400 13px/1.4 var(--font-sans)',
       color: 'var(--green)',
-      textDecoration: 'none'
+      textDecoration: 'none',
+      padding: '12px',
+      border: '1px solid var(--border)',
+      borderRadius: '4px',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      gap: '8px'
     }
-  }, "Arbeitsgemeinschaft Verkehrsrecht"), /*#__PURE__*/React.createElement("a", {
+  }, /*#__PURE__*/React.createElement("span", null, "Arbeitsgemeinschaft Verkehrsrecht"), /*#__PURE__*/React.createElement("img", {
+    src: "img/verkehrsanwaelte-logo.png",
+    alt: "Verkehrsanw\xE4lte Logo",
+    style: {
+      height: '56px',
+      width: 'auto'
+    }
+  })), /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: '12px',
+      border: '1px solid var(--border)',
+      borderRadius: '4px',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '10px',
+      alignItems: 'center'
+    }
+  }, /*#__PURE__*/React.createElement("a", {
     href: "https://www.anwalt.de/riess-stephan",
     target: "_blank",
     rel: "noopener noreferrer",
@@ -1114,7 +1166,7 @@ function HomeScreen({
       color: 'var(--green)',
       textDecoration: 'none'
     }
-  }, "Stephan Rie\xDF auf anwalt.de"))))), /*#__PURE__*/React.createElement("section", {
+  }, "Stephan Rie\xDF auf anwalt.de"), /*#__PURE__*/React.createElement(AnwaltSiegel, null)))))), /*#__PURE__*/React.createElement("section", {
     style: {
       background: 'var(--white)',
       padding: isMobile ? '32px 0 40px' : '40px 0 50px'
@@ -1191,7 +1243,7 @@ function HomeScreen({
       marginTop: 20,
       display: 'flex',
       flexDirection: 'column',
-      gap: 12
+      gap: 14
     }
   }, /*#__PURE__*/React.createElement("a", {
     href: "https://anwaltverein.de/",
@@ -1200,7 +1252,12 @@ function HomeScreen({
     style: {
       font: '400 14px/1.4 var(--font-sans)',
       color: 'var(--green)',
-      textDecoration: 'none'
+      textDecoration: 'none',
+      padding: '12px',
+      border: '1px solid var(--border)',
+      borderRadius: '4px',
+      textAlign: 'center',
+      display: 'block'
     }
   }, "Deutscher Anwaltverein"), /*#__PURE__*/React.createElement("a", {
     href: "https://anwaltverein.de/mitgliedschaft/arbeitsgemeinschaften/verkehrsrecht",
@@ -1209,9 +1266,33 @@ function HomeScreen({
     style: {
       font: '400 14px/1.4 var(--font-sans)',
       color: 'var(--green)',
-      textDecoration: 'none'
+      textDecoration: 'none',
+      padding: '12px',
+      border: '1px solid var(--border)',
+      borderRadius: '4px',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      gap: '8px'
     }
-  }, "Arbeitsgemeinschaft Verkehrsrecht"), /*#__PURE__*/React.createElement("a", {
+  }, /*#__PURE__*/React.createElement("span", null, "Arbeitsgemeinschaft Verkehrsrecht"), /*#__PURE__*/React.createElement("img", {
+    src: "img/verkehrsanwaelte-logo.png",
+    alt: "Verkehrsanw\xE4lte Logo",
+    style: {
+      height: '56px',
+      width: 'auto'
+    }
+  })), /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: '12px',
+      border: '1px solid var(--border)',
+      borderRadius: '4px',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '10px',
+      alignItems: 'center'
+    }
+  }, /*#__PURE__*/React.createElement("a", {
     href: "https://www.anwalt.de/riess-stephan",
     target: "_blank",
     rel: "noopener noreferrer",
@@ -1220,7 +1301,7 @@ function HomeScreen({
       color: 'var(--green)',
       textDecoration: 'none'
     }
-  }, "Stephan Rie\xDF auf anwalt.de"))))));
+  }, "Stephan Rie\xDF auf anwalt.de"), /*#__PURE__*/React.createElement(AnwaltSiegel, null)))))));
 }
 
 /* ---------- PRACTICE DETAIL (Arbeitsrecht) ---------- */
@@ -1659,17 +1740,20 @@ function JagdrechtScreen() {
 function FragebogenScreen() {
   const isMobile = window.frUseIsMobile();
   const rows = [{
-    text: /*#__PURE__*/React.createElement(React.Fragment, null, "Sie m\xF6chten uns Angaben zur Mandatsaufnahme machen? Hier gehte es zu unserem Mandantenbogen."),
-    cta: 'Mandantenbogen',
-    href: 'docs/mandantenbogen.pdf'
+    text: /*#__PURE__*/React.createElement(React.Fragment, null, "Sie m\xF6chten uns Angaben zur Mandatsaufnahme machen? Hier geht es zu unserem Online-Mandantenbogen:"),
+    cta: 'Mandantenbogen ausfüllen',
+    href: 'mandantenbogen.html',
+    online: true
   }, {
-    text: /*#__PURE__*/React.createElement(React.Fragment, null, "Sie hatten einen Unfall und Sie m\xF6chten uns schildern, was passiert ist? Hier geht zu unserem Fragebogen zum Unfallgeschehen:"),
-    cta: 'Unfallfragebogen',
-    href: 'docs/unfallfragebogen.pdf'
+    text: /*#__PURE__*/React.createElement(React.Fragment, null, "Sie hatten einen Unfall und Sie m\xF6chten uns schildern, was passiert ist? Hier geht es zu unserem Online-Fragebogen zum Unfallgeschehen:"),
+    cta: 'Unfallfragebogen ausfüllen',
+    href: 'unfallfragebogen.html',
+    online: true
   }, {
-    text: /*#__PURE__*/React.createElement(React.Fragment, null, "Sie haben einen Bu\xDFgeldbescheid oder einen Strafbefehl erhalten und Ihnen droht ein Fahrverbot? Hier geht es zu unserem Fragebogen zum Fahrverbot:"),
-    cta: 'Fahrverbotfragebogen',
-    href: 'docs/fahrverbotfragebogen.pdf'
+    text: /*#__PURE__*/React.createElement(React.Fragment, null, "Sie haben einen Bu\xDFgeldbescheid oder einen Strafbefehl erhalten und Ihnen droht ein Fahrverbot? Hier geht es zu unserem Online-Fragebogen zum Fahrverbot:"),
+    cta: 'Fahrverbotfragebogen ausfüllen',
+    href: 'fahrverbotfragebogen.html',
+    online: true
   }, {
     text: /*#__PURE__*/React.createElement(React.Fragment, null, "Sie m\xF6chten uns Unterlagen (Fotos, Gutachten, Rechnungen, \u2026) zukommen lassen?"),
     cta: 'Unterlagen Upload',
@@ -1721,7 +1805,23 @@ function FragebogenScreen() {
     }
   }, rows.map((r, i) => {
     const isPdf = (r.href || '').endsWith('.pdf');
-    const icon = isPdf ? /*#__PURE__*/React.createElement("svg", {
+    const icon = r.online ? /*#__PURE__*/React.createElement("svg", {
+      width: "20",
+      height: "20",
+      viewBox: "0 0 24 24",
+      fill: "none",
+      stroke: "currentColor",
+      strokeWidth: "2",
+      strokeLinecap: "round",
+      strokeLinejoin: "round",
+      style: {
+        flexShrink: 0
+      }
+    }, /*#__PURE__*/React.createElement("path", {
+      d: "M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"
+    })) : isPdf ? /*#__PURE__*/React.createElement("svg", {
       width: "20",
       height: "20",
       viewBox: "0 0 24 24",
@@ -1784,8 +1884,8 @@ function FragebogenScreen() {
       }
     }, r.text), /*#__PURE__*/React.createElement("a", {
       href: r.href || '#',
-      target: r.href ? '_blank' : undefined,
-      rel: r.href ? 'noopener noreferrer' : undefined,
+      target: r.online ? undefined : r.href ? '_blank' : undefined,
+      rel: r.href && !r.online ? 'noopener noreferrer' : undefined,
       onClick: r.href ? undefined : e => e.preventDefault(),
       style: {
         display: 'flex',
@@ -2319,7 +2419,8 @@ Object.assign(window, {
    routed screen, footer, dismissible cookie banner.
    ============================================ */
 const {
-  useState: useAppState
+  useState: useAppState,
+  useEffect: useAppEffect
 } = React;
 const PAGE_META = {
   practice: {
@@ -2352,17 +2453,32 @@ const PAGE_META = {
   }
 };
 function App() {
-  const [route, setRoute] = useAppState('home');
+  const KNOWN_ROUTES = ['home', 'practice', 'verkehrsrecht', 'jagdrecht', 'fragebogen', 'anfahrt', 'karriere', 'impressum', 'datenschutz'];
+  const hashRoute = typeof location !== 'undefined' ? (location.hash || '').replace(/^#/, '') : '';
+  const [route, setRoute] = useAppState(KNOWN_ROUTES.indexOf(hashRoute) !== -1 ? hashRoute : 'home');
   const [cookie, setCookie] = useAppState(true);
   const [menuOpen, setMenuOpen] = useAppState(false);
   const isMobile = window.frUseIsMobile();
   const go = r => {
     setRoute(r);
     setMenuOpen(false);
+    if (typeof history !== 'undefined' && history.replaceState) {
+      history.replaceState(null, '', r === 'home' ? location.pathname + location.search : '#' + r);
+    }
     window.scrollTo({
       top: 0
     });
   };
+
+  // Reagiere auf Vor/Zurück und auf Deep-Links von den Formularseiten (index.html#fragebogen)
+  useAppEffect(() => {
+    const onHash = () => {
+      const r = (location.hash || '').replace(/^#/, '');
+      setRoute(KNOWN_ROUTES.indexOf(r) !== -1 ? r : 'home');
+    };
+    window.addEventListener('hashchange', onHash);
+    return () => window.removeEventListener('hashchange', onHash);
+  }, []);
 
   // nav: Arbeitsrecht -> practice, Verkehrsrecht -> fragebogen, Jagdrecht -> practice
   const navItems = [{
@@ -2425,6 +2541,13 @@ function App() {
     }
   }];
   const meta = PAGE_META[route];
+
+  // Widget nach dem Rendern laden
+  useAppEffect(() => {
+    if (window.getAnwaltWidget) {
+      setTimeout(() => window.getAnwaltWidget?.(), 200);
+    }
+  }, [route]);
   return /*#__PURE__*/React.createElement("div", {
     style: {
       position: 'relative',
@@ -2451,14 +2574,29 @@ function App() {
       position: 'absolute',
       top: 0,
       bottom: 0,
-      left: 210,
+      left: 0,
+      right: 0,
       zIndex: 200,
-      background: 'rgba(245,245,243,0.62)'
+      pointerEvents: 'none'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      maxWidth: 'var(--max-w)',
+      margin: '0 auto',
+      padding: '0 20px',
+      height: '100%'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'inline-block',
+      height: '100%',
+      background: 'rgba(245,245,243,0.62)',
+      pointerEvents: 'auto'
     }
   }, /*#__PURE__*/React.createElement(NavRail, {
     items: navItems,
     variant: "transparent"
-  })), /*#__PURE__*/React.createElement(Hero, null)), route !== 'home' && route !== 'fragebogen' && route !== 'verkehrsrecht' && route !== 'jagdrecht' && route !== 'impressum' && route !== 'datenschutz' && /*#__PURE__*/React.createElement(PageHeader, {
+  })))), /*#__PURE__*/React.createElement(Hero, null)), route !== 'home' && route !== 'fragebogen' && route !== 'verkehrsrecht' && route !== 'jagdrecht' && route !== 'impressum' && route !== 'datenschutz' && /*#__PURE__*/React.createElement(PageHeader, {
     title: meta.title,
     tagline: meta.tagline
   }), /*#__PURE__*/React.createElement("div", {

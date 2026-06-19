@@ -338,6 +338,19 @@ const FRBox = window.KanzleiBox;
 
 const CONTAINER = { maxWidth: 'var(--max-w)', margin: '0 auto', padding: '0 20px' };
 
+/* anwalt.de Mitgliedssiegel — loader script must run AFTER the target div is mounted,
+   so we inject it in an effect (React does not execute <script> tags rendered as JSX). */
+function AnwaltSiegel() {
+  React.useEffect(() => {
+    const s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://widget.anwalt.de/mitgliedssiegel/31/id/149420/get.js?v=2';
+    document.body.appendChild(s);
+    return () => { try { document.body.removeChild(s); } catch (e) {} };
+  }, []);
+  return <div data-anw-widget="31" style={{ display: 'flex', justifyContent: 'center' }}></div>;
+}
+
 /* ---------- HOME ---------- */
 function HomeScreen({ go }) {
   const isMobile = window.frUseIsMobile();
@@ -364,8 +377,14 @@ function HomeScreen({ go }) {
               <FRBox style={{ border: 'none', padding: 0, textAlign: 'center' }} />
               <div style={{ borderTop: '1px solid var(--border)', marginTop: 63, paddingTop: 18, display: 'flex', flexDirection: 'column', gap: 10 }}>
                 <a href="https://anwaltverein.de/" target="_blank" rel="noopener noreferrer" style={{ font: '400 13px/1.4 var(--font-sans)', color: 'var(--green)', textDecoration: 'none' }}>Deutscher Anwaltverein</a>
-                <a href="https://anwaltverein.de/mitgliedschaft/arbeitsgemeinschaften/verkehrsrecht" target="_blank" rel="noopener noreferrer" style={{ font: '400 13px/1.4 var(--font-sans)', color: 'var(--green)', textDecoration: 'none' }}>Arbeitsgemeinschaft Verkehrsrecht</a>
+                <a href="https://anwaltverein.de/mitgliedschaft/arbeitsgemeinschaften/verkehrsrecht" target="_blank" rel="noopener noreferrer" style={{ font: '400 13px/1.4 var(--font-sans)', color: 'var(--green)', textDecoration: 'none' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}>
+                    <span>Arbeitsgemeinschaft Verkehrsrecht</span>
+                    <img src="img/verkehrsanwaelte-logo.png" alt="Verkehrsanwälte Logo" style={{ height: '40px', width: 'auto' }} />
+                  </div>
+                </a>
                 <a href="https://www.anwalt.de/riess-stephan" target="_blank" rel="noopener noreferrer" style={{ font: '400 13px/1.4 var(--font-sans)', color: 'var(--green)', textDecoration: 'none' }}>Stephan Rieß auf anwalt.de</a>
+                <AnwaltSiegel />
               </div>
             </aside>
         </div>
@@ -399,8 +418,14 @@ function HomeScreen({ go }) {
               <FRBox style={{ border: 'none', padding: 0, textAlign: 'center' }} />
               <div style={{ marginTop: 20, display: 'flex', flexDirection: 'column', gap: 12 }}>
                 <a href="https://anwaltverein.de/" target="_blank" rel="noopener noreferrer" style={{ font: '400 14px/1.4 var(--font-sans)', color: 'var(--green)', textDecoration: 'none' }}>Deutscher Anwaltverein</a>
-                <a href="https://anwaltverein.de/mitgliedschaft/arbeitsgemeinschaften/verkehrsrecht" target="_blank" rel="noopener noreferrer" style={{ font: '400 14px/1.4 var(--font-sans)', color: 'var(--green)', textDecoration: 'none' }}>Arbeitsgemeinschaft Verkehrsrecht</a>
+                <a href="https://anwaltverein.de/mitgliedschaft/arbeitsgemeinschaften/verkehrsrecht" target="_blank" rel="noopener noreferrer" style={{ font: '400 14px/1.4 var(--font-sans)', color: 'var(--green)', textDecoration: 'none' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+                    <span>Arbeitsgemeinschaft Verkehrsrecht</span>
+                    <img src="img/verkehrsanwaelte-logo.png" alt="Verkehrsanwälte Logo" style={{ height: '48px', width: 'auto' }} />
+                  </div>
+                </a>
                 <a href="https://www.anwalt.de/riess-stephan" target="_blank" rel="noopener noreferrer" style={{ font: '400 14px/1.4 var(--font-sans)', color: 'var(--green)', textDecoration: 'none' }}>Stephan Rieß auf anwalt.de</a>
+                <AnwaltSiegel />
               </div>
             </div>
           </div>
@@ -545,9 +570,9 @@ function JagdrechtScreen() {
 function FragebogenScreen() {
   const isMobile = window.frUseIsMobile();
   const rows = [
-    { text: <>Sie möchten uns Angaben zur Mandatsaufnahme machen? Hier gehte es zu unserem Mandantenbogen.</>, cta: 'Mandantenbogen', href: 'docs/mandantenbogen.pdf' },
-    { text: <>Sie hatten einen Unfall und Sie möchten uns schildern, was passiert ist? Hier geht zu unserem Fragebogen zum Unfallgeschehen:</>, cta: 'Unfallfragebogen', href: 'docs/unfallfragebogen.pdf' },
-    { text: <>Sie haben einen Bußgeldbescheid oder einen Strafbefehl erhalten und Ihnen droht ein Fahrverbot? Hier geht es zu unserem Fragebogen zum Fahrverbot:</>, cta: 'Fahrverbotfragebogen', href: 'docs/fahrverbotfragebogen.pdf' },
+    { text: <>Sie möchten uns Angaben zur Mandatsaufnahme machen? Hier geht es zu unserem Online-Mandantenbogen:</>, cta: 'Mandantenbogen ausfüllen', href: 'mandantenbogen.html', online: true },
+    { text: <>Sie hatten einen Unfall und Sie möchten uns schildern, was passiert ist? Hier geht es zu unserem Online-Fragebogen zum Unfallgeschehen:</>, cta: 'Unfallfragebogen ausfüllen', href: 'unfallfragebogen.html', online: true },
+    { text: <>Sie haben einen Bußgeldbescheid oder einen Strafbefehl erhalten und Ihnen droht ein Fahrverbot? Hier geht es zu unserem Online-Fragebogen zum Fahrverbot:</>, cta: 'Fahrverbotfragebogen ausfüllen', href: 'fahrverbotfragebogen.html', online: true },
     { text: <>Sie möchten uns Unterlagen (Fotos, Gutachten, Rechnungen, …) zukommen lassen?</>, cta: 'Unterlagen Upload', href: 'https://app.jupus.de/client/portal/external/questionnaires/zBn2LNWXVWzzSASw1qVtlKzejSxZHnnuGx3Jgj_4gu1w7qVt/5lomOa4HwnxEHkFl3u6iLC5jT50weh2U6iI1kF_lotyIS8GH' },
   ];
   return (
@@ -564,7 +589,9 @@ function FragebogenScreen() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: isMobile ? 24 : 36, maxWidth: 760 }}>
           {rows.map((r, i) => {
             const isPdf = (r.href || '').endsWith('.pdf');
-            const icon = isPdf ? (
+            const icon = r.online ? (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            ) : isPdf ? (
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
             ) : (
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
@@ -572,7 +599,7 @@ function FragebogenScreen() {
             return (
             <div key={i} style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 280px', gap: isMobile ? 14 : 40, alignItems: 'center' }}>
               <p style={{ font: '400 15px/1.6 var(--font-sans)', color: 'var(--text-light)' }}>{r.text}</p>
-              <a href={r.href || '#'} target={r.href ? '_blank' : undefined} rel={r.href ? 'noopener noreferrer' : undefined} onClick={r.href ? undefined : (e) => e.preventDefault()} style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: 12, background: 'var(--green)', color: 'var(--white)', font: '600 15px var(--font-sans)', padding: '16px 22px', textDecoration: 'none', transition: 'background var(--ease)' }} onMouseEnter={(e) => e.currentTarget.style.background = 'var(--green-dark)'} onMouseLeave={(e) => e.currentTarget.style.background = 'var(--green)'}>{icon}{r.cta}</a>
+              <a href={r.href || '#'} target={r.online ? undefined : (r.href ? '_blank' : undefined)} rel={r.href && !r.online ? 'noopener noreferrer' : undefined} onClick={r.href ? undefined : (e) => e.preventDefault()} style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: 12, background: 'var(--green)', color: 'var(--white)', font: '600 15px var(--font-sans)', padding: '16px 22px', textDecoration: 'none', transition: 'background var(--ease)' }} onMouseEnter={(e) => e.currentTarget.style.background = 'var(--green-dark)'} onMouseLeave={(e) => e.currentTarget.style.background = 'var(--green)'}>{icon}{r.cta}</a>
             </div>
             );
           })}
@@ -792,7 +819,7 @@ Object.assign(window, { HomeScreen, PracticeScreen, VerkehrsrechtScreen, Jagdrec
    Click-through shell: header, nav rail over hero/page-header,
    routed screen, footer, dismissible cookie banner.
    ============================================ */
-const { useState: useAppState } = React;
+const { useState: useAppState, useEffect: useAppEffect } = React;
 
 const PAGE_META = {
   practice:     { title: 'Arbeitsrecht', tagline: 'Beratung, Verhandlung und Konfliktlösung im Betrieb' },
@@ -806,11 +833,30 @@ const PAGE_META = {
 };
 
 function App() {
-  const [route, setRoute] = useAppState('home');
+  const KNOWN_ROUTES = ['home','practice','verkehrsrecht','jagdrecht','fragebogen','anfahrt','karriere','impressum','datenschutz'];
+  const hashRoute = (typeof location !== 'undefined' ? (location.hash || '').replace(/^#/, '') : '');
+  const [route, setRoute] = useAppState(KNOWN_ROUTES.indexOf(hashRoute) !== -1 ? hashRoute : 'home');
   const [cookie, setCookie] = useAppState(true);
   const [menuOpen, setMenuOpen] = useAppState(false);
   const isMobile = window.frUseIsMobile();
-  const go = (r) => { setRoute(r); setMenuOpen(false); window.scrollTo({ top: 0 }); };
+  const go = (r) => {
+    setRoute(r);
+    setMenuOpen(false);
+    if (typeof history !== 'undefined' && history.replaceState) {
+      history.replaceState(null, '', r === 'home' ? location.pathname + location.search : '#' + r);
+    }
+    window.scrollTo({ top: 0 });
+  };
+
+  // Reagiere auf Vor/Zurück und auf Deep-Links von den Formularseiten (index.html#fragebogen)
+  useAppEffect(() => {
+    const onHash = () => {
+      const r = (location.hash || '').replace(/^#/, '');
+      setRoute(KNOWN_ROUTES.indexOf(r) !== -1 ? r : 'home');
+    };
+    window.addEventListener('hashchange', onHash);
+    return () => window.removeEventListener('hashchange', onHash);
+  }, []);
 
   // nav: Arbeitsrecht -> practice, Verkehrsrecht -> fragebogen, Jagdrecht -> practice
   const navItems = [
@@ -830,6 +876,13 @@ function App() {
 
   const meta = PAGE_META[route];
 
+  // Widget nach dem Rendern laden
+  useAppEffect(() => {
+    if (window.getAnwaltWidget) {
+      setTimeout(() => window.getAnwaltWidget?.(), 200);
+    }
+  }, [route]);
+
   return (
     <div style={{ position: 'relative', minHeight: '100%', background: 'var(--white)', display: 'flex', flexDirection: 'column' }}>
       <HeaderBrand go={go} isMobile={isMobile} menuOpen={menuOpen} onToggle={() => setMenuOpen((o) => !o)} />
@@ -838,8 +891,12 @@ function App() {
 
       <div style={{ position: 'relative' }}>
         {!isMobile && (
-          <div style={{ position: 'absolute', top: 0, bottom: 0, left: 210, zIndex: 200, background: 'rgba(245,245,243,0.62)' }}>
-            <NavRail items={navItems} variant="transparent" />
+          <div style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, zIndex: 200, pointerEvents: 'none' }}>
+            <div style={{ maxWidth: 'var(--max-w)', margin: '0 auto', padding: '0 20px', height: '100%' }}>
+              <div style={{ display: 'inline-block', height: '100%', background: 'rgba(245,245,243,0.62)', pointerEvents: 'auto' }}>
+                <NavRail items={navItems} variant="transparent" />
+              </div>
+            </div>
           </div>
         )}
         <Hero />
