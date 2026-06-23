@@ -627,17 +627,17 @@ function HeaderBrand({
     }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
-      maxWidth: 960,
+      maxWidth: 'var(--max-w)',
       margin: '0 auto',
       padding: isMobile ? '20px 16px 18px' : '44px 20px 40px',
       display: 'flex',
       alignItems: 'center',
-      justifyContent: isMobile ? 'space-between' : 'center',
+      justifyContent: 'space-between',
       gap: 12
     }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
-      textAlign: 'center',
+      textAlign: 'left',
       borderLeft: '1px solid var(--border)',
       paddingLeft: isMobile ? 14 : 22,
       cursor: 'pointer'
@@ -827,7 +827,7 @@ function Footer({
     }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
-      maxWidth: 960,
+      maxWidth: 'var(--max-w)',
       margin: '0 auto',
       padding: '0 20px',
       display: 'flex',
@@ -885,7 +885,7 @@ function CookieBanner({
     }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
-      maxWidth: 960,
+      maxWidth: 'var(--max-w)',
       margin: '0 auto'
     }
   }, /*#__PURE__*/React.createElement("h3", {
@@ -988,7 +988,7 @@ Object.assign(window, {
 /* inline */
 const FRBox = window.KanzleiBox;
 const CONTAINER = {
-  maxWidth: 960,
+  maxWidth: 'var(--max-w)',
   margin: '0 auto',
   padding: '0 20px'
 };
@@ -1028,15 +1028,23 @@ function HomeScreen({
     }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
-      maxWidth: 960,
+      maxWidth: 'var(--max-w)',
       margin: '0 auto',
-      padding: '0 20px'
+      padding: '0 20px',
+      display: 'flex',
+      flexDirection: isMobile ? 'column' : 'row',
+      alignItems: 'flex-start',
+      gap: isMobile ? 20 : 50
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      flex: 1,
+      maxWidth: 760
     }
   }, /*#__PURE__*/React.createElement("h1", {
     style: {
       font: `300 ${isMobile ? '26px' : '30px'}/1.35 var(--font-sans)`,
-      color: 'var(--text)',
-      textAlign: isMobile ? 'left' : 'center'
+      color: 'var(--text)'
     }
   }, "Fokussiert", /*#__PURE__*/React.createElement("br", null), "auf Struktur und L\xF6sung."), /*#__PURE__*/React.createElement("div", {
     style: {
@@ -1078,18 +1086,96 @@ function HomeScreen({
         go('jagdrecht');
       }
     }
-  })))), /*#__PURE__*/React.createElement("section", {
+  }))), /*#__PURE__*/React.createElement("aside", {
+    style: isMobile ? {
+      display: 'none'
+    } : {
+      flex: '0 0 220px',
+      borderLeft: '1px solid var(--border)',
+      paddingLeft: 24,
+      textAlign: 'center'
+    }
+  }, /*#__PURE__*/React.createElement(FRBox, {
+    style: {
+      border: 'none',
+      padding: 0,
+      textAlign: 'center'
+    }
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      borderTop: '1px solid var(--border)',
+      marginTop: 63,
+      paddingTop: 18,
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 14
+    }
+  }, /*#__PURE__*/React.createElement("a", {
+    href: "https://anwaltverein.de/",
+    target: "_blank",
+    rel: "noopener noreferrer",
+    style: {
+      font: '400 13px/1.4 var(--font-sans)',
+      color: 'var(--green)',
+      textDecoration: 'none',
+      padding: '12px',
+      border: '1px solid var(--border)',
+      borderRadius: '4px',
+      textAlign: 'center',
+      display: 'block'
+    }
+  }, "Deutscher Anwaltverein"), /*#__PURE__*/React.createElement("a", {
+    href: "https://anwaltverein.de/mitgliedschaft/arbeitsgemeinschaften/verkehrsrecht",
+    target: "_blank",
+    rel: "noopener noreferrer",
+    style: {
+      font: '400 13px/1.4 var(--font-sans)',
+      color: 'var(--green)',
+      textDecoration: 'none',
+      padding: '12px',
+      border: '1px solid var(--border)',
+      borderRadius: '4px',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      gap: '8px'
+    }
+  }, /*#__PURE__*/React.createElement("span", null, "Arbeitsgemeinschaft Verkehrsrecht"), /*#__PURE__*/React.createElement("img", {
+    src: "img/verkehrsanwaelte-logo.png",
+    alt: "Verkehrsanw\xE4lte Logo",
+    style: {
+      height: '56px',
+      width: 'auto'
+    }
+  })), /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: '12px',
+      border: '1px solid var(--border)',
+      borderRadius: '4px',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '10px',
+      alignItems: 'center'
+    }
+  }, /*#__PURE__*/React.createElement("a", {
+    href: "https://www.anwalt.de/riess-stephan",
+    target: "_blank",
+    rel: "noopener noreferrer",
+    style: {
+      font: '400 13px/1.4 var(--font-sans)',
+      color: 'var(--green)',
+      textDecoration: 'none'
+    }
+  }, "Stephan Rie\xDF auf anwalt.de"), /*#__PURE__*/React.createElement(AnwaltSiegel, null)))))), /*#__PURE__*/React.createElement("section", {
     style: {
       background: 'var(--white)',
       padding: isMobile ? '32px 0 40px' : '40px 0 50px'
     }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
-      maxWidth: 960,
-      margin: '0 auto',
-      padding: '0 20px',
+      ...CONTAINER,
       display: 'flex',
-      justifyContent: 'center',
+      justifyContent: isMobile ? 'center' : 'flex-start',
       gap: isMobile ? 36 : 50,
       flexWrap: 'wrap'
     }
@@ -1131,7 +1217,91 @@ function HomeScreen({
       label: 'Telefon',
       href: 'tel:+4966233008120'
     }]
-  }))));
+  }))), isMobile && /*#__PURE__*/React.createElement("section", {
+    style: {
+      background: 'var(--white)',
+      padding: '0 0 44px'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      ...CONTAINER
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      borderTop: '1px solid var(--border)',
+      paddingTop: 24,
+      textAlign: 'center'
+    }
+  }, /*#__PURE__*/React.createElement(FRBox, {
+    style: {
+      border: 'none',
+      padding: 0,
+      textAlign: 'center'
+    }
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 20,
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 14
+    }
+  }, /*#__PURE__*/React.createElement("a", {
+    href: "https://anwaltverein.de/",
+    target: "_blank",
+    rel: "noopener noreferrer",
+    style: {
+      font: '400 14px/1.4 var(--font-sans)',
+      color: 'var(--green)',
+      textDecoration: 'none',
+      padding: '12px',
+      border: '1px solid var(--border)',
+      borderRadius: '4px',
+      textAlign: 'center',
+      display: 'block'
+    }
+  }, "Deutscher Anwaltverein"), /*#__PURE__*/React.createElement("a", {
+    href: "https://anwaltverein.de/mitgliedschaft/arbeitsgemeinschaften/verkehrsrecht",
+    target: "_blank",
+    rel: "noopener noreferrer",
+    style: {
+      font: '400 14px/1.4 var(--font-sans)',
+      color: 'var(--green)',
+      textDecoration: 'none',
+      padding: '12px',
+      border: '1px solid var(--border)',
+      borderRadius: '4px',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      gap: '8px'
+    }
+  }, /*#__PURE__*/React.createElement("span", null, "Arbeitsgemeinschaft Verkehrsrecht"), /*#__PURE__*/React.createElement("img", {
+    src: "img/verkehrsanwaelte-logo.png",
+    alt: "Verkehrsanw\xE4lte Logo",
+    style: {
+      height: '56px',
+      width: 'auto'
+    }
+  })), /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: '12px',
+      border: '1px solid var(--border)',
+      borderRadius: '4px',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '10px',
+      alignItems: 'center'
+    }
+  }, /*#__PURE__*/React.createElement("a", {
+    href: "https://www.anwalt.de/riess-stephan",
+    target: "_blank",
+    rel: "noopener noreferrer",
+    style: {
+      font: '400 14px/1.4 var(--font-sans)',
+      color: 'var(--green)',
+      textDecoration: 'none'
+    }
+  }, "Stephan Rie\xDF auf anwalt.de"), /*#__PURE__*/React.createElement(AnwaltSiegel, null)))))));
 }
 
 /* ---------- PRACTICE DETAIL (Arbeitsrecht) ---------- */
@@ -2411,7 +2581,7 @@ function App() {
     }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
-      maxWidth: 960,
+      maxWidth: 'var(--max-w)',
       margin: '0 auto',
       padding: '0 20px',
       height: '100%'

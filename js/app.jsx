@@ -214,8 +214,8 @@ const NAV_ITEMS = (go, current) => ([
 function HeaderBrand({ go, isMobile, menuOpen, onToggle }) {
   return (
     <header style={{ background: 'var(--white)' }}>
-      <div style={{ maxWidth: 'var(--max-w)', margin: '0 auto', padding: isMobile ? '20px 16px 18px' : '44px 20px 40px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
-        <div style={{ textAlign: 'left', borderLeft: '1px solid var(--border)', paddingLeft: isMobile ? 14 : 22, cursor: 'pointer' }} onClick={() => go('home')}>
+      <div style={{ maxWidth: 960, margin: '0 auto', padding: isMobile ? '20px 16px 18px' : '44px 20px 40px', display: 'flex', alignItems: 'center', justifyContent: isMobile ? 'space-between' : 'center', gap: 12 }}>
+        <div style={{ textAlign: 'center', borderLeft: '1px solid var(--border)', paddingLeft: isMobile ? 14 : 22, cursor: 'pointer' }} onClick={() => go('home')}>
           <span style={{ font: `300 ${isMobile ? '25px' : '42px'}/1.18 var(--font-sans)`, color: 'var(--green)', display: 'block' }}>Fiedler &amp; Rieß</span>
           <span style={{ font: `300 ${isMobile ? '13px' : '18px'}/1.3 var(--font-sans)`, color: 'var(--green)', display: 'block', marginTop: 2 }}>Rechtsanwälte PartGmbB</span>
         </div>
@@ -289,7 +289,7 @@ function Footer({ go }) {
   const nav = (r) => (e) => { e.preventDefault(); if (go) go(r); };
   return (
     <footer style={{ background: 'var(--white)', borderTop: '1px solid var(--border)', padding: '15px 0' }}>
-      <div style={{ maxWidth: 'var(--max-w)', margin: '0 auto', padding: '0 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 10 }}>
+      <div style={{ maxWidth: 960, margin: '0 auto', padding: '0 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 10 }}>
         <div>
           <span style={{ color: 'var(--green)', font: '700 13px var(--font-sans)', display: 'block' }}>Fiedler &amp; Rieß Rechtsanwälte PartGmbB</span>
           <span style={{ color: 'var(--text-light)', font: '400 12px var(--font-sans)' }}>Rotenburger Str. 17 · 36199 Rotenburg a.d. Fulda</span>
@@ -306,7 +306,7 @@ function Footer({ go }) {
 function CookieBanner({ onClose }) {
   return (
     <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: 'var(--white)', borderTop: '1px solid var(--border)', padding: '18px 20px', zIndex: 9999, boxShadow: '0 -3px 12px rgba(0,0,0,.09)' }}>
-      <div style={{ maxWidth: 'var(--max-w)', margin: '0 auto' }}>
+      <div style={{ maxWidth: 960, margin: '0 auto' }}>
         <h3 style={{ font: '700 14px var(--font-sans)', marginBottom: 6 }}>Cookie-Einstellungen</h3>
         <p style={{ font: '400 12.5px/1.5 var(--font-sans)', color: 'var(--text-light)', marginBottom: 14 }}>Diese Webseite verwendet Cookies, um Besuchern ein optimales Nutzererlebnis zu bieten. Bestimmte Inhalte von Drittanbietern werden nur angezeigt, wenn die entsprechende Option aktiviert ist. Weitere Informationen in der <a href="#" style={{ color: 'var(--green)' }}>Datenschutzerklärung</a>.</p>
         <div style={{ display: 'flex', gap: 18, flexWrap: 'wrap', marginBottom: 12 }}>
@@ -336,7 +336,7 @@ Object.assign(window, { HeaderBrand, Hero, PageHeader, KanzleiBox, Footer, Cooki
 /* inline */
 const FRBox = window.KanzleiBox;
 
-const CONTAINER = { maxWidth: 'var(--max-w)', margin: '0 auto', padding: '0 20px' };
+const CONTAINER = { maxWidth: 960, margin: '0 auto', padding: '0 20px' };
 
 /* anwalt.de Mitgliedssiegel — loader script must run AFTER the target div is mounted,
    so we inject it in an effect (React does not execute <script> tags rendered as JSX). */
@@ -356,43 +356,27 @@ function HomeScreen({ go }) {
   const isMobile = window.frUseIsMobile();
   return (
     <div>
-      {/* Intro + practice grid — combined two-column row on desktop (like Verkehrsrecht) */}
+      {/* Intro + practice grid — centered, no sidebar */}
       <section style={{ background: 'var(--white)', padding: isMobile ? '26px 0 30px' : '40px 0 44px' }}>
-        <div style={{ maxWidth: 'var(--max-w)', margin: '0 auto', padding: '0 20px', display: 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: 'flex-start', gap: isMobile ? 20 : 50 }}>
-          <div style={{ flex: 1, maxWidth: 760 }}>
-            <h1 style={{ font: `300 ${isMobile ? '26px' : '30px'}/1.35 var(--font-sans)`, color: 'var(--text)' }}>Fokussiert<br />auf Struktur und Lösung.</h1>
-            <div style={{ marginTop: isMobile ? 22 : 26, display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3,1fr)', gap: 16 }}>
-              <PracticeCard area="Arbeitsrecht" href="#" moreLabel=">> mehr erfahren"
-                items={['Verhandlungen', 'Konfliktlösung, Schlichtung und Einigungsstellen', 'Arbeitszeit', 'Vergütungssysteme', 'Umstrukturierungen']}
-                onClick={(e) => { if (e.target.tagName === 'A') { e.preventDefault(); go('practice'); } }} />
-              <PracticeCard area="Verkehrsrecht" href="#" moreLabel=">> mehr erfahren"
-                items={['Unfallregulierung', 'Personen- und Sachschäden', 'Bußgeld', 'Verkehrsstrafsachen', 'Ordnungswidrigkeiten', 'Führerscheinsachen']}
-                onClick={(e) => { if (e.target.tagName === 'A') { e.preventDefault(); go('verkehrsrecht'); } }} />
-              <PracticeCard area="Jagdrecht" href="#" moreLabel=">> mehr erfahren"
-                items={['Beratung im Jagd- und Waffenrecht', 'Jagdschein-/WBK-Sachen', 'Ordnungswidrigkeiten- und Strafsachen mit jagdrechtlichem Bezug', 'Jagdpacht- und Revierangelegenheiten']}
-                onClick={(e) => { if (e.target.tagName === 'A') { e.preventDefault(); go('jagdrecht'); } }} />
-            </div>
+        <div style={{ maxWidth: 960, margin: '0 auto', padding: '0 20px' }}>
+          <h1 style={{ font: `300 ${isMobile ? '26px' : '30px'}/1.35 var(--font-sans)`, color: 'var(--text)', textAlign: isMobile ? 'left' : 'center' }}>Fokussiert<br />auf Struktur und Lösung.</h1>
+          <div style={{ marginTop: isMobile ? 22 : 26, display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3,1fr)', gap: 16 }}>
+            <PracticeCard area="Arbeitsrecht" href="#" moreLabel=">> mehr erfahren"
+              items={['Verhandlungen', 'Konfliktlösung, Schlichtung und Einigungsstellen', 'Arbeitszeit', 'Vergütungssysteme', 'Umstrukturierungen']}
+              onClick={(e) => { if (e.target.tagName === 'A') { e.preventDefault(); go('practice'); } }} />
+            <PracticeCard area="Verkehrsrecht" href="#" moreLabel=">> mehr erfahren"
+              items={['Unfallregulierung', 'Personen- und Sachschäden', 'Bußgeld', 'Verkehrsstrafsachen', 'Ordnungswidrigkeiten', 'Führerscheinsachen']}
+              onClick={(e) => { if (e.target.tagName === 'A') { e.preventDefault(); go('verkehrsrecht'); } }} />
+            <PracticeCard area="Jagdrecht" href="#" moreLabel=">> mehr erfahren"
+              items={['Beratung im Jagd- und Waffenrecht', 'Jagdschein-/WBK-Sachen', 'Ordnungswidrigkeiten- und Strafsachen mit jagdrechtlichem Bezug', 'Jagdpacht- und Revierangelegenheiten']}
+              onClick={(e) => { if (e.target.tagName === 'A') { e.preventDefault(); go('jagdrecht'); } }} />
           </div>
-          <aside style={isMobile ? { display: 'none' } : { flex: '0 0 220px', borderLeft: '1px solid var(--border)', paddingLeft: 24, textAlign: 'center' }}>
-              <FRBox style={{ border: 'none', padding: 0, textAlign: 'center' }} />
-              <div style={{ borderTop: '1px solid var(--border)', marginTop: 63, paddingTop: 18, display: 'flex', flexDirection: 'column', gap: 10 }}>
-                <a href="https://anwaltverein.de/" target="_blank" rel="noopener noreferrer" style={{ font: '400 13px/1.4 var(--font-sans)', color: 'var(--green)', textDecoration: 'none' }}>Deutscher Anwaltverein</a>
-                <a href="https://anwaltverein.de/mitgliedschaft/arbeitsgemeinschaften/verkehrsrecht" target="_blank" rel="noopener noreferrer" style={{ font: '400 13px/1.4 var(--font-sans)', color: 'var(--green)', textDecoration: 'none' }}>
-                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}>
-                    <span>Arbeitsgemeinschaft Verkehrsrecht</span>
-                    <img src="img/verkehrsanwaelte-logo.png" alt="Verkehrsanwälte Logo" style={{ height: '40px', width: 'auto' }} />
-                  </div>
-                </a>
-                <a href="https://www.anwalt.de/riess-stephan" target="_blank" rel="noopener noreferrer" style={{ font: '400 13px/1.4 var(--font-sans)', color: 'var(--green)', textDecoration: 'none' }}>Stephan Rieß auf anwalt.de</a>
-                <AnwaltSiegel />
-              </div>
-            </aside>
         </div>
       </section>
 
       {/* Partners */}
       <section style={{ background: 'var(--white)', padding: isMobile ? '32px 0 40px' : '40px 0 50px' }}>
-        <div style={{ ...CONTAINER, display: 'flex', justifyContent: isMobile ? 'center' : 'flex-start', gap: isMobile ? 36 : 50, flexWrap: 'wrap' }}>
+        <div style={{ maxWidth: 960, margin: '0 auto', padding: '0 20px', display: 'flex', justifyContent: 'center', gap: isMobile ? 36 : 50, flexWrap: 'wrap' }}>
           <PartnerCard name="Dr. Dominik Fiedler" photo="img/fiedler.png" initials="DF"
             title={['Rechtsanwalt | Fachanwalt für Arbeitsrecht | Partner']}
             contacts={[
@@ -410,27 +394,7 @@ function HomeScreen({ go }) {
         </div>
       </section>
 
-      {/* Kanzlei box + links — mobile only, at the very bottom (like Verkehrsrecht) */}
-      {isMobile && (
-        <section style={{ background: 'var(--white)', padding: '0 0 44px' }}>
-          <div style={{ ...CONTAINER }}>
-            <div style={{ borderTop: '1px solid var(--border)', paddingTop: 24, textAlign: 'center' }}>
-              <FRBox style={{ border: 'none', padding: 0, textAlign: 'center' }} />
-              <div style={{ marginTop: 20, display: 'flex', flexDirection: 'column', gap: 12 }}>
-                <a href="https://anwaltverein.de/" target="_blank" rel="noopener noreferrer" style={{ font: '400 14px/1.4 var(--font-sans)', color: 'var(--green)', textDecoration: 'none' }}>Deutscher Anwaltverein</a>
-                <a href="https://anwaltverein.de/mitgliedschaft/arbeitsgemeinschaften/verkehrsrecht" target="_blank" rel="noopener noreferrer" style={{ font: '400 14px/1.4 var(--font-sans)', color: 'var(--green)', textDecoration: 'none' }}>
-                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
-                    <span>Arbeitsgemeinschaft Verkehrsrecht</span>
-                    <img src="img/verkehrsanwaelte-logo.png" alt="Verkehrsanwälte Logo" style={{ height: '48px', width: 'auto' }} />
-                  </div>
-                </a>
-                <a href="https://www.anwalt.de/riess-stephan" target="_blank" rel="noopener noreferrer" style={{ font: '400 14px/1.4 var(--font-sans)', color: 'var(--green)', textDecoration: 'none' }}>Stephan Rieß auf anwalt.de</a>
-                <AnwaltSiegel />
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
+      {/* Mitgliedschaften ausgeblendet */}
     </div>
   );
 }
@@ -892,7 +856,7 @@ function App() {
       <div style={{ position: 'relative' }}>
         {!isMobile && (
           <div style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, zIndex: 200, pointerEvents: 'none' }}>
-            <div style={{ maxWidth: 'var(--max-w)', margin: '0 auto', padding: '0 20px', height: '100%' }}>
+            <div style={{ maxWidth: 960, margin: '0 auto', padding: '0 20px', height: '100%' }}>
               <div style={{ display: 'inline-block', height: '100%', background: 'rgba(245,245,243,0.62)', pointerEvents: 'auto' }}>
                 <NavRail items={navItems} variant="transparent" />
               </div>
