@@ -220,6 +220,7 @@
       const [form, setForm] = React.useState(EMPTY);
       const [errors, setErrors] = React.useState({});
       const [submitted, setSubmitted] = React.useState(false);
+      const [showNextPrompt, setShowNextPrompt] = React.useState(false);
       const [sending, setSending] = React.useState(false);
       const [sendError, setSendError] = React.useState('');
       const set = (k) => (v) => setForm((f) => ({ ...f, [k]: v }));
@@ -254,6 +255,7 @@
           try { data = await res.json(); } catch (_) {}
           if (res.ok && data && data.ok) {
             setSubmitted(true);
+            setShowNextPrompt(true);
             window.scrollTo({ top: 0, behavior: 'smooth' });
           } else {
             setSendError((data && data.error) || 'Der Fragebogen konnte nicht gesendet werden. Bitte versuchen Sie es erneut oder schicken Sie uns Ihre Angaben per E-Mail.');
@@ -266,6 +268,25 @@
       }
 
       // Chrome ist oben (außerhalb von Page) definiert.
+
+      if (showNextPrompt && submitted) {
+        return (
+          <Chrome>
+            <section style={{ background: 'var(--white)', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div style={{ ...CONTAINER, maxWidth: 500, textAlign: 'center' }}>
+                <div style={{ background: 'var(--white)', border: '1px solid var(--border)', borderRadius: '6px', padding: '40px 32px' }}>
+                  <h2 style={{ font: '300 24px var(--font-sans)', color: 'var(--text)', margin: '0 0 16px' }}>Möchten Sie einen weiteren Fragebogen ausfüllen?</h2>
+                  <p style={{ font: '400 14px/1.75 var(--font-sans)', color: 'var(--text-light)', margin: '0 0 28px' }}>Sie können jetzt einen weiteren Fragebogen starten oder zur Startseite zurückkehren.</p>
+                  <div style={{ display: 'flex', gap: 12, justifyContent: 'center' }}>
+                    <a href="../index.html#fragebogen" style={{ background: 'var(--green)', color: 'var(--white)', border: 'none', font: '600 13px var(--font-sans)', padding: '12px 24px', borderRadius: '4px', cursor: 'pointer', textDecoration: 'none', display: 'inline-block' }}>Ja, weiterer Fragebogen</a>
+                    <a href="../index.html" style={{ background: 'none', color: 'var(--text-light)', border: '1px solid var(--border)', font: '600 13px var(--font-sans)', padding: '12px 24px', borderRadius: '4px', cursor: 'pointer', textDecoration: 'none', display: 'inline-block' }}>Nein, zur Startseite</a>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </Chrome>
+        );
+      }
 
       if (submitted) {
         return (

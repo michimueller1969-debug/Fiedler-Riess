@@ -62,12 +62,12 @@ function PracticeCard({ area, items = [], href = '#', moreLabel = '» mehr erfah
   );
 }
 
-function PartnerCard({ name, photo, initials, title = [], contacts = [], style, ...props }) {
+function PartnerCard({ name, photo, initials, title = [], contacts = [], photoFilter, style, ...props }) {
   return (
     <div style={{ width: '210px', textAlign: 'center', ...style }} {...props}>
       <div style={{ background: 'var(--green)', color: 'var(--white)', fontFamily: 'var(--font-sans)', fontWeight: 'var(--fw-semibold)', fontSize: '13px', padding: '8px 10px', marginBottom: '14px' }}>{name}</div>
       <div style={{ width: '150px', height: '150px', borderRadius: '50%', margin: '0 auto 12px', overflow: 'hidden', background: '#d0d0d0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        {photo ? <img src={photo} alt={name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <span style={{ fontSize: '42px', color: '#999', fontWeight: 'var(--fw-light)' }}>{initials}</span>}
+        {photo ? <img src={photo} alt={name} style={{ width: '100%', height: '100%', objectFit: 'cover', ...(photoFilter ? { filter: photoFilter } : {}) }} /> : <span style={{ fontSize: '42px', color: '#999', fontWeight: 'var(--fw-light)' }}>{initials}</span>}
       </div>
       <div style={{ fontSize: '11.5px', color: 'var(--text-light)', lineHeight: 1.55, marginBottom: '12px' }}>
         {title.map((line, i) => <Fragment key={i}>{line}{i < title.length - 1 && <br />}</Fragment>)}

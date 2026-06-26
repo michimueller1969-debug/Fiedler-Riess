@@ -328,6 +328,7 @@ function mount() {
     const [form, setForm] = React.useState(EMPTY);
     const [errors, setErrors] = React.useState({});
     const [submitted, setSubmitted] = React.useState(false);
+    const [showNextPrompt, setShowNextPrompt] = React.useState(false);
     const [sending, setSending] = React.useState(false);
     const [sendError, setSendError] = React.useState('');
     const set = k => v => setForm(f => ({
@@ -366,6 +367,7 @@ function mount() {
         } catch (_) {}
         if (res.ok && data && data.ok) {
           setSubmitted(true);
+          setShowNextPrompt(true);
           window.scrollTo({
             top: 0,
             behavior: 'smooth'
@@ -382,6 +384,74 @@ function mount() {
 
     // Chrome ist oben (außerhalb von Page) definiert.
 
+    if (showNextPrompt && submitted) {
+      return /*#__PURE__*/React.createElement(Chrome, null, /*#__PURE__*/React.createElement("section", {
+        style: {
+          background: 'var(--white)',
+          minHeight: '100vh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }
+      }, /*#__PURE__*/React.createElement("div", {
+        style: {
+          ...CONTAINER,
+          maxWidth: 500,
+          textAlign: 'center'
+        }
+      }, /*#__PURE__*/React.createElement("div", {
+        style: {
+          background: 'var(--white)',
+          border: '1px solid var(--border)',
+          borderRadius: '6px',
+          padding: '40px 32px'
+        }
+      }, /*#__PURE__*/React.createElement("h2", {
+        style: {
+          font: '300 24px var(--font-sans)',
+          color: 'var(--text)',
+          margin: '0 0 16px'
+        }
+      }, "M\xF6chten Sie einen weiteren Fragebogen ausf\xFCllen?"), /*#__PURE__*/React.createElement("p", {
+        style: {
+          font: '400 14px/1.75 var(--font-sans)',
+          color: 'var(--text-light)',
+          margin: '0 0 28px'
+        }
+      }, "Sie k\xF6nnen jetzt einen weiteren Fragebogen starten oder zur Startseite zur\xFCckkehren."), /*#__PURE__*/React.createElement("div", {
+        style: {
+          display: 'flex',
+          gap: 12,
+          justifyContent: 'center'
+        }
+      }, /*#__PURE__*/React.createElement("a", {
+        href: "../index.html#fragebogen",
+        style: {
+          background: 'var(--green)',
+          color: 'var(--white)',
+          border: 'none',
+          font: '600 13px var(--font-sans)',
+          padding: '12px 24px',
+          borderRadius: '4px',
+          cursor: 'pointer',
+          textDecoration: 'none',
+          display: 'inline-block'
+        }
+      }, "Ja, weiterer Fragebogen"), /*#__PURE__*/React.createElement("a", {
+        href: "../index.html",
+        style: {
+          background: 'none',
+          color: 'var(--text-light)',
+          border: '1px solid var(--border)',
+          font: '600 13px var(--font-sans)',
+          padding: '12px 24px',
+          borderRadius: '4px',
+          cursor: 'pointer',
+          textDecoration: 'none',
+          display: 'inline-block'
+        }
+      }, "Nein, zur Startseite"))))));
+    }
     if (submitted) {
       return /*#__PURE__*/React.createElement(Chrome, null, /*#__PURE__*/React.createElement("main", {
         style: {

@@ -218,6 +218,7 @@ function PartnerCard({
   initials,
   title = [],
   contacts = [],
+  photoFilter,
   style,
   ...props
 }) {
@@ -255,7 +256,10 @@ function PartnerCard({
     style: {
       width: '100%',
       height: '100%',
-      objectFit: 'cover'
+      objectFit: 'cover',
+      ...(photoFilter ? {
+        filter: photoFilter
+      } : {})
     }
   }) : /*#__PURE__*/React.createElement("span", {
     style: {
