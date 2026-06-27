@@ -444,7 +444,7 @@ function VerkehrsrechtScreen({ go }) {
   const isMobile = window.frUseIsMobile();
   return (
     <main style={{ padding: isMobile ? '28px 0 48px' : '40px 0 60px' }}>
-      <div style={{ ...CONTAINER, display: 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: 'flex-start', gap: isMobile ? 36 : 50 }}>
+      <div style={{ maxWidth: 'var(--max-w)', margin: '0 auto', padding: '0 20px', display: 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: 'flex-start', gap: isMobile ? 36 : 50 }}>
         <div style={{ maxWidth: 760, flex: 1 }}>
           <h1 style={{ font: `300 ${isMobile ? '26px' : '30px'} var(--font-sans)`, color: 'var(--text)', display: 'inline-block', paddingBottom: 8, borderBottom: '2px solid var(--green)', marginBottom: 28 }}>Verkehrsrecht von A – Z</h1>
           <h2 style={{ font: '300 22px var(--font-sans)', color: 'var(--text)', marginBottom: 18 }}>Handwerklich präzise – Exzellent</h2>
@@ -493,7 +493,7 @@ function JagdrechtScreen() {
   const para = { font: '400 14px/1.75 var(--font-sans)', color: 'var(--text)', marginBottom: 16 };
   return (
     <main style={{ padding: isMobile ? '28px 0 48px' : '40px 0 60px' }}>
-      <div style={{ ...CONTAINER, display: 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: 'flex-start', gap: isMobile ? 36 : 50 }}>
+      <div style={{ maxWidth: 'var(--max-w)', margin: '0 auto', padding: '0 20px', display: 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: 'flex-start', gap: isMobile ? 36 : 50 }}>
         <div style={{ maxWidth: 760, flex: 1 }}>
           <h1 style={{ font: `300 ${isMobile ? '26px' : '30px'} var(--font-sans)`, color: 'var(--text)', display: 'inline-block', paddingBottom: 8, borderBottom: '2px solid var(--green)', marginBottom: 28 }}>Jagdrecht</h1>
           <h2 style={{ font: '300 22px var(--font-sans)', color: 'var(--text)', marginBottom: 18 }}>Handwerklich präzise – Treffsicher</h2>

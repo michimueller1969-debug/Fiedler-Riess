@@ -795,13 +795,7 @@ function PageHeader({
       paddingBottom: 8,
       borderBottom: '2px solid var(--green)'
     }
-  }, title), tagline && /*#__PURE__*/React.createElement("p", {
-    style: {
-      font: '400 14px var(--font-sans)',
-      color: 'var(--text-light)',
-      marginTop: 12
-    }
-  }, tagline)), !isMobile && /*#__PURE__*/React.createElement("aside", {
+  }, title)), !isMobile && /*#__PURE__*/React.createElement("aside", {
     style: {
       flex: '0 0 220px',
       borderLeft: '1px solid var(--border)',
@@ -814,7 +808,19 @@ function PageHeader({
       padding: 0,
       textAlign: 'center'
     }
-  }))));
+  }))), tagline && /*#__PURE__*/React.createElement("div", {
+    style: {
+      ...CONTAINER,
+      paddingTop: 20,
+      paddingBottom: 20
+    }
+  }, /*#__PURE__*/React.createElement("h2", {
+    style: {
+      font: '300 22px var(--font-sans)',
+      color: 'var(--text)',
+      marginBottom: 0
+    }
+  }, tagline)));
 }
 function Footer({
   go
@@ -1140,17 +1146,46 @@ function HomeScreen({
 
 /* ---------- PRACTICE DETAIL (Arbeitsrecht) ---------- */
 function PracticeScreen() {
+  const isMobile = window.frUseIsMobile();
   return /*#__PURE__*/React.createElement("main", {
     style: {
-      padding: '40px 0 60px'
+      padding: isMobile ? '28px 0 48px' : '40px 0 60px'
     }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: CONTAINER
   }, /*#__PURE__*/React.createElement("div", {
     style: {
-      maxWidth: 760
+      maxWidth: 'var(--max-w)',
+      margin: '0 auto',
+      padding: isMobile ? '0 16px' : '0 20px',
+      marginBottom: 28
     }
-  }, /*#__PURE__*/React.createElement("p", {
+  }, /*#__PURE__*/React.createElement("h1", {
+    style: {
+      font: `300 ${isMobile ? '26px' : '30px'} var(--font-sans)`,
+      color: 'var(--text)',
+      display: 'inline-block',
+      paddingBottom: 8,
+      borderBottom: '2px solid var(--green)'
+    }
+  }, "Arbeitsrecht")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      ...CONTAINER,
+      display: 'flex',
+      flexDirection: isMobile ? 'column' : 'row',
+      alignItems: 'flex-start',
+      gap: isMobile ? 36 : 50
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      maxWidth: 760,
+      flex: 1
+    }
+  }, /*#__PURE__*/React.createElement("h2", {
+    style: {
+      font: '300 22px var(--font-sans)',
+      color: 'var(--text)',
+      marginBottom: 18
+    }
+  }, "Beratung, Verhandlung und Konfliktl\xF6sung im Betrieb"), /*#__PURE__*/React.createElement("p", {
     style: {
       font: '400 14px/1.75 var(--font-sans)',
       color: 'var(--text)',
@@ -1170,12 +1205,10 @@ function PracticeScreen() {
     }
   }, "Unsere T\xE4tigkeit ist auf Beratung, Verhandlung und Konfliktl\xF6sung ausgerichtet."), /*#__PURE__*/React.createElement("h2", {
     style: {
-      font: '700 17px var(--font-sans)',
-      color: 'var(--text)',
-      marginBottom: 12,
-      paddingBottom: 6,
-      borderBottom: '2px solid var(--green)',
-      display: 'inline-block'
+      font: '700 16px var(--font-sans)',
+      color: 'var(--green)',
+      marginTop: 32,
+      marginBottom: 12
     }
   }, "Wof\xFCr wir beauftragt werden"), /*#__PURE__*/React.createElement("ul", {
     style: {
@@ -1201,40 +1234,24 @@ function PracticeScreen() {
       color: 'var(--text)',
       marginBottom: 16
     }
-  }, "Wir beraten Betriebsparteien in mittelgro\xDFen Unternehmen sowie in Konzernen mit komplexen Strukturen. Die Mandate sind regelm\xE4\xDFig durch anspruchsvolle Verhandlungs- und Entscheidungsprozesse gepr\xE4gt. Ein Teil unserer Mandatsbeziehungen besteht seit vielen Jahren.")), /*#__PURE__*/React.createElement("div", {
+  }, "Wir beraten Betriebsparteien in mittelgro\xDFen Unternehmen sowie in Konzernen mit komplexen Strukturen. Die Mandate sind regelm\xE4\xDFig durch anspruchsvolle Verhandlungs- und Entscheidungsprozesse gepr\xE4gt. Ein Teil unserer Mandatsbeziehungen besteht seit vielen Jahren.")), /*#__PURE__*/React.createElement("aside", {
     style: {
-      marginTop: 34,
-      maxWidth: 760
+      flex: isMobile ? '1 1 auto' : '0 0 220px',
+      alignSelf: isMobile ? 'center' : 'auto',
+      textAlign: 'center',
+      borderLeft: isMobile ? 'none' : '1px solid var(--border)',
+      borderTop: isMobile ? '1px solid var(--border)' : 'none',
+      paddingLeft: isMobile ? 0 : 24,
+      paddingTop: isMobile ? 28 : 0,
+      marginTop: 4
     }
-  }, /*#__PURE__*/React.createElement(Card, {
-    accent: true
-  }, /*#__PURE__*/React.createElement("h2", {
+  }, /*#__PURE__*/React.createElement(FRBox, {
     style: {
-      font: '700 16px var(--font-sans)',
-      marginBottom: 10
+      border: 'none',
+      padding: 0,
+      textAlign: 'center',
     }
-  }, "Ansprechpartner"), /*#__PURE__*/React.createElement("p", {
-    style: {
-      font: '400 14px/1.7 var(--font-sans)',
-      color: 'var(--text)',
-      marginBottom: 4
-    }
-  }, "Die Mandatsarbeit erfolgt pers\xF6nlich."), /*#__PURE__*/React.createElement("p", {
-    style: {
-      font: '400 14px/1.7 var(--font-sans)',
-      color: 'var(--text)',
-      marginBottom: 14
-    }
-  }, "F\xFCr den Bereich Arbeitsrecht stehen Ihnen ", /*#__PURE__*/React.createElement("strong", null, "Dr. Dominik Fiedler"), " und ", /*#__PURE__*/React.createElement("strong", null, "Mona Broghammer"), " zur Verf\xFCgung."), /*#__PURE__*/React.createElement("p", {
-    style: {
-      font: '400 14px var(--font-sans)'
-    }
-  }, /*#__PURE__*/React.createElement("a", {
-    href: "mailto:arbeitsrecht@fiedler-riess.de",
-    style: {
-      color: 'var(--green)'
-    }
-  }, "arbeitsrecht@fiedler-riess.de"))))));
+  }))));
 }
 
 /* ---------- VERKEHRSRECHT ---------- */
@@ -1262,6 +1279,21 @@ function VerkehrsrechtScreen({
     }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
+      maxWidth: 'var(--max-w)',
+      margin: '0 auto',
+      padding: isMobile ? '0 16px' : '0 20px',
+      marginBottom: 28
+    }
+  }, /*#__PURE__*/React.createElement("h1", {
+    style: {
+      font: `300 ${isMobile ? '26px' : '30px'} var(--font-sans)`,
+      color: 'var(--text)',
+      display: 'inline-block',
+      paddingBottom: 8,
+      borderBottom: '2px solid var(--green)'
+    }
+  }, "Verkehrsrecht")), /*#__PURE__*/React.createElement("div", {
+    style: {
       ...CONTAINER,
       display: 'flex',
       flexDirection: isMobile ? 'column' : 'row',
@@ -1273,16 +1305,7 @@ function VerkehrsrechtScreen({
       maxWidth: 760,
       flex: 1
     }
-  }, /*#__PURE__*/React.createElement("h1", {
-    style: {
-      font: `300 ${isMobile ? '26px' : '30px'} var(--font-sans)`,
-      color: 'var(--text)',
-      display: 'inline-block',
-      paddingBottom: 8,
-      borderBottom: '2px solid var(--green)',
-      marginBottom: 28
-    }
-  }, "Verkehrsrecht von A \u2013 Z"), /*#__PURE__*/React.createElement("h2", {
+  }, /*#__PURE__*/React.createElement("h2", {
     style: {
       font: '300 22px var(--font-sans)',
       color: 'var(--text)',
@@ -1445,6 +1468,21 @@ function JagdrechtScreen() {
     }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
+      maxWidth: 'var(--max-w)',
+      margin: '0 auto',
+      padding: isMobile ? '0 16px' : '0 20px',
+      marginBottom: 28
+    }
+  }, /*#__PURE__*/React.createElement("h1", {
+    style: {
+      font: `300 ${isMobile ? '26px' : '30px'} var(--font-sans)`,
+      color: 'var(--text)',
+      display: 'inline-block',
+      paddingBottom: 8,
+      borderBottom: '2px solid var(--green)'
+    }
+  }, "Jagdrecht")), /*#__PURE__*/React.createElement("div", {
+    style: {
       ...CONTAINER,
       display: 'flex',
       flexDirection: isMobile ? 'column' : 'row',
@@ -1456,16 +1494,7 @@ function JagdrechtScreen() {
       maxWidth: 760,
       flex: 1
     }
-  }, /*#__PURE__*/React.createElement("h1", {
-    style: {
-      font: `300 ${isMobile ? '26px' : '30px'} var(--font-sans)`,
-      color: 'var(--text)',
-      display: 'inline-block',
-      paddingBottom: 8,
-      borderBottom: '2px solid var(--green)',
-      marginBottom: 28
-    }
-  }, "Jagdrecht"), /*#__PURE__*/React.createElement("h2", {
+  }, /*#__PURE__*/React.createElement("h2", {
     style: {
       font: '300 22px var(--font-sans)',
       color: 'var(--text)',
@@ -1595,17 +1624,14 @@ function FragebogenScreen() {
   }];
   return /*#__PURE__*/React.createElement("main", {
     style: {
-      padding: '34px 0 60px'
+      padding: isMobile ? '28px 0 48px' : '40px 0 60px'
     }
   }, /*#__PURE__*/React.createElement("div", {
-    style: CONTAINER
-  }, /*#__PURE__*/React.createElement("div", {
     style: {
-      display: 'flex',
-      flexDirection: isMobile ? 'column' : 'row',
-      alignItems: 'flex-start',
-      gap: isMobile ? 18 : 50,
-      marginBottom: 40
+      maxWidth: 'var(--max-w)',
+      margin: '0 auto',
+      padding: isMobile ? '0 16px' : '0 20px',
+      marginBottom: 28
     }
   }, /*#__PURE__*/React.createElement("h1", {
     style: {
@@ -1613,29 +1639,22 @@ function FragebogenScreen() {
       color: 'var(--text)',
       display: 'inline-block',
       paddingBottom: 8,
-      borderBottom: '2px solid var(--green)',
-      maxWidth: 760,
-      flex: 1
+      borderBottom: '2px solid var(--green)'
     }
-  }, "Sie haben ein Anliegen - wir k\xFCmmern uns."), !isMobile && /*#__PURE__*/React.createElement("aside", {
+  }, "Sie haben ein Anliegen – wir k\xFCmmern uns.")), /*#__PURE__*/React.createElement("div", {
     style: {
-      flex: '0 0 220px',
-      borderLeft: '1px solid var(--border)',
-      paddingLeft: 24,
-      textAlign: 'center'
+      ...CONTAINER,
+      display: 'flex',
+      flexDirection: isMobile ? 'column' : 'row',
+      alignItems: 'flex-start',
+      gap: isMobile ? 36 : 50
     }
-  }, /*#__PURE__*/React.createElement(FRBox, {
+  }, /*#__PURE__*/React.createElement("div", {
     style: {
-      border: 'none',
-      padding: 0,
-      textAlign: 'center'
-    }
-  }))), /*#__PURE__*/React.createElement("div", {
-    style: {
+      flex: 1,
       display: 'flex',
       flexDirection: 'column',
-      gap: isMobile ? 24 : 36,
-      maxWidth: 760
+      gap: isMobile ? 24 : 36
     }
   }, rows.map((r, i) => {
     const isPdf = (r.href || '').endsWith('.pdf');
@@ -1736,6 +1755,23 @@ function FragebogenScreen() {
       onMouseEnter: e => e.currentTarget.style.background = 'var(--green-dark)',
       onMouseLeave: e => e.currentTarget.style.background = 'var(--green)'
     }, icon, r.cta));
+  })), /*#__PURE__*/React.createElement("aside", {
+    style: {
+      flex: isMobile ? '1 1 auto' : '0 0 220px',
+      alignSelf: isMobile ? 'center' : 'auto',
+      textAlign: 'center',
+      borderLeft: isMobile ? 'none' : '1px solid var(--border)',
+      borderTop: isMobile ? '1px solid var(--border)' : 'none',
+      paddingLeft: isMobile ? 0 : 24,
+      paddingTop: isMobile ? 28 : 0,
+      marginTop: 4
+    }
+  }, /*#__PURE__*/React.createElement(FRBox, {
+    style: {
+      border: 'none',
+      padding: 0,
+      textAlign: 'center'
+    }
   }))));
 }
 
@@ -1746,13 +1782,37 @@ function AnfahrtScreen() {
   const mapSrc = 'https://www.google.com/maps?q=Rotenburger+Str.+17,+36199+Rotenburg+an+der+Fulda&output=embed';
   return /*#__PURE__*/React.createElement("main", {
     style: {
-      padding: isMobile ? '20px 0 48px' : '24px 0 60px'
+      padding: isMobile ? '28px 0 48px' : '40px 0 60px'
     }
   }, /*#__PURE__*/React.createElement("div", {
-    style: CONTAINER
+    style: {
+      maxWidth: 'var(--max-w)',
+      margin: '0 auto',
+      padding: isMobile ? '0 16px' : '0 20px',
+      marginBottom: 28
+    }
+  }, /*#__PURE__*/React.createElement("h1", {
+    style: {
+      font: `300 ${isMobile ? '26px' : '30px'} var(--font-sans)`,
+      color: 'var(--text)',
+      display: 'inline-block',
+      paddingBottom: 8,
+      borderBottom: '2px solid var(--green)'
+    }
+  }, "Anfahrt")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      ...CONTAINER,
+      display: 'flex',
+      flexDirection: isMobile ? 'column' : 'row',
+      alignItems: 'flex-start',
+      gap: isMobile ? 36 : 50
+    }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
-      maxWidth: 760,
+      flex: 1
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
       border: '1px solid var(--border)',
       height: isMobile ? 340 : 460
     }
@@ -1791,20 +1851,60 @@ function AnfahrtScreen() {
   }, "Mit dem Laden der Karte akzeptieren Sie die Datenschutzerkl\xE4rung von Google."), /*#__PURE__*/React.createElement(Button, {
     variant: "primary",
     onClick: () => setActive(true)
-  }, "Karte aktivieren")))));
+  }, "Karte aktivieren")))), /*#__PURE__*/React.createElement("aside", {
+    style: {
+      flex: isMobile ? '1 1 auto' : '0 0 220px',
+      alignSelf: isMobile ? 'center' : 'auto',
+      textAlign: 'center',
+      borderLeft: isMobile ? 'none' : '1px solid var(--border)',
+      borderTop: isMobile ? '1px solid var(--border)' : 'none',
+      paddingLeft: isMobile ? 0 : 24,
+      paddingTop: isMobile ? 28 : 0,
+      marginTop: 4
+    }
+  }, /*#__PURE__*/React.createElement(FRBox, {
+    style: {
+      border: 'none',
+      padding: 0,
+      textAlign: 'center'
+    }
+  }))));
 }
 
 /* ---------- KARRIERE ---------- */
 function KarriereScreen() {
+  const isMobile = window.frUseIsMobile();
   return /*#__PURE__*/React.createElement("main", {
     style: {
-      padding: '40px 0 60px'
+      padding: isMobile ? '28px 0 48px' : '40px 0 60px'
     }
   }, /*#__PURE__*/React.createElement("div", {
-    style: CONTAINER
+    style: {
+      maxWidth: 'var(--max-w)',
+      margin: '0 auto',
+      padding: isMobile ? '0 16px' : '0 20px',
+      marginBottom: 28
+    }
+  }, /*#__PURE__*/React.createElement("h1", {
+    style: {
+      font: `300 ${isMobile ? '26px' : '30px'} var(--font-sans)`,
+      color: 'var(--text)',
+      display: 'inline-block',
+      paddingBottom: 8,
+      borderBottom: '2px solid var(--green)'
+    }
+  }, "Karriere")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      ...CONTAINER,
+      display: 'flex',
+      flexDirection: isMobile ? 'column' : 'row',
+      alignItems: 'flex-start',
+      gap: isMobile ? 36 : 50
+    }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
-      maxWidth: 680
+      maxWidth: 680,
+      flex: 1
     }
   }, /*#__PURE__*/React.createElement("h2", {
     style: {
@@ -1849,7 +1949,24 @@ function KarriereScreen() {
       font: '400 14px/1.9 var(--font-sans)',
       color: 'var(--text)'
     }
-  }, "Stephan Rie\xDF"))));
+  }, "Stephan Rie\xDF")), /*#__PURE__*/React.createElement("aside", {
+    style: {
+      flex: isMobile ? '1 1 auto' : '0 0 220px',
+      alignSelf: isMobile ? 'center' : 'auto',
+      textAlign: 'center',
+      borderLeft: isMobile ? 'none' : '1px solid var(--border)',
+      borderTop: isMobile ? '1px solid var(--border)' : 'none',
+      paddingLeft: isMobile ? 0 : 24,
+      paddingTop: isMobile ? 28 : 0,
+      marginTop: 4
+    }
+  }, /*#__PURE__*/React.createElement(FRBox, {
+    style: {
+      border: 'none',
+      padding: 0,
+      textAlign: 'center'
+    }
+  }))));
 }
 
 /* ---------- IMPRESSUM ---------- */
@@ -2430,7 +2547,7 @@ function App() {
   }, /*#__PURE__*/React.createElement(NavRail, {
     items: navItems,
     variant: "transparent"
-  })))), /*#__PURE__*/React.createElement(Hero, null)), route !== 'home' && route !== 'fragebogen' && route !== 'verkehrsrecht' && route !== 'jagdrecht' && route !== 'impressum' && route !== 'datenschutz' && /*#__PURE__*/React.createElement(PageHeader, {
+  })))), /*#__PURE__*/React.createElement(Hero, null)), route !== 'home' && route !== 'fragebogen' && route !== 'verkehrsrecht' && route !== 'jagdrecht' && route !== 'practice' && route !== 'karriere' && route !== 'anfahrt' && route !== 'impressum' && route !== 'datenschutz' && /*#__PURE__*/React.createElement(PageHeader, {
     title: meta.title,
     tagline: meta.tagline
   }), /*#__PURE__*/React.createElement("div", {
