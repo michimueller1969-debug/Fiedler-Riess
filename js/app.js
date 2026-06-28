@@ -1234,7 +1234,7 @@ function PracticeScreen() {
       color: 'var(--text)',
       marginBottom: 16
     }
-  }, "Wir beraten Betriebsparteien in mittelgro\xDFen Unternehmen sowie in Konzernen mit komplexen Strukturen. Die Mandate sind regelm\xE4\xDFig durch anspruchsvolle Verhandlungs- und Entscheidungsprozesse gepr\xE4gt. Ein Teil unserer Mandatsbeziehungen besteht seit vielen Jahren.")), /*#__PURE__*/React.createElement("aside", {
+  }, "Wir beraten Betriebsparteien in mittelgro\xDFen Unternehmen sowie in Konzernen mit komplexen Strukturen. Die Mandate sind regelm\xE4\xDFig durch anspruchsvolle Verhandlungs- und Entscheidungsprozesse gepr\xE4gt. Ein Teil unserer Mandatsbeziehungen besteht seit vielen Jahren.")), !isMobile && /*#__PURE__*/React.createElement("aside", {
     style: {
       flex: isMobile ? '1 1 auto' : '0 0 220px',
       alignSelf: isMobile ? 'center' : 'auto',
@@ -1755,7 +1755,7 @@ function FragebogenScreen() {
       onMouseEnter: e => e.currentTarget.style.background = 'var(--green-dark)',
       onMouseLeave: e => e.currentTarget.style.background = 'var(--green)'
     }, icon, r.cta));
-  })), /*#__PURE__*/React.createElement("aside", {
+  })), !isMobile && /*#__PURE__*/React.createElement("aside", {
     style: {
       flex: isMobile ? '1 1 auto' : '0 0 220px',
       alignSelf: isMobile ? 'center' : 'auto',
@@ -1851,7 +1851,7 @@ function AnfahrtScreen() {
   }, "Mit dem Laden der Karte akzeptieren Sie die Datenschutzerkl\xE4rung von Google."), /*#__PURE__*/React.createElement(Button, {
     variant: "primary",
     onClick: () => setActive(true)
-  }, "Karte aktivieren")))), /*#__PURE__*/React.createElement("aside", {
+  }, "Karte aktivieren")))), !isMobile && /*#__PURE__*/React.createElement("aside", {
     style: {
       flex: isMobile ? '1 1 auto' : '0 0 220px',
       alignSelf: isMobile ? 'center' : 'auto',
@@ -1949,7 +1949,7 @@ function KarriereScreen() {
       font: '400 14px/1.9 var(--font-sans)',
       color: 'var(--text)'
     }
-  }, "Stephan Rie\xDF")), /*#__PURE__*/React.createElement("aside", {
+  }, "Stephan Rie\xDF")), !isMobile && /*#__PURE__*/React.createElement("aside", {
     style: {
       flex: isMobile ? '1 1 auto' : '0 0 220px',
       alignSelf: isMobile ? 'center' : 'auto',
