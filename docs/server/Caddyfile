@@ -12,6 +12,7 @@
 # Lokaler Test ohne DNS-Änderung: http://192.168.178.102:8081
 :8081 {
     root * /opt/fiedler-riess/www
+    php_fastcgi 127.0.0.1:9000
     file_server
 }
 
@@ -22,6 +23,7 @@ fiedler-riess.de, www.fiedler-riess.de {
     tls internal
     root * /opt/fiedler-riess/www
     encode zstd gzip
+    php_fastcgi 127.0.0.1:9000
     file_server
     log {
         output file /opt/caddy/logs/fiedler-riess_access.log
