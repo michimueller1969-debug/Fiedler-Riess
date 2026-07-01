@@ -13,8 +13,8 @@ use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
 /* ---- KONFIGURATION ---- */
-$EMPFAENGER    = 'kontakt@k-s-com.de';
-$KOPIE_AN      = '';                          // optional: zweite Adresse (CC)
+$EMPFAENGER    = 's.riess@fiedler-riess.de';
+$KOPIE_AN      = 'v.leister@fiedler-riess.de';
 
 $SPEICHERN     = true;
 $VERSAND       = true;
