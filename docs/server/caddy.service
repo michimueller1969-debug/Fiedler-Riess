@@ -1,0 +1,26 @@
+[Unit]
+Description=Caddy (Podman Reverse Proxy)
+After=network.target filebrowser.service
+Wants=network.target filebrowser.service
+RequiresMountsFor=/opt/caddy /opt/caddy/data /opt/caddy/config /opt/caddy/Caddyfile /opt/fiedler-riess/www
+
+[Service]
+Type=simple
+ExecStartPre=-/usr/bin/podman image exists docker.io/library/caddy:2 || /usr/bin/podman pull docker.io/library/caddy:2
+ExecStartPre=-/usr/bin/podman rm -f caddy
+ExecStart=/usr/bin/podman run --name caddy \
+  --user 0:0 \
+  --network host \
+  -v /opt/caddy/Caddyfile:/etc/caddy/Caddyfile:ro \
+  -v /opt/caddy/data:/data \
+  -v /opt/caddy/config:/config \
+  -v /opt/fiedler-riess/www:/opt/fiedler-riess/www:ro \
+  docker.io/library/caddy:2
+ExecStop=/usr/bin/podman stop -t 10 caddy
+ExecStopPost=-/usr/bin/podman rm -f caddy
+Restart=always
+RestartSec=5
+TimeoutStartSec=60
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,30 @@
+# Filebrowser (unverändert)
+7yx9gmj9ib6o2mja.myfritz.net {
+    encode zstd gzip
+    tls internal
+    reverse_proxy 127.0.0.1:8080
+    log {
+        output file /opt/caddy/logs/filebrowser_access.log
+        format json
+    }
+}
+
+# Lokaler Test ohne DNS-Änderung: http://192.168.178.102:8081
+:8081 {
+    root * /opt/fiedler-riess/www
+    file_server
+}
+
+# Fiedler & Rieß Website (statisch – PHP-FPM wird später ergänzt)
+# tls internal: solange A-Record noch nicht auf diesen Server zeigt.
+# Wenn DNS umgestellt ist: tls-Zeile entfernen → Caddy holt automatisch Let's Encrypt.
+fiedler-riess.de, www.fiedler-riess.de {
+    tls internal
+    root * /opt/fiedler-riess/www
+    encode zstd gzip
+    file_server
+    log {
+        output file /opt/caddy/logs/fiedler-riess_access.log
+        format json
+    }
+}
