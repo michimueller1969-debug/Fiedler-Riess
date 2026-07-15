@@ -301,19 +301,19 @@
       }
     }, /*#__PURE__*/React.createElement("div", {
       style: {
-        maxWidth: 'var(--max-w)',
+        maxWidth: 960,
         margin: '0 auto',
         padding: isMobile ? '20px 16px 18px' : '44px 20px 40px',
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'space-between',
+        justifyContent: isMobile ? 'space-between' : 'center',
         gap: 12
       }
     }, /*#__PURE__*/React.createElement("a", {
       href: "index.html",
       style: {
         textDecoration: 'none',
-        textAlign: 'left',
+        textAlign: 'center',
         borderLeft: '1px solid var(--border)',
         paddingLeft: isMobile ? 14 : 22
       }
@@ -554,7 +554,7 @@
       }
     }, /*#__PURE__*/React.createElement("div", {
       style: {
-        maxWidth: 'var(--max-w)',
+        maxWidth: 960,
         margin: '0 auto',
         padding: '0 20px',
         height: '100%'
@@ -579,4 +579,5 @@
     }, children), /*#__PURE__*/React.createElement(Footer, null));
   }
   window.SiteChrome = SiteChrome;
+  window.frUseIsMobile = useIsMobile;
 })();

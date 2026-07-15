@@ -20,7 +20,7 @@ function mailtoHref(f) {
 }
 function mount() {
   const CONTAINER = {
-    maxWidth: 880,
+    maxWidth: 960,
     margin: '0 auto',
     padding: '0 20px'
   };
@@ -428,6 +428,7 @@ function mount() {
     const [showNextPrompt, setShowNextPrompt] = React.useState(false);
     const [sending, setSending] = React.useState(false);
     const [sendError, setSendError] = React.useState('');
+    const isMobile = window.frUseIsMobile();
     const set = k => v => setForm(f => ({
       ...f,
       [k]: v
@@ -603,10 +604,18 @@ function mount() {
     const hasErrors = Object.keys(errors).length > 0;
     return /*#__PURE__*/React.createElement(Chrome, null, /*#__PURE__*/React.createElement("main", {
       style: {
-        padding: '40px 0 10px'
+        padding: '40px 0 60px'
       }
     }, /*#__PURE__*/React.createElement("div", {
-      style: CONTAINER
+      style: {
+        maxWidth: 'var(--max-w)',
+        margin: '0 auto',
+        padding: '0 20px'
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        maxWidth: 680
+      }
     }, /*#__PURE__*/React.createElement("p", {
       style: {
         font: '400 14px/1.75 var(--font-sans)',
@@ -623,7 +632,6 @@ function mount() {
       onSubmit: handleSubmit,
       noValidate: true,
       style: {
-        maxWidth: 680,
         marginTop: 30
       }
     }, /*#__PURE__*/React.createElement(Section, {
@@ -1016,7 +1024,7 @@ function mount() {
         font: '400 12.5px var(--font-sans)',
         color: 'var(--text-faint)'
       }
-    }, "Ihre Angaben werden direkt an die Kanzlei \xFCbermittelt.")))))));
+    }, "Ihre Angaben werden direkt an die Kanzlei \xFCbermittelt."))))))));
   }
   ReactDOM.createRoot(document.getElementById('root')).render(/*#__PURE__*/React.createElement(Page, null));
 }

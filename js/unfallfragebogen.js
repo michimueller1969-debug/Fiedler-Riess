@@ -6,7 +6,7 @@ const RECIPIENT = 's.riess@fiedler-riess.de'; // Empfänger der Fragebögen
 const ENDPOINT = 'unfallfragebogen.php'; // serverseitiger Mailversand (PHP)
 
 /* Feldgruppen + Beschriftungen für die E-Mail-Zusammenfassung (Fallback per mailto) */
-const FIELD_GROUPS = [['Ihre Angaben', [['name', 'Name'], ['strasse', 'Straße/Hausnr.'], ['plz', 'PLZ'], ['ort', 'Ort'], ['email', 'E-Mail'], ['telefon', 'Telefon'], ['vorsteuer', 'Vorsteuerabzugsberechtigt'], ['bank', 'Bank'], ['iban', 'IBAN']]], ['I. Eigenes Fahrzeug', [['eigentuemer', 'Eigentümer'], ['fahrzeugart', 'Art des Fahrzeugs'], ['fahrzeugartDetail', 'Art (Sonstiges)'], ['kennzeichen', 'Kennzeichen'], ['leasing', 'Leasingfahrzeug'], ['leasingDetail', 'Leasing-Details'], ['finanziert', 'Finanziert'], ['finanziertDetail', 'Finanzierung-Details'], ['fahrer', 'Fahrer zum Unfallzeitpunkt'], ['scheckheft', 'Scheckheftgepflegt'], ['vollkasko', 'Vollkasko'], ['vollkaskoDetail', 'Vollkasko-Details'], ['begutachtet', 'Begutachtet'], ['begutachtetDetail', 'Sachverständigenbüro'], ['fahrbereit', 'Fahrbereit/verkehrssicher']]], ['II. Unfallgegner', [['gKennzeichen', 'Kennzeichen'], ['gFahrer', 'Name/Anschrift Fahrer'], ['gVersicherung', 'Haftpflichtversicherung'], ['gVssNr', 'VSS-/Schadennr.']]], ['III. Unfall', [['uOrt', 'Unfallort'], ['uDatum', 'Unfalltag'], ['uZeit', 'Uhrzeit'], ['zeugen', 'Zeugen'], ['polizei', 'Polizei aufgenommen'], ['polizeiDetail', 'Dienststelle/Az.'], ['schilderung', 'Unfallschilderung']]], ['IV. Personenschäden', [['personenschaden', 'Person verletzt'], ['psName', 'Name/Anschrift Verletzte/r'], ['psKontakt', 'Kontakt'], ['psGeburt', 'Geburtsdatum'], ['khAufenthalt', 'Krankenhausaufenthalt'], ['khVon', 'von'], ['khBis', 'bis'], ['khAnschrift', 'Krankenhaus-Anschrift'], ['psArzt', 'Ärzte/Therapeuten'], ['wegeunfall', 'Wegeunfall']]], ['V. Rechtsschutzversicherung', [['rsv', 'Rechtsschutzversicherung vorhanden'], ['rsvName', 'Name der RSV'], ['rsvSchein', 'Versicherungsschein-Nr.'], ['rsvNehmer', 'Versicherungsnehmer'], ['rsvSchaden', 'Schaden-Nr.'], ['selbstbeteiligung', 'Selbstbeteiligung'], ['selbstbeteiligungBetrag', 'Höhe Selbstbeteiligung']]], ['Einwilligungen', [['datenStr', 'Speicherung der Daten gem. Hinweisen'], ['emailConsent', 'Unverschlüsselte E-Mail-/Fax-Kommunikation'], ['sofortLeistung', 'Sofortiger Leistungsbeginn (Verzicht Widerruf)'], ['datenschutz', 'Datenschutzerklärung']]]];
+const FIELD_GROUPS = [['Ihre Angaben', [['name', 'Name'], ['strasse', 'Straße/Hausnr.'], ['plz', 'PLZ'], ['ort', 'Ort'], ['email', 'E-Mail'], ['telefon', 'Telefon'], ['vorsteuer', 'Vorsteuerabzugsberechtigt'], ['bank', 'Bank'], ['iban', 'IBAN']]], ['I. Eigenes Fahrzeug', [['eigentuemer', 'Eigentümer'], ['kaufvertragUnterzeichner', 'Kaufvertrag unterschrieben von'], ['fahrzeugart', 'Art des Fahrzeugs'], ['fahrzeugartDetail', 'Art (Sonstiges)'], ['kennzeichen', 'Kennzeichen'], ['leasing', 'Leasingfahrzeug'], ['leasingDetail', 'Leasing-Details'], ['finanziert', 'Finanziert'], ['finanziertDetail', 'Finanzierung-Details'], ['fahrer', 'Fahrer zum Unfallzeitpunkt'], ['scheckheft', 'Scheckheftgepflegt'], ['vollkasko', 'Vollkasko'], ['vollkaskoDetail', 'Vollkasko-Details'], ['begutachtet', 'Begutachtet'], ['begutachtetDetail', 'Sachverständigenbüro'], ['fahrbereit', 'Fahrbereit/verkehrssicher']]], ['II. Unfallgegner', [['gKennzeichen', 'Kennzeichen'], ['gFahrer', 'Name/Anschrift Fahrer'], ['gVersicherung', 'Haftpflichtversicherung'], ['gVssNr', 'VSS-/Schadennr.']]], ['III. Unfall', [['uOrt', 'Unfallort'], ['uDatum', 'Unfalltag'], ['uZeit', 'Uhrzeit'], ['zeugen', 'Zeugen'], ['polizei', 'Polizei aufgenommen'], ['polizeiDetail', 'Dienststelle/Az.'], ['schilderung', 'Unfallschilderung']]], ['IV. Personenschäden', [['personenschaden', 'Person verletzt'], ['psName', 'Name/Anschrift Verletzte/r'], ['psKontakt', 'Kontakt'], ['psGeburt', 'Geburtsdatum'], ['khAufenthalt', 'Krankenhausaufenthalt'], ['khVon', 'von'], ['khBis', 'bis'], ['khAnschrift', 'Krankenhaus-Anschrift'], ['psArzt', 'Ärzte/Therapeuten'], ['wegeunfall', 'Wegeunfall']]], ['Rechtsschutzversicherung', [['rsv', 'Rechtsschutzversicherung vorhanden'], ['rsvName', 'Name der RSV'], ['rsvSchein', 'Versicherungsschein-Nr.'], ['rsvNehmer', 'Versicherungsnehmer'], ['rsvSchaden', 'Schaden-Nr.'], ['selbstbeteiligung', 'Selbstbeteiligung'], ['selbstbeteiligungBetrag', 'Höhe Selbstbeteiligung']]], ['Einwilligungen', [['datenStr', 'Speicherung der Daten gem. Hinweisen'], ['emailConsent', 'Unverschlüsselte E-Mail-/Fax-Kommunikation'], ['sofortLeistung', 'Sofortiger Leistungsbeginn (Verzicht Widerruf)'], ['datenschutz', 'Datenschutzerklärung']]]];
 function jaNein(v) {
   return v === true ? 'Ja' : v === false ? '' : v;
 }
@@ -23,7 +23,7 @@ function mailtoHref(f) {
 }
 function mount() {
   const CONTAINER = {
-    maxWidth: 880,
+    maxWidth: 960,
     margin: '0 auto',
     padding: '0 20px'
   };
@@ -345,6 +345,7 @@ function mount() {
     iban: '',
     // I. eigenes Fahrzeug
     eigentuemer: '',
+    kaufvertragUnterzeichner: '',
     fahrzeugart: '',
     fahrzeugartDetail: '',
     kennzeichen: '',
@@ -407,6 +408,7 @@ function mount() {
     const [showNextPrompt, setShowNextPrompt] = React.useState(false);
     const [sending, setSending] = React.useState(false);
     const [sendError, setSendError] = React.useState('');
+    const isMobile = window.frUseIsMobile();
     const set = k => v => setForm(f => ({
       ...f,
       [k]: v
@@ -419,6 +421,8 @@ function mount() {
       if (!form.email.trim()) e.email = 'Bitte geben Sie Ihre E-Mail-Adresse an.';else if (!isEmail(form.email)) e.email = 'Bitte geben Sie eine gültige E-Mail-Adresse an.';
       if (!form.iban.trim()) e.iban = 'Bitte geben Sie Ihre IBAN an.';else if (!isValidIban(form.iban)) e.iban = 'Diese IBAN ist ungültig. Bitte prüfen Sie Ihre Eingabe.';
       if (!form.fahrzeugart) e.fahrzeugart = 'Bitte wählen Sie die Art des Fahrzeugs.';else if (form.fahrzeugart === 'Sonstiges' && !form.fahrzeugartDetail.trim()) e.fahrzeugartDetail = 'Bitte geben Sie die Art des Fahrzeugs an.';
+      if (!form.eigentuemer.trim()) e.eigentuemer = 'Bitte geben Sie den Eigentümer des Fahrzeugs an.';
+      if (!form.kaufvertragUnterzeichner.trim()) e.kaufvertragUnterzeichner = 'Bitte geben Sie an, wer den Kaufvertrag unterschrieben hat.';
       if (!form.datenStr) e.datenStr = 'Für die Bearbeitung ist Ihre Einwilligung zur Datenspeicherung erforderlich.';
       if (!form.datenschutz) e.datenschutz = 'Bitte stimmen Sie der Datenschutzerklärung zu.';
       return e;
@@ -584,10 +588,18 @@ function mount() {
     const hasErrors = Object.keys(errors).length > 0;
     return /*#__PURE__*/React.createElement(Chrome, null, /*#__PURE__*/React.createElement("main", {
       style: {
-        padding: '40px 0 10px'
+        padding: '40px 0 60px'
       }
     }, /*#__PURE__*/React.createElement("div", {
-      style: CONTAINER
+      style: {
+        maxWidth: 'var(--max-w)',
+        margin: '0 auto',
+        padding: '0 20px'
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        maxWidth: 680
+      }
     }, /*#__PURE__*/React.createElement("p", {
       style: {
         font: '400 14px/1.75 var(--font-sans)',
@@ -604,7 +616,6 @@ function mount() {
       onSubmit: handleSubmit,
       noValidate: true,
       style: {
-        maxWidth: 680,
         marginTop: 30
       }
     }, /*#__PURE__*/React.createElement(Section, {
@@ -722,7 +733,73 @@ function mount() {
       label: "Vorsteuerabzugsberechtigt?",
       value: form.vorsteuer,
       onChange: set('vorsteuer')
-    })), /*#__PURE__*/React.createElement("div", {
+    }), /*#__PURE__*/React.createElement(YesNoField, {
+      label: "Besteht eine Rechtsschutzversicherung?",
+      value: form.rsv,
+      onChange: set('rsv')
+    }), form.rsv === 'ja' && /*#__PURE__*/React.createElement("div", {
+      style: {
+        borderLeft: '3px solid var(--green)',
+        paddingLeft: 22,
+        marginTop: 4
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr',
+        gap: 16
+      }
+    }, /*#__PURE__*/React.createElement(Field, {
+      label: "Name der Versicherung"
+    }, /*#__PURE__*/React.createElement(TextInput, {
+      type: "text",
+      value: form.rsvName,
+      onChange: set('rsvName'),
+      placeholder: "z. B. ARAG, ADAC \u2026"
+    })), /*#__PURE__*/React.createElement(Field, {
+      label: "Versicherungsschein-Nr."
+    }, /*#__PURE__*/React.createElement(TextInput, {
+      type: "text",
+      value: form.rsvSchein,
+      onChange: set('rsvSchein'),
+      placeholder: "Schein-Nr."
+    }))), /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr',
+        gap: 16
+      }
+    }, /*#__PURE__*/React.createElement(Field, {
+      label: "Versicherungsnehmer"
+    }, /*#__PURE__*/React.createElement(TextInput, {
+      type: "text",
+      value: form.rsvNehmer,
+      onChange: set('rsvNehmer'),
+      placeholder: "falls abweichend"
+    })), /*#__PURE__*/React.createElement(Field, {
+      label: "Schaden-Nr."
+    }, /*#__PURE__*/React.createElement(TextInput, {
+      type: "text",
+      value: form.rsvSchaden,
+      onChange: set('rsvSchaden'),
+      placeholder: "falls bekannt"
+    }))), /*#__PURE__*/React.createElement(YesNoField, {
+      label: "Ist eine Selbstbeteiligung vereinbart?",
+      value: form.selbstbeteiligung,
+      onChange: set('selbstbeteiligung')
+    }), form.selbstbeteiligung === 'ja' && /*#__PURE__*/React.createElement(Field, {
+      label: "H\xF6he der Selbstbeteiligung"
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        maxWidth: 260
+      }
+    }, /*#__PURE__*/React.createElement(TextInput, {
+      type: "text",
+      inputMode: "decimal",
+      value: form.selbstbeteiligungBetrag,
+      onChange: set('selbstbeteiligungBetrag'),
+      placeholder: "z. B. 150 \u20AC"
+    }))))), /*#__PURE__*/React.createElement("div", {
       style: {
         height: 26
       }
@@ -731,13 +808,30 @@ function mount() {
       title: "Angaben zum eigenen Fahrzeug"
     }, /*#__PURE__*/React.createElement(Field, {
       label: "Wer ist Eigent\xFCmer des Fahrzeugs?",
-      hint: "Bei Kauffahrzeugen bitte sp\xE4ter eine Kopie des Kaufvertrags beif\xFCgen."
+      required: true,
+      hint: "Bei Kauffahrzeugen bitte sp\xE4ter eine Kopie des Kaufvertrags beif\xFCgen.",
+      error: errors.eigentuemer
+    }, /*#__PURE__*/React.createElement("span", {
+      "data-error": !!errors.eigentuemer
     }, /*#__PURE__*/React.createElement(TextInput, {
       type: "text",
       value: form.eigentuemer,
       onChange: set('eigentuemer'),
+      error: errors.eigentuemer,
       placeholder: "Name des Eigent\xFCmers"
-    })), /*#__PURE__*/React.createElement(Field, {
+    }))), /*#__PURE__*/React.createElement(Field, {
+      label: "Wer hat den Kaufvertrag unterschrieben?",
+      required: true,
+      error: errors.kaufvertragUnterzeichner
+    }, /*#__PURE__*/React.createElement("span", {
+      "data-error": !!errors.kaufvertragUnterzeichner
+    }, /*#__PURE__*/React.createElement(TextInput, {
+      type: "text",
+      value: form.kaufvertragUnterzeichner,
+      onChange: set('kaufvertragUnterzeichner'),
+      error: errors.kaufvertragUnterzeichner,
+      placeholder: "Name des Unterzeichners"
+    }))), /*#__PURE__*/React.createElement(Field, {
       label: "Art des Fahrzeugs",
       required: true,
       error: errors.fahrzeugart
@@ -841,7 +935,21 @@ function mount() {
     }), /*#__PURE__*/React.createElement(Section, {
       num: "II.",
       title: "Angaben zum Unfallgegner"
-    }, /*#__PURE__*/React.createElement("div", {
+    }, /*#__PURE__*/React.createElement(Field, {
+      label: "Name und Anschrift des Fahrers"
+    }, /*#__PURE__*/React.createElement(TextInput, {
+      type: "text",
+      value: form.gFahrer,
+      onChange: set('gFahrer'),
+      placeholder: "Name, Stra\xDFe, PLZ, Ort"
+    })), /*#__PURE__*/React.createElement(Field, {
+      label: "Wo ist das Kfz haftpflichtversichert?"
+    }, /*#__PURE__*/React.createElement(TextInput, {
+      type: "text",
+      value: form.gVersicherung,
+      onChange: set('gVersicherung'),
+      placeholder: "Name der Haftpflichtversicherung"
+    })), /*#__PURE__*/React.createElement("div", {
       style: {
         display: 'grid',
         gridTemplateColumns: '1fr 1fr',
@@ -861,21 +969,7 @@ function mount() {
       value: form.gVssNr,
       onChange: set('gVssNr'),
       placeholder: "Versicherungs-/Schadennummer"
-    }))), /*#__PURE__*/React.createElement(Field, {
-      label: "Name und Anschrift des Fahrers"
-    }, /*#__PURE__*/React.createElement(TextInput, {
-      type: "text",
-      value: form.gFahrer,
-      onChange: set('gFahrer'),
-      placeholder: "Name, Stra\xDFe, PLZ, Ort"
-    })), /*#__PURE__*/React.createElement(Field, {
-      label: "Wo ist das Kfz haftpflichtversichert?"
-    }, /*#__PURE__*/React.createElement(TextInput, {
-      type: "text",
-      value: form.gVersicherung,
-      onChange: set('gVersicherung'),
-      placeholder: "Name der Haftpflichtversicherung"
-    }))), /*#__PURE__*/React.createElement("div", {
+    })))), /*#__PURE__*/React.createElement("div", {
       style: {
         height: 26
       }
@@ -1020,76 +1114,7 @@ function mount() {
       style: {
         height: 26
       }
-    }), /*#__PURE__*/React.createElement(Section, {
-      num: "V.",
-      title: "Rechtsschutzversicherung"
-    }, /*#__PURE__*/React.createElement(YesNoField, {
-      label: "Besteht eine Rechtsschutzversicherung?",
-      value: form.rsv,
-      onChange: set('rsv')
-    }), form.rsv === 'ja' && /*#__PURE__*/React.createElement("div", {
-      style: {
-        borderLeft: '3px solid var(--green)',
-        paddingLeft: 22,
-        marginTop: 4
-      }
-    }, /*#__PURE__*/React.createElement("div", {
-      style: {
-        display: 'grid',
-        gridTemplateColumns: '1fr 1fr',
-        gap: 16
-      }
-    }, /*#__PURE__*/React.createElement(Field, {
-      label: "Name der Versicherung"
-    }, /*#__PURE__*/React.createElement(TextInput, {
-      type: "text",
-      value: form.rsvName,
-      onChange: set('rsvName'),
-      placeholder: "z. B. ARAG, ADAC \u2026"
-    })), /*#__PURE__*/React.createElement(Field, {
-      label: "Versicherungsschein-Nr."
-    }, /*#__PURE__*/React.createElement(TextInput, {
-      type: "text",
-      value: form.rsvSchein,
-      onChange: set('rsvSchein'),
-      placeholder: "Schein-Nr."
-    }))), /*#__PURE__*/React.createElement("div", {
-      style: {
-        display: 'grid',
-        gridTemplateColumns: '1fr 1fr',
-        gap: 16
-      }
-    }, /*#__PURE__*/React.createElement(Field, {
-      label: "Versicherungsnehmer"
-    }, /*#__PURE__*/React.createElement(TextInput, {
-      type: "text",
-      value: form.rsvNehmer,
-      onChange: set('rsvNehmer'),
-      placeholder: "falls abweichend"
-    })), /*#__PURE__*/React.createElement(Field, {
-      label: "Schaden-Nr."
-    }, /*#__PURE__*/React.createElement(TextInput, {
-      type: "text",
-      value: form.rsvSchaden,
-      onChange: set('rsvSchaden'),
-      placeholder: "falls bekannt"
-    }))), /*#__PURE__*/React.createElement(YesNoField, {
-      label: "Ist eine Selbstbeteiligung vereinbart?",
-      value: form.selbstbeteiligung,
-      onChange: set('selbstbeteiligung')
-    }), form.selbstbeteiligung === 'ja' && /*#__PURE__*/React.createElement(Field, {
-      label: "H\xF6he der Selbstbeteiligung"
-    }, /*#__PURE__*/React.createElement("div", {
-      style: {
-        maxWidth: 260
-      }
-    }, /*#__PURE__*/React.createElement(TextInput, {
-      type: "text",
-      inputMode: "decimal",
-      value: form.selbstbeteiligungBetrag,
-      onChange: set('selbstbeteiligungBetrag'),
-      placeholder: "z. B. 150 \u20AC"
-    }))))), /*#__PURE__*/React.createElement("div", {
+    }), /*#__PURE__*/React.createElement("div", {
       style: {
         borderTop: '1px solid var(--border)',
         marginTop: 30,
@@ -1194,7 +1219,7 @@ function mount() {
         font: '400 12.5px var(--font-sans)',
         color: 'var(--text-faint)'
       }
-    }, "Ihre Angaben werden direkt an die Kanzlei \xFCbermittelt.")))))));
+    }, "Ihre Angaben werden direkt an die Kanzlei \xFCbermittelt."))))))));
   }
   ReactDOM.createRoot(document.getElementById('root')).render(/*#__PURE__*/React.createElement(Page, null));
 }
