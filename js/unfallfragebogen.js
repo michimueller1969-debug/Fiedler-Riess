@@ -422,7 +422,6 @@ function mount() {
       if (!form.iban.trim()) e.iban = 'Bitte geben Sie Ihre IBAN an.';else if (!isValidIban(form.iban)) e.iban = 'Diese IBAN ist ungültig. Bitte prüfen Sie Ihre Eingabe.';
       if (!form.fahrzeugart) e.fahrzeugart = 'Bitte wählen Sie die Art des Fahrzeugs.';else if (form.fahrzeugart === 'Sonstiges' && !form.fahrzeugartDetail.trim()) e.fahrzeugartDetail = 'Bitte geben Sie die Art des Fahrzeugs an.';
       if (!form.eigentuemer.trim()) e.eigentuemer = 'Bitte geben Sie den Eigentümer des Fahrzeugs an.';
-      if (!form.kaufvertragUnterzeichner.trim()) e.kaufvertragUnterzeichner = 'Bitte geben Sie an, wer den Kaufvertrag unterschrieben hat.';
       if (!form.datenStr) e.datenStr = 'Für die Bearbeitung ist Ihre Einwilligung zur Datenspeicherung erforderlich.';
       if (!form.datenschutz) e.datenschutz = 'Bitte stimmen Sie der Datenschutzerklärung zu.';
       return e;
@@ -807,7 +806,11 @@ function mount() {
       num: "I.",
       title: "Angaben zum eigenen Fahrzeug"
     }, /*#__PURE__*/React.createElement(Field, {
-      label: "Wer ist Eigent\xFCmer des Fahrzeugs?",
+      label: /*#__PURE__*/React.createElement(React.Fragment, null, "Wer ist Eigent\xFCmer des Fahrzeugs ", /*#__PURE__*/React.createElement("span", {
+        style: {
+          fontWeight: 'normal'
+        }
+      }, "(Wer hat den Kaufvertrag unterschrieben)"), "?"),
       required: true,
       hint: "Bei Kauffahrzeugen bitte sp\xE4ter eine Kopie des Kaufvertrags beif\xFCgen.",
       error: errors.eigentuemer
@@ -819,18 +822,6 @@ function mount() {
       onChange: set('eigentuemer'),
       error: errors.eigentuemer,
       placeholder: "Name des Eigent\xFCmers"
-    }))), /*#__PURE__*/React.createElement(Field, {
-      label: "Wer hat den Kaufvertrag unterschrieben?",
-      required: true,
-      error: errors.kaufvertragUnterzeichner
-    }, /*#__PURE__*/React.createElement("span", {
-      "data-error": !!errors.kaufvertragUnterzeichner
-    }, /*#__PURE__*/React.createElement(TextInput, {
-      type: "text",
-      value: form.kaufvertragUnterzeichner,
-      onChange: set('kaufvertragUnterzeichner'),
-      error: errors.kaufvertragUnterzeichner,
-      placeholder: "Name des Unterzeichners"
     }))), /*#__PURE__*/React.createElement(Field, {
       label: "Art des Fahrzeugs",
       required: true,
