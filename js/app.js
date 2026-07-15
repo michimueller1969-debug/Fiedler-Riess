@@ -1603,11 +1603,6 @@ function JagdrechtScreen() {
 function FragebogenScreen() {
   const isMobile = window.frUseIsMobile();
   const rows = [{
-    text: /*#__PURE__*/React.createElement(React.Fragment, null, "Sie m\xF6chten uns Angaben zur Mandatsaufnahme machen? Hier geht es zu unserem Online-Mandantenbogen:"),
-    cta: 'Mandantenbogen ausfüllen',
-    href: 'mandantenbogen.html',
-    online: true
-  }, {
     text: /*#__PURE__*/React.createElement(React.Fragment, null, "Sie hatten einen Unfall und Sie m\xF6chten uns schildern, was passiert ist? Hier geht es zu unserem Online-Fragebogen zum Unfallgeschehen:"),
     cta: 'Unfallfragebogen ausfüllen',
     href: 'unfallfragebogen.html',

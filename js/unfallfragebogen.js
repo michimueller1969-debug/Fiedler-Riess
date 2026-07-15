@@ -6,11 +6,14 @@ const RECIPIENT = 's.riess@fiedler-riess.de'; // Empfänger der Fragebögen
 const ENDPOINT = 'unfallfragebogen.php'; // serverseitiger Mailversand (PHP)
 
 /* Feldgruppen + Beschriftungen für die E-Mail-Zusammenfassung (Fallback per mailto) */
-const FIELD_GROUPS = [['Ihre Angaben', [['name', 'Name'], ['strasse', 'Straße/Hausnr.'], ['plz', 'PLZ'], ['ort', 'Ort'], ['email', 'E-Mail'], ['telefon', 'Telefon'], ['iban', 'IBAN']]], ['I. Eigenes Fahrzeug', [['eigentuemer', 'Eigentümer'], ['leasing', 'Leasingfahrzeug'], ['leasingDetail', 'Leasing-Details'], ['finanziert', 'Finanziert'], ['finanziertDetail', 'Finanzierung-Details'], ['fahrer', 'Fahrer zum Unfallzeitpunkt'], ['scheckheft', 'Scheckheftgepflegt'], ['vollkasko', 'Vollkasko'], ['vollkaskoDetail', 'Vollkasko-Details'], ['begutachtet', 'Begutachtet'], ['begutachtetDetail', 'Sachverständigenbüro']]], ['II. Unfallgegner', [['gKennzeichen', 'Kennzeichen'], ['gFahrer', 'Name/Anschrift Fahrer'], ['gVersicherung', 'Haftpflichtversicherung'], ['gVssNr', 'VSS-/Schadennr.']]], ['III. Unfall', [['uOrt', 'Unfallort'], ['uDatum', 'Unfalltag'], ['uZeit', 'Uhrzeit'], ['zeugen', 'Zeugen'], ['polizei', 'Polizei aufgenommen'], ['polizeiDetail', 'Dienststelle/Az.'], ['schilderung', 'Unfallschilderung']]], ['IV. Personenschäden', [['personenschaden', 'Person verletzt'], ['psName', 'Name/Anschrift Verletzte/r'], ['psKontakt', 'Kontakt'], ['psGeburt', 'Geburtsdatum'], ['khAufenthalt', 'Krankenhausaufenthalt'], ['khVon', 'von'], ['khBis', 'bis'], ['khAnschrift', 'Krankenhaus-Anschrift'], ['psArzt', 'Ärzte/Therapeuten'], ['wegeunfall', 'Wegeunfall']]]];
+const FIELD_GROUPS = [['Ihre Angaben', [['name', 'Name'], ['strasse', 'Straße/Hausnr.'], ['plz', 'PLZ'], ['ort', 'Ort'], ['email', 'E-Mail'], ['telefon', 'Telefon'], ['vorsteuer', 'Vorsteuerabzugsberechtigt'], ['bank', 'Bank'], ['iban', 'IBAN']]], ['I. Eigenes Fahrzeug', [['eigentuemer', 'Eigentümer'], ['fahrzeugart', 'Art des Fahrzeugs'], ['fahrzeugartDetail', 'Art (Sonstiges)'], ['kennzeichen', 'Kennzeichen'], ['leasing', 'Leasingfahrzeug'], ['leasingDetail', 'Leasing-Details'], ['finanziert', 'Finanziert'], ['finanziertDetail', 'Finanzierung-Details'], ['fahrer', 'Fahrer zum Unfallzeitpunkt'], ['scheckheft', 'Scheckheftgepflegt'], ['vollkasko', 'Vollkasko'], ['vollkaskoDetail', 'Vollkasko-Details'], ['begutachtet', 'Begutachtet'], ['begutachtetDetail', 'Sachverständigenbüro'], ['fahrbereit', 'Fahrbereit/verkehrssicher']]], ['II. Unfallgegner', [['gKennzeichen', 'Kennzeichen'], ['gFahrer', 'Name/Anschrift Fahrer'], ['gVersicherung', 'Haftpflichtversicherung'], ['gVssNr', 'VSS-/Schadennr.']]], ['III. Unfall', [['uOrt', 'Unfallort'], ['uDatum', 'Unfalltag'], ['uZeit', 'Uhrzeit'], ['zeugen', 'Zeugen'], ['polizei', 'Polizei aufgenommen'], ['polizeiDetail', 'Dienststelle/Az.'], ['schilderung', 'Unfallschilderung']]], ['IV. Personenschäden', [['personenschaden', 'Person verletzt'], ['psName', 'Name/Anschrift Verletzte/r'], ['psKontakt', 'Kontakt'], ['psGeburt', 'Geburtsdatum'], ['khAufenthalt', 'Krankenhausaufenthalt'], ['khVon', 'von'], ['khBis', 'bis'], ['khAnschrift', 'Krankenhaus-Anschrift'], ['psArzt', 'Ärzte/Therapeuten'], ['wegeunfall', 'Wegeunfall']]], ['V. Rechtsschutzversicherung', [['rsv', 'Rechtsschutzversicherung vorhanden'], ['rsvName', 'Name der RSV'], ['rsvSchein', 'Versicherungsschein-Nr.'], ['rsvNehmer', 'Versicherungsnehmer'], ['rsvSchaden', 'Schaden-Nr.'], ['selbstbeteiligung', 'Selbstbeteiligung'], ['selbstbeteiligungBetrag', 'Höhe Selbstbeteiligung']]], ['Einwilligungen', [['datenStr', 'Speicherung der Daten gem. Hinweisen'], ['emailConsent', 'Unverschlüsselte E-Mail-/Fax-Kommunikation'], ['sofortLeistung', 'Sofortiger Leistungsbeginn (Verzicht Widerruf)'], ['datenschutz', 'Datenschutzerklärung']]]];
+function jaNein(v) {
+  return v === true ? 'Ja' : v === false ? '' : v;
+}
 function summaryText(f) {
   let out = 'Verkehrsunfall-Fragebogen\n';
   for (const [title, fields] of FIELD_GROUPS) {
-    const lines = fields.filter(([k]) => String(f[k] == null ? '' : f[k]).trim() !== '').map(([k, l]) => l + ': ' + f[k]);
+    const lines = fields.map(([k, l]) => [l, jaNein(f[k])]).filter(([, v]) => String(v == null ? '' : v).trim() !== '').map(([l, v]) => l + ': ' + v);
     if (lines.length) out += '\n' + title + '\n' + lines.join('\n') + '\n';
   }
   return out.trim();
@@ -240,6 +243,75 @@ function mount() {
     })));
   }
 
+  /* label + nein/ja stacked (Nein/Ja under the question) */
+  function YesNoField({
+    label,
+    hint,
+    value,
+    onChange
+  }) {
+    return /*#__PURE__*/React.createElement("div", {
+      style: {
+        marginBottom: 18
+      }
+    }, /*#__PURE__*/React.createElement("label", {
+      style: labelStyle
+    }, label), hint && /*#__PURE__*/React.createElement("p", {
+      style: {
+        ...hintStyle,
+        marginTop: 0,
+        marginBottom: 10
+      }
+    }, hint), /*#__PURE__*/React.createElement(YesNo, {
+      value: value,
+      onChange: onChange
+    }));
+  }
+
+  /* consent checkbox */
+  function Consent({
+    checked,
+    onChange,
+    error,
+    children
+  }) {
+    return /*#__PURE__*/React.createElement("div", {
+      style: {
+        marginBottom: 16
+      }
+    }, /*#__PURE__*/React.createElement("label", {
+      "data-error": !!error,
+      style: {
+        display: 'flex',
+        alignItems: 'flex-start',
+        gap: 12,
+        cursor: 'pointer'
+      }
+    }, /*#__PURE__*/React.createElement("input", {
+      type: "checkbox",
+      checked: checked,
+      onChange: e => onChange(e.target.checked),
+      style: {
+        width: 18,
+        height: 18,
+        marginTop: 2,
+        accentColor: 'var(--green)',
+        flexShrink: 0
+      }
+    }), /*#__PURE__*/React.createElement("span", {
+      style: {
+        font: '400 13px/1.6 var(--font-sans)',
+        color: 'var(--text-light)'
+      }
+    }, children)), error && /*#__PURE__*/React.createElement("p", {
+      style: {
+        ...hintStyle,
+        color: 'var(--crimson)',
+        marginLeft: 30
+      }
+    }, error));
+  }
+
   /* ---------- validation ---------- */
   function isEmail(v) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
@@ -273,6 +345,9 @@ function mount() {
     iban: '',
     // I. eigenes Fahrzeug
     eigentuemer: '',
+    fahrzeugart: '',
+    fahrzeugartDetail: '',
+    kennzeichen: '',
     leasing: '',
     leasingDetail: '',
     finanziert: '',
@@ -283,6 +358,7 @@ function mount() {
     vollkaskoDetail: '',
     begutachtet: '',
     begutachtetDetail: '',
+    fahrbereit: '',
     // II. Unfallgegner
     gKennzeichen: '',
     gFahrer: '',
@@ -307,7 +383,21 @@ function mount() {
     khAnschrift: '',
     psArzt: '',
     wegeunfall: '',
+    // Stammdaten-Ergänzungen
+    vorsteuer: '',
+    bank: '',
+    // V. Rechtsschutzversicherung
+    rsv: '',
+    rsvName: '',
+    rsvSchein: '',
+    rsvNehmer: '',
+    rsvSchaden: '',
+    selbstbeteiligung: '',
+    selbstbeteiligungBetrag: '',
     // consent
+    datenStr: false,
+    emailConsent: false,
+    sofortLeistung: false,
     datenschutz: false
   };
   function Page() {
@@ -328,6 +418,8 @@ function mount() {
       if (!form.plz.trim() || !form.ort.trim()) e.ort = 'Bitte geben Sie PLZ und Ort an.';
       if (!form.email.trim()) e.email = 'Bitte geben Sie Ihre E-Mail-Adresse an.';else if (!isEmail(form.email)) e.email = 'Bitte geben Sie eine gültige E-Mail-Adresse an.';
       if (!form.iban.trim()) e.iban = 'Bitte geben Sie Ihre IBAN an.';else if (!isValidIban(form.iban)) e.iban = 'Diese IBAN ist ungültig. Bitte prüfen Sie Ihre Eingabe.';
+      if (!form.fahrzeugart) e.fahrzeugart = 'Bitte wählen Sie die Art des Fahrzeugs.';else if (form.fahrzeugart === 'Sonstiges' && !form.fahrzeugartDetail.trim()) e.fahrzeugartDetail = 'Bitte geben Sie die Art des Fahrzeugs an.';
+      if (!form.datenStr) e.datenStr = 'Für die Bearbeitung ist Ihre Einwilligung zur Datenspeicherung erforderlich.';
       if (!form.datenschutz) e.datenschutz = 'Bitte stimmen Sie der Datenschutzerklärung zu.';
       return e;
     }
@@ -604,6 +696,14 @@ function mount() {
       placeholder: "0151 23456789",
       autoComplete: "tel"
     }))), /*#__PURE__*/React.createElement(Field, {
+      label: "Bank",
+      hint: "Name des Kreditinstituts."
+    }, /*#__PURE__*/React.createElement(TextInput, {
+      type: "text",
+      value: form.bank,
+      onChange: set('bank'),
+      placeholder: "Name des Kreditinstituts"
+    })), /*#__PURE__*/React.createElement(Field, {
       label: "IBAN",
       required: true,
       hint: "F\xFCr die Auszahlung regulierter Sch\xE4den auf Ihr Konto.",
@@ -618,7 +718,11 @@ function mount() {
       placeholder: "DE00 0000 0000 0000 0000 00",
       inputMode: "text",
       autoComplete: "off"
-    })))), /*#__PURE__*/React.createElement("div", {
+    }))), /*#__PURE__*/React.createElement(YesNoField, {
+      label: "Vorsteuerabzugsberechtigt?",
+      value: form.vorsteuer,
+      onChange: set('vorsteuer')
+    })), /*#__PURE__*/React.createElement("div", {
       style: {
         height: 26
       }
@@ -633,6 +737,53 @@ function mount() {
       value: form.eigentuemer,
       onChange: set('eigentuemer'),
       placeholder: "Name des Eigent\xFCmers"
+    })), /*#__PURE__*/React.createElement(Field, {
+      label: "Art des Fahrzeugs",
+      required: true,
+      error: errors.fahrzeugart
+    }, /*#__PURE__*/React.createElement("span", {
+      "data-error": !!errors.fahrzeugart
+    }, /*#__PURE__*/React.createElement("select", {
+      value: form.fahrzeugart,
+      onChange: e => set('fahrzeugart')(e.target.value),
+      style: {
+        ...baseInput,
+        appearance: 'auto',
+        border: errors.fahrzeugart ? '1px solid var(--crimson)' : '1px solid var(--border)'
+      }
+    }, /*#__PURE__*/React.createElement("option", {
+      value: ""
+    }, "Bitte w\xE4hlen \u2026"), /*#__PURE__*/React.createElement("option", {
+      value: "PKW"
+    }, "PKW"), /*#__PURE__*/React.createElement("option", {
+      value: "LKW"
+    }, "LKW"), /*#__PURE__*/React.createElement("option", {
+      value: "Motorrad"
+    }, "Motorrad"), /*#__PURE__*/React.createElement("option", {
+      value: "e-Bike"
+    }, "e-Bike"), /*#__PURE__*/React.createElement("option", {
+      value: "Fussg\xE4nger"
+    }, "Fu\xDFg\xE4nger"), /*#__PURE__*/React.createElement("option", {
+      value: "Sonstiges"
+    }, "Sonstiges")))), form.fahrzeugart === 'Sonstiges' && /*#__PURE__*/React.createElement(Field, {
+      label: "Art des Fahrzeugs (Sonstiges)",
+      required: true,
+      error: errors.fahrzeugartDetail
+    }, /*#__PURE__*/React.createElement("span", {
+      "data-error": !!errors.fahrzeugartDetail
+    }, /*#__PURE__*/React.createElement(TextInput, {
+      type: "text",
+      value: form.fahrzeugartDetail,
+      onChange: set('fahrzeugartDetail'),
+      error: errors.fahrzeugartDetail,
+      placeholder: "Bitte n\xE4her angeben"
+    }))), /*#__PURE__*/React.createElement(Field, {
+      label: "Kennzeichen des Fahrzeugs"
+    }, /*#__PURE__*/React.createElement(TextInput, {
+      type: "text",
+      value: form.kennzeichen,
+      onChange: set('kennzeichen'),
+      placeholder: "z. B. HEF-AB 123"
     })), /*#__PURE__*/React.createElement(ConditionalField, {
       label: "Handelt es sich um ein Leasingfahrzeug?",
       hint: "Wenn ja: Leasinggeber und Vertrags-Nr. angeben.",
@@ -678,7 +829,12 @@ function mount() {
       detailValue: form.begutachtetDetail,
       onDetail: set('begutachtetDetail'),
       detailPlaceholder: "Sachverst\xE4ndigenb\xFCro"
-    })), /*#__PURE__*/React.createElement("div", {
+    }), /*#__PURE__*/React.createElement(Field, {
+      label: "Ist das Fahrzeug fahrbereit und verkehrssicher?"
+    }, /*#__PURE__*/React.createElement(YesNo, {
+      value: form.fahrbereit,
+      onChange: set('fahrbereit')
+    }))), /*#__PURE__*/React.createElement("div", {
       style: {
         height: 26
       }
@@ -862,46 +1018,124 @@ function mount() {
       onChange: set('wegeunfall')
     })))), /*#__PURE__*/React.createElement("div", {
       style: {
+        height: 26
+      }
+    }), /*#__PURE__*/React.createElement(Section, {
+      num: "V.",
+      title: "Rechtsschutzversicherung"
+    }, /*#__PURE__*/React.createElement(YesNoField, {
+      label: "Besteht eine Rechtsschutzversicherung?",
+      value: form.rsv,
+      onChange: set('rsv')
+    }), form.rsv === 'ja' && /*#__PURE__*/React.createElement("div", {
+      style: {
+        borderLeft: '3px solid var(--green)',
+        paddingLeft: 22,
+        marginTop: 4
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr',
+        gap: 16
+      }
+    }, /*#__PURE__*/React.createElement(Field, {
+      label: "Name der Versicherung"
+    }, /*#__PURE__*/React.createElement(TextInput, {
+      type: "text",
+      value: form.rsvName,
+      onChange: set('rsvName'),
+      placeholder: "z. B. ARAG, ADAC \u2026"
+    })), /*#__PURE__*/React.createElement(Field, {
+      label: "Versicherungsschein-Nr."
+    }, /*#__PURE__*/React.createElement(TextInput, {
+      type: "text",
+      value: form.rsvSchein,
+      onChange: set('rsvSchein'),
+      placeholder: "Schein-Nr."
+    }))), /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr',
+        gap: 16
+      }
+    }, /*#__PURE__*/React.createElement(Field, {
+      label: "Versicherungsnehmer"
+    }, /*#__PURE__*/React.createElement(TextInput, {
+      type: "text",
+      value: form.rsvNehmer,
+      onChange: set('rsvNehmer'),
+      placeholder: "falls abweichend"
+    })), /*#__PURE__*/React.createElement(Field, {
+      label: "Schaden-Nr."
+    }, /*#__PURE__*/React.createElement(TextInput, {
+      type: "text",
+      value: form.rsvSchaden,
+      onChange: set('rsvSchaden'),
+      placeholder: "falls bekannt"
+    }))), /*#__PURE__*/React.createElement(YesNoField, {
+      label: "Ist eine Selbstbeteiligung vereinbart?",
+      value: form.selbstbeteiligung,
+      onChange: set('selbstbeteiligung')
+    }), form.selbstbeteiligung === 'ja' && /*#__PURE__*/React.createElement(Field, {
+      label: "H\xF6he der Selbstbeteiligung"
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        maxWidth: 260
+      }
+    }, /*#__PURE__*/React.createElement(TextInput, {
+      type: "text",
+      inputMode: "decimal",
+      value: form.selbstbeteiligungBetrag,
+      onChange: set('selbstbeteiligungBetrag'),
+      placeholder: "z. B. 150 \u20AC"
+    }))))), /*#__PURE__*/React.createElement("div", {
+      style: {
         borderTop: '1px solid var(--border)',
         marginTop: 30,
         paddingTop: 24
       }
-    }, /*#__PURE__*/React.createElement("label", {
-      "data-error": !!errors.datenschutz,
+    }, /*#__PURE__*/React.createElement("h2", {
       style: {
-        display: 'flex',
-        alignItems: 'flex-start',
-        gap: 12,
-        cursor: 'pointer'
+        font: '700 16px var(--font-sans)',
+        color: 'var(--text)',
+        margin: '0 0 18px',
+        paddingBottom: 8,
+        borderBottom: '2px solid var(--green)'
       }
-    }, /*#__PURE__*/React.createElement("input", {
-      type: "checkbox",
+    }, "Erkl\xE4rungen und Einwilligungen"), /*#__PURE__*/React.createElement(Consent, {
+      checked: form.datenStr,
+      onChange: set('datenStr'),
+      error: errors.datenStr
+    }, "Ich bin mit der Speicherung meiner Daten gem\xE4\xDF den ", /*#__PURE__*/React.createElement("a", {
+      href: "index.html#datenschutz",
+      style: {
+        color: 'var(--green)'
+      }
+    }, "Hinweisen zur Datenverarbeitung"), " einverstanden. Mir ist bekannt, dass die Daten elektronisch gespeichert werden.", /*#__PURE__*/React.createElement(Req, null)), /*#__PURE__*/React.createElement(Consent, {
+      checked: form.emailConsent,
+      onChange: set('emailConsent')
+    }, "Ich w\xFCnsche ausdr\xFCcklich die Kommunikation per ", /*#__PURE__*/React.createElement("strong", null, "unverschl\xFCsselter E-Mail und/oder Telefax"), " und bin auf die damit verbundenen Risiken hingewiesen worden. Diese Erkl\xE4rung kann ich jederzeit widerrufen. ", /*#__PURE__*/React.createElement("span", {
+      style: {
+        color: 'var(--text-faint)'
+      }
+    }, "(optional)")), /*#__PURE__*/React.createElement(Consent, {
+      checked: form.sofortLeistung,
+      onChange: set('sofortLeistung')
+    }, "Ich w\xFCnsche, dass die Kanzlei bereits ", /*#__PURE__*/React.createElement("strong", null, "vor Ablauf der 14-t\xE4gigen Widerrufsfrist"), " mit der T\xE4tigkeit beginnt. Mir ist bekannt, dass ich bei Widerruf bereits erbrachte Leistungen zu verg\xFCten habe und mein Widerrufsrecht bei vollst\xE4ndiger Erf\xFCllung erlischt. ", /*#__PURE__*/React.createElement("span", {
+      style: {
+        color: 'var(--text-faint)'
+      }
+    }, "(optional)")), /*#__PURE__*/React.createElement(Consent, {
       checked: form.datenschutz,
-      onChange: e => set('datenschutz')(e.target.checked),
-      style: {
-        width: 18,
-        height: 18,
-        marginTop: 2,
-        accentColor: 'var(--green)',
-        flexShrink: 0
-      }
-    }), /*#__PURE__*/React.createElement("span", {
-      style: {
-        font: '400 13px/1.6 var(--font-sans)',
-        color: 'var(--text-light)'
-      }
+      onChange: set('datenschutz'),
+      error: errors.datenschutz
     }, "Ich habe die ", /*#__PURE__*/React.createElement("a", {
       href: "index.html#datenschutz",
       style: {
         color: 'var(--green)'
       }
-    }, "Datenschutzerkl\xE4rung"), " gelesen und willige in die Verarbeitung meiner Angaben zur Bearbeitung meines Anliegens ein.", /*#__PURE__*/React.createElement(Req, null))), errors.datenschutz && /*#__PURE__*/React.createElement("p", {
-      style: {
-        ...hintStyle,
-        color: 'var(--crimson)',
-        marginLeft: 30
-      }
-    }, errors.datenschutz), hasErrors && /*#__PURE__*/React.createElement("p", {
+    }, "Datenschutzerkl\xE4rung"), " gelesen und willige in die Verarbeitung meiner Angaben zur Bearbeitung meines Anliegens ein.", /*#__PURE__*/React.createElement(Req, null)), hasErrors && /*#__PURE__*/React.createElement("p", {
       style: {
         font: '400 13px/1.6 var(--font-sans)',
         color: 'var(--crimson)',

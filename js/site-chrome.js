@@ -405,14 +405,28 @@
     })));
   }
   function PageHeader({
-    title
+    title,
+    tagline
   }) {
     const isMobile = useIsMobile();
     return /*#__PURE__*/React.createElement("div", {
       style: {
+        background: 'var(--white)'
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
         maxWidth: 'var(--max-w)',
-        padding: isMobile ? '0 16px' : '0 20px',
-        marginBottom: 28
+        margin: '0 auto',
+        padding: isMobile ? '26px 16px 4px' : '34px 20px 8px',
+        display: 'flex',
+        flexDirection: isMobile ? 'column' : 'row',
+        alignItems: 'flex-start',
+        gap: isMobile ? 18 : 50
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        maxWidth: 760,
+        flex: 1
       }
     }, /*#__PURE__*/React.createElement("h1", {
       style: {
@@ -423,7 +437,31 @@
         borderBottom: '2px solid var(--green)',
         margin: 0
       }
-    }, title));
+    }, title), tagline && /*#__PURE__*/React.createElement("p", {
+      style: {
+        font: '400 14px var(--font-sans)',
+        color: 'var(--text-light)',
+        marginTop: 12
+      }
+    }, tagline)), !isMobile && /*#__PURE__*/React.createElement("aside", {
+      style: {
+        flex: '0 0 220px',
+        borderLeft: '1px solid var(--border)',
+        paddingLeft: 24,
+        textAlign: 'center'
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        font: '700 14px var(--font-sans)',
+        color: 'var(--green)',
+        display: 'block'
+      }
+    }, "Fiedler & Rie\xDF"), /*#__PURE__*/React.createElement("span", {
+      style: {
+        font: '600 12px var(--font-sans)',
+        color: 'var(--text-light)'
+      }
+    }, "Rechtsanw\xE4lte PartGmbB"))));
   }
   function Footer() {
     return /*#__PURE__*/React.createElement("footer", {
@@ -531,64 +569,14 @@
     }, /*#__PURE__*/React.createElement(NavRail, {
       items: items,
       variant: "transparent"
-    })))), /*#__PURE__*/React.createElement(Hero, null)), /*#__PURE__*/React.createElement("div", {
+    })))), /*#__PURE__*/React.createElement(Hero, null)), title && /*#__PURE__*/React.createElement(PageHeader, {
+      title: title,
+      tagline: tagline
+    }), /*#__PURE__*/React.createElement("div", {
       style: {
         flex: 1
       }
-    }, /*#__PURE__*/React.createElement("main", {
-      style: {
-        padding: isMobile ? '28px 0 48px' : '40px 0 60px'
-      }
-    }, title && /*#__PURE__*/React.createElement("div", {
-      style: {
-        maxWidth: 'var(--max-w)',
-        margin: '0 auto',
-        padding: isMobile ? '0 16px' : '0 20px',
-        marginBottom: 28
-      }
-    }, /*#__PURE__*/React.createElement("h1", {
-      style: {
-        font: `300 ${isMobile ? '26px' : '30px'} var(--font-sans)`,
-        color: 'var(--text)',
-        display: 'inline-block',
-        paddingBottom: 8,
-        borderBottom: '2px solid var(--green)',
-        margin: 0
-      }
-    }, title)), /*#__PURE__*/React.createElement("div", {
-      style: {
-        maxWidth: 960,
-        margin: '0 auto',
-        padding: isMobile ? '0 16px' : '0 20px',
-        display: 'flex',
-        flexDirection: isMobile ? 'column' : 'row',
-        alignItems: 'flex-start',
-        gap: isMobile ? 36 : 50
-      }
-    }, /*#__PURE__*/React.createElement("div", {
-      style: {
-        flex: 1
-      }
-    }, children), !isMobile && /*#__PURE__*/React.createElement("aside", {
-      style: {
-        flex: '0 0 220px',
-        borderLeft: '1px solid var(--border)',
-        paddingLeft: 24,
-        textAlign: 'center',
-        marginTop: 4
-      }
-    }, /*#__PURE__*/React.createElement("span", {
-      style: {
-        font: '700 14px var(--font-sans)',
-        color: 'var(--green)',
-        display: 'block'
-      }
-    }, "Fiedler & Rie\xDF"), /*#__PURE__*/React.createElement("span", {
-      style: {
-        font: '600 12px var(--font-sans)',
-        color: 'var(--text-light)'
-      }
-    }, "Rechtsanw\xE4lte PartGmbB"))))), /*#__PURE__*/React.createElement(Footer, null));
+    }, children), /*#__PURE__*/React.createElement(Footer, null));
   }
   window.SiteChrome = SiteChrome;
 })();
