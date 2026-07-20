@@ -8,16 +8,23 @@
    Drittanbieter genutzt – der Versand erfolgt über den eigenen Server.
    ============================================================ */
 
-/* ---- KONFIGURATION (bei Bedarf anpassen) ---- */
-$EMPFAENGER  = 's.riess@fiedler-riess.de';                 // Wohin der Fragebogen geht
-$ABSENDER    = 'website@fiedler-riess.de';                 // Technische Absenderadresse (Domain des Servers!)
-$ABSENDER_NAME = 'Unfallfragebogen Website';
-$KOPIE_AN    = '';                                         // optional: zweite Adresse (CC), sonst leer lassen
+// Auf dem Server liegen vendor/ und smtp_config.php in private/ (außerhalb Web-Root)
+$_private = is_dir('/opt/fiedler-riess/private') ? '/opt/fiedler-riess/private' : __DIR__;
+require_once $_private . '/vendor/autoload.php';
+require_once $_private . '/smtp_config.php';
 
-$SPEICHERN   = true;                                       // Eingänge als Datei auf dem Server ablegen
-$VERSAND     = true;                                       // zusätzlich per E-Mail senden? (false = NUR ablegen)
-$ABLAGE_ORDNER = __DIR__ . '/eingaenge/unfall';            // Ablageordner (muss vor Web-Zugriff geschützt sein!)
-/* --------------------------------------------- */
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+/* ---- KONFIGURATION ---- */
+$EMPFAENGER  = 's.riess@fiedler-riess.de';
+$KOPIE_AN    = 'v.leister@fiedler-riess.de';
+
+$SPEICHERN   = true;
+$VERSAND     = true;
+$_data = is_dir('/opt/fiedler-riess/eingaenge') ? '/opt/fiedler-riess/eingaenge' : __DIR__ . '/eingaenge';
+$ABLAGE_ORDNER = $_data . '/unfall';
+/* ----------------------- */
 
 header('Content-Type: application/json; charset=utf-8');
 
@@ -152,19 +159,7 @@ foreach ($gruppen as $titel => $felder) {
 $body .= "\n" . str_repeat('=', 48) . "\n";
 $body .= "Diese Nachricht wurde über das Online-Formular auf der Website erzeugt.\n";
 
-/* ---- Kopfzeilen ---- */
 $betreff = 'Unfallfragebogen – ' . $name;
-$von     = clean_header($ABSENDER_NAME) . ' <' . clean_header($ABSENDER) . '>';
-$antwort = clean_header($name) . ' <' . clean_header($email) . '>';
-
-$headers  = 'From: ' . $von . "\r\n";
-$headers .= 'Reply-To: ' . $antwort . "\r\n";
-if ($KOPIE_AN !== '') $headers .= 'Cc: ' . clean_header($KOPIE_AN) . "\r\n";
-$headers .= "MIME-Version: 1.0\r\n";
-$headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
-$headers .= "Content-Transfer-Encoding: 8bit\r\n";
-
-$betreff_enc = '=?UTF-8?B?' . base64_encode($betreff) . '?=';
 
 /* ---- 1) Eingang auf dem Server ablegen ---- */
 $gespeichert = false;
@@ -175,10 +170,34 @@ if ($SPEICHERN) {
     }
 }
 
-/* ---- 2) Optional zusätzlich per E-Mail senden ("best effort") ---- */
+/* ---- 2) Per E-Mail via SMTP senden ---- */
 $gemailt = false;
 if ($VERSAND) {
-    $gemailt = @mail($EMPFAENGER, $betreff_enc, $body, $headers);
+    $mail = new PHPMailer(true);
+    try {
+        $mail->isSMTP();
+        $mail->Host       = SMTP_HOST;
+        $mail->SMTPAuth   = true;
+        $mail->Username   = SMTP_USER;
+        $mail->Password   = SMTP_PASS;
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+        $mail->Port       = SMTP_PORT;
+        $mail->CharSet    = 'UTF-8';
+
+        $mail->setFrom(SMTP_FROM, SMTP_FROM_NAME);
+        $mail->addAddress($EMPFAENGER);
+        if ($KOPIE_AN !== '') $mail->addCC($KOPIE_AN);
+        $mail->addReplyTo($email, $name);
+
+        $mail->Subject = $betreff;
+        $mail->Body    = $body;
+        $mail->isHTML(false);
+
+        $mail->send();
+        $gemailt = true;
+    } catch (Exception $e) {
+        error_log('PHPMailer: ' . $mail->ErrorInfo);
+    }
 }
 
 /* Erfolg, sobald die Daten gesichert sind (abgelegt ODER gemailt). */
