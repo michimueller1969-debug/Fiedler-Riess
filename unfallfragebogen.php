@@ -45,7 +45,13 @@ if (!is_array($data) || count($data) === 0) {
 function val($data, $key) {
     return isset($data[$key]) ? trim((string)$data[$key]) : '';
 }
-/* Schutz vor Header-Injection in Kopfzeilen-Feldern */
+function jn($data, $key) {
+    if (!isset($data[$key])) return '';
+    $v = $data[$key];
+    if ($v === true  || $v === 'ja')   return 'Ja';
+    if ($v === false || $v === 'nein') return 'Nein';
+    return trim((string)$v);
+}
 function clean_header($s) {
     return trim(str_replace(array("\r", "\n", "%0a", "%0d"), '', $s));
 }
@@ -116,7 +122,17 @@ $gruppen = array(
         'rsvNehmer' => 'Versicherungsnehmer', 'rsvSchaden' => 'Schaden-Nr.',
         'selbstbeteiligung' => 'Selbstbeteiligung', 'selbstbeteiligungBetrag' => 'Höhe Selbstbeteiligung',
     ),
+    'Erklärungen und Einwilligungen' => array(
+        'datenStr'      => 'Speicherung der Daten gem. Hinweisen',
+        'emailConsent'  => 'Unverschlüsselte E-Mail-/Fax-Kommunikation gewünscht',
+        'sofortLeistung' => 'Sofortiger Leistungsbeginn (Verzicht Widerruf)',
+        'datenschutz'   => 'Datenschutzerklärung akzeptiert',
+    ),
 );
+
+$janein = array('vorsteuer','rsv','selbstbeteiligung','leasing','finanziert','scheckheft',
+                'vollkasko','begutachtet','fahrbereit','polizei','personenschaden',
+                'khAufenthalt','wegeunfall','datenStr','emailConsent','sofortLeistung','datenschutz');
 
 /* ---- Textkörper bauen (nur ausgefüllte Felder) ---- */
 $body  = "Neuer Verkehrsunfall-Fragebogen\n";
@@ -125,7 +141,7 @@ $body .= str_repeat('=', 48) . "\n";
 foreach ($gruppen as $titel => $felder) {
     $zeilen = array();
     foreach ($felder as $key => $label) {
-        $v = val($data, $key);
+        $v = in_array($key, $janein, true) ? jn($data, $key) : val($data, $key);
         if ($v !== '') $zeilen[] = $label . ': ' . $v;
     }
     if (count($zeilen) > 0) {
