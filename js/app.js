@@ -1355,12 +1355,12 @@ function VerkehrsrechtScreen({
       color: 'var(--text)',
       marginBottom: 16
     }
-  }, "Wurde die Fahrerlaubnis bereits entzogen, kl\xE4ren wir die M\xF6glichkeiten, diese wiederzuerlangen. Das tun wir in enger Zusammenarbeit mit Diana Voigt-Hohoff, Inhaberin der DVH-Praxis f\xFCr Organisationsberatung, Coaching, Supervision und MPU-Schulung, die auf fachliche Stellungnahmen und Begutachtungen zur pers\xF6nlichen Eignung und Zuverl\xE4ssigkeit im Rahmen beh\xF6rdlicher Verfahren (z. B. MPU-Kontext) spezialisiert ist."), /*#__PURE__*/React.createElement("p", {
+  }, "Wurde die Fahrerlaubnis bereits entzogen, kl\xE4ren wir die M\xF6glichkeiten, diese wiederzuerlangen."), /*#__PURE__*/React.createElement("p", {
     style: {
       font: '400 14px/1.75 var(--font-sans)',
       color: 'var(--text)'
     }
-  }, "Das Ziel ist, die MPU-Pr\xFCfung zu bestehen und k\xFCnftige Gesetzeskonflikte zu vermeiden. Die MPU ist kein Wissenstest, sondern ein komplexer Vorgang zur \xDCberpr\xFCfung der pers\xF6nlichen Eignung zum F\xFChren von Kfz im Stra\xDFenverkehr \u2013 dasselbe gilt auch f\xFCr den ", /*#__PURE__*/React.createElement("a", {
+  }, "Das Ziel ist, die MPU-Pr\xFCfung zu bestehen und k\xFCnftige Gesetzeskonflikte zu vermeiden. Die MPU ist kein Wissenstest, sondern ein komplexer Vorgang zur \xDCberpr\xFCfung der pers\xF6nlichen Eignung zum F\xFChren von Kfz im Stra\xDFenverkehr – dasselbe gilt auch f\xFCr den ", /*#__PURE__*/React.createElement("a", {
     href: "#",
     onClick: e => {
       e.preventDefault();
@@ -1369,35 +1369,7 @@ function VerkehrsrechtScreen({
     style: {
       color: 'var(--green)'
     }
-  }, "Jagdschein bzw. die Waffenbesitzkarte"), "."), /*#__PURE__*/React.createElement("div", {
-    style: {
-      margin: '24px 0 8px',
-      textAlign: 'center'
-    }
-  }, /*#__PURE__*/React.createElement("a", {
-    href: "https://www.dvhpraxis.de/",
-    target: "_blank",
-    rel: "noopener noreferrer",
-    style: {
-      display: 'inline-block',
-      textDecoration: 'none'
-    }
-  }, /*#__PURE__*/React.createElement("img", {
-    src: "img/dvh-logo.png",
-    alt: "Diana Voigt-Hohoff",
-    style: {
-      width: 150,
-      height: 'auto',
-      display: 'block',
-      margin: '0 auto'
-    }
-  })), /*#__PURE__*/React.createElement("p", {
-    style: {
-      font: '400 13.5px/1.6 var(--font-sans)',
-      color: 'var(--text-light)',
-      marginTop: 14
-    }
-  }, "Praxis f\xFCr Organisationsberatung,", /*#__PURE__*/React.createElement("br", null), "Coaching, Supervision und MPU-Schulung"))), /*#__PURE__*/React.createElement("aside", {
+  }, "Jagdschein bzw. die Waffenbesitzkarte"), ".")), /*#__PURE__*/React.createElement("aside", {
     style: {
       flex: isMobile ? '1 1 auto' : '0 0 220px',
       alignSelf: isMobile ? 'center' : 'auto',
@@ -1514,41 +1486,9 @@ function JagdrechtScreen() {
     style: para
   }, "Als Fachanwalt f\xFCr Verkehrsrecht verf\xFCgt Stephan Rie\xDF \xFCber umfassende Erfahrung in Bu\xDFgeld-, Straf- und Verwaltungsverfahren und setzt dieses Wissen gezielt f\xFCr Ihre Interessen und Zielsetzung im Jagd- und Waffenrecht ein."), /*#__PURE__*/React.createElement("h2", {
     style: head
-  }, "Recht & Psychologie im Schulterschluss \u2013 Interdisziplin\xE4re Zusammenarbeit"), /*#__PURE__*/React.createElement("p", {
+  }, "Bundesweit f\xFCr Sie t\xE4tig"), /*#__PURE__*/React.createElement("p", {
     style: para
-  }, "Ein Alleinstellungsmerkmal ist die Zusammenarbeit mit Diana Voigt-Hohoff, Inhaberin der DVH-Praxis f\xFCr Organisationsberatung, Coaching, Supervision und MPU-Schulung, die auf fachliche Stellungnahmen und Begutachtungen zur pers\xF6nlichen Eignung und Zuverl\xE4ssigkeit im Rahmen beh\xF6rdlicher Verfahren (z. B. MPU-Kontext) spezialisiert ist. So k\xF6nnen rechtliche und tats\xE4chliche Aspekte optimal miteinander verzahnt und Ihre Erfolgschancen gezielt verbessert werden."), /*#__PURE__*/React.createElement("div", {
-    style: {
-      margin: '24px 0 8px',
-      textAlign: 'center'
-    }
-  }, /*#__PURE__*/React.createElement("a", {
-    href: "https://www.dvhpraxis.de/",
-    target: "_blank",
-    rel: "noopener noreferrer",
-    style: {
-      display: 'inline-block',
-      textDecoration: 'none'
-    }
-  }, /*#__PURE__*/React.createElement("img", {
-    src: "img/dvh-logo.png",
-    alt: "Diana Voigt-Hohoff",
-    style: {
-      width: 150,
-      height: 'auto',
-      display: 'block',
-      margin: '0 auto'
-    }
-  })), /*#__PURE__*/React.createElement("p", {
-    style: {
-      font: '400 13.5px/1.6 var(--font-sans)',
-      color: 'var(--text-light)',
-      marginTop: 14
-    }
-  }, "Praxis f\xFCr Organisationsberatung,", /*#__PURE__*/React.createElement("br", null), "Coaching, Supervision und MPU-Schulung")), /*#__PURE__*/React.createElement("h2", {
-    style: head
-  }, "Regional f\xFCr Sie t\xE4tig \u2013 Nordhessen, Osthessen & Westth\xFCringen"), /*#__PURE__*/React.createElement("p", {
-    style: para
-  }, "Gemeinsam sind wir Ihre Ansprechpartner im Jagd- und Waffenrecht in Nordhessen, Osthessen und Westth\xFCringen, insbesondere in Rotenburg a. d. Fulda, Bad Hersfeld, Fulda, Kassel, Eisenach und Gotha.")), /*#__PURE__*/React.createElement("aside", {
+  }, "Wir sind bundesweit t\xE4tig und Ihr zuverl\xE4ssiger Ansprechpartner im Jagd- und Waffenrecht.")), /*#__PURE__*/React.createElement("aside", {
     style: {
       flex: isMobile ? '1 1 auto' : '0 0 220px',
       alignSelf: isMobile ? 'center' : 'auto',
