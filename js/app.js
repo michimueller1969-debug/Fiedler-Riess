@@ -1555,7 +1555,7 @@ function FragebogenScreen() {
   }, {
     text: /*#__PURE__*/React.createElement(React.Fragment, null, "Sie m\xF6chten uns Unterlagen (Fotos, Gutachten, Rechnungen, \u2026) zukommen lassen?"),
     cta: 'Unterlagen Upload',
-    href: 'https://app.jupus.de/client/portal/external/questionnaires/zBn2LNWXVWzzSASw1qVtlKzejSxZHnnuGx3Jgj_4gu1w7qVt/5lomOa4HwnxEHkFl3u6iLC5jT50weh2U6iI1kF_lotyIS8GH'
+    disabled: true
   }];
   return /*#__PURE__*/React.createElement("main", {
     style: {
@@ -1671,11 +1671,14 @@ function FragebogenScreen() {
         color: 'var(--text-light)'
       }
     }, r.text), /*#__PURE__*/React.createElement("a", {
+      "aria-disabled": r.disabled ? 'true' : undefined,
+      tabIndex: r.disabled ? -1 : undefined,
       href: r.href || '#',
       target: r.online ? undefined : r.href ? '_blank' : undefined,
       rel: r.href && !r.online ? 'noopener noreferrer' : undefined,
       onClick: r.href ? undefined : e => e.preventDefault(),
       style: {
+        ...(r.disabled ? { opacity: 0.45, cursor: 'not-allowed', pointerEvents: 'none' } : {}),
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'flex-start',

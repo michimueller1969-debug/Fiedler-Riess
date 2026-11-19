@@ -109,7 +109,7 @@ $gruppen = array(
         'eigentuemer' => 'Eigentümer', 'fahrzeugart' => 'Art des Fahrzeugs', 'fahrzeugartDetail' => 'Art (Sonstiges)', 'kennzeichen' => 'Kennzeichen', 'leasing' => 'Leasingfahrzeug', 'leasingDetail' => 'Leasing-Details',
         'finanziert' => 'Finanziert', 'finanziertDetail' => 'Finanzierung-Details', 'fahrer' => 'Fahrer zum Unfallzeitpunkt',
         'scheckheft' => 'Scheckheftgepflegt', 'vollkasko' => 'Vollkasko', 'vollkaskoDetail' => 'Vollkasko-Details',
-        'begutachtet' => 'Begutachtet', 'begutachtetDetail' => 'Sachverständigenbüro', 'fahrbereit' => 'Fahrbereit/verkehrssicher',
+        'begutachtet' => 'Begutachtet', 'begutachtetDetail' => 'Sachverständigenbüro', 'fahrbereit' => 'Fahrbereit/verkehrssicher', 'repariert' => 'Soll repariert/weitergenutzt werden', 'vorschaden' => 'Früherer Unfallschaden (Haftpflicht/Kasko)',
     ),
     'II. Unfallgegner' => array(
         'gKennzeichen' => 'Kennzeichen', 'gFahrer' => 'Name/Anschrift Fahrer',
@@ -138,7 +138,7 @@ $gruppen = array(
 );
 
 $janein = array('vorsteuer','rsv','selbstbeteiligung','leasing','finanziert','scheckheft',
-                'vollkasko','begutachtet','fahrbereit','polizei','personenschaden',
+                'vollkasko','begutachtet','fahrbereit','repariert','vorschaden','polizei','personenschaden',
                 'khAufenthalt','wegeunfall','datenStr','emailConsent','sofortLeistung','datenschutz');
 
 /* ---- Textkörper bauen (nur ausgefüllte Felder) ---- */

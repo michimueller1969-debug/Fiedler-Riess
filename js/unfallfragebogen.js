@@ -6,7 +6,7 @@ const RECIPIENT = 's.riess@fiedler-riess.de'; // Empfänger der Fragebögen
 const ENDPOINT = 'unfallfragebogen.php'; // serverseitiger Mailversand (PHP)
 
 /* Feldgruppen + Beschriftungen für die E-Mail-Zusammenfassung (Fallback per mailto) */
-const FIELD_GROUPS = [['Ihre Angaben', [['name', 'Name'], ['strasse', 'Straße/Hausnr.'], ['plz', 'PLZ'], ['ort', 'Ort'], ['email', 'E-Mail'], ['telefon', 'Telefon'], ['vorsteuer', 'Vorsteuerabzugsberechtigt'], ['bank', 'Bank'], ['iban', 'IBAN']]], ['I. Eigenes Fahrzeug', [['eigentuemer', 'Eigentümer'], ['kaufvertragUnterzeichner', 'Kaufvertrag unterschrieben von'], ['fahrzeugart', 'Art des Fahrzeugs'], ['fahrzeugartDetail', 'Art (Sonstiges)'], ['kennzeichen', 'Kennzeichen'], ['leasing', 'Leasingfahrzeug'], ['leasingDetail', 'Leasing-Details'], ['finanziert', 'Finanziert'], ['finanziertDetail', 'Finanzierung-Details'], ['fahrer', 'Fahrer zum Unfallzeitpunkt'], ['scheckheft', 'Scheckheftgepflegt'], ['vollkasko', 'Vollkasko'], ['vollkaskoDetail', 'Vollkasko-Details'], ['begutachtet', 'Begutachtet'], ['begutachtetDetail', 'Sachverständigenbüro'], ['fahrbereit', 'Fahrbereit/verkehrssicher']]], ['II. Unfallgegner', [['gKennzeichen', 'Kennzeichen'], ['gFahrer', 'Name/Anschrift Fahrer'], ['gVersicherung', 'Haftpflichtversicherung'], ['gVssNr', 'VSS-/Schadennr.']]], ['III. Unfall', [['uOrt', 'Unfallort'], ['uDatum', 'Unfalltag'], ['uZeit', 'Uhrzeit'], ['zeugen', 'Zeugen'], ['polizei', 'Polizei aufgenommen'], ['polizeiDetail', 'Dienststelle/Az.'], ['schilderung', 'Unfallschilderung']]], ['IV. Personenschäden', [['personenschaden', 'Person verletzt'], ['psName', 'Name/Anschrift Verletzte/r'], ['psKontakt', 'Kontakt'], ['psGeburt', 'Geburtsdatum'], ['khAufenthalt', 'Krankenhausaufenthalt'], ['khVon', 'von'], ['khBis', 'bis'], ['khAnschrift', 'Krankenhaus-Anschrift'], ['psArzt', 'Ärzte/Therapeuten'], ['wegeunfall', 'Wegeunfall']]], ['Rechtsschutzversicherung', [['rsv', 'Rechtsschutzversicherung vorhanden'], ['rsvName', 'Name der RSV'], ['rsvSchein', 'Versicherungsschein-Nr.'], ['rsvNehmer', 'Versicherungsnehmer'], ['rsvSchaden', 'Schaden-Nr.'], ['selbstbeteiligung', 'Selbstbeteiligung'], ['selbstbeteiligungBetrag', 'Höhe Selbstbeteiligung']]], ['Einwilligungen', [['datenStr', 'Speicherung der Daten gem. Hinweisen'], ['emailConsent', 'Unverschlüsselte E-Mail-/Fax-Kommunikation'], ['sofortLeistung', 'Sofortiger Leistungsbeginn (Verzicht Widerruf)'], ['datenschutz', 'Datenschutzerklärung']]]];
+const FIELD_GROUPS = [['Ihre Angaben', [['name', 'Name'], ['strasse', 'Straße/Hausnr.'], ['plz', 'PLZ'], ['ort', 'Ort'], ['email', 'E-Mail'], ['telefon', 'Telefon'], ['vorsteuer', 'Vorsteuerabzugsberechtigt'], ['bank', 'Bank'], ['iban', 'IBAN']]], ['I. Eigenes Fahrzeug', [['eigentuemer', 'Eigentümer'], ['kaufvertragUnterzeichner', 'Kaufvertrag unterschrieben von'], ['fahrzeugart', 'Art des Fahrzeugs'], ['fahrzeugartDetail', 'Art (Sonstiges)'], ['kennzeichen', 'Kennzeichen'], ['leasing', 'Leasingfahrzeug'], ['leasingDetail', 'Leasing-Details'], ['finanziert', 'Finanziert'], ['finanziertDetail', 'Finanzierung-Details'], ['fahrer', 'Fahrer zum Unfallzeitpunkt'], ['scheckheft', 'Scheckheftgepflegt'], ['vollkasko', 'Vollkasko'], ['vollkaskoDetail', 'Vollkasko-Details'], ['begutachtet', 'Begutachtet'], ['begutachtetDetail', 'Sachverständigenbüro'], ['fahrbereit', 'Fahrbereit/verkehrssicher'], ['repariert', 'Fahrzeug soll repariert/weitergenutzt werden'], ['vorschaden', 'Bereits früher Unfallschaden (Haftpflicht/Kasko)']]], ['II. Unfallgegner', [['gKennzeichen', 'Kennzeichen'], ['gFahrer', 'Name/Anschrift Fahrer'], ['gVersicherung', 'Haftpflichtversicherung'], ['gVssNr', 'VSS-/Schadennr.']]], ['III. Unfall', [['uOrt', 'Unfallort'], ['uDatum', 'Unfalltag'], ['uZeit', 'Uhrzeit'], ['zeugen', 'Zeugen'], ['polizei', 'Polizei aufgenommen'], ['polizeiDetail', 'Dienststelle/Az.'], ['schilderung', 'Unfallschilderung']]], ['IV. Personenschäden', [['personenschaden', 'Person verletzt'], ['psName', 'Name/Anschrift Verletzte/r'], ['psKontakt', 'Kontakt'], ['psGeburt', 'Geburtsdatum'], ['khAufenthalt', 'Krankenhausaufenthalt'], ['khVon', 'von'], ['khBis', 'bis'], ['khAnschrift', 'Krankenhaus-Anschrift'], ['psArzt', 'Ärzte/Therapeuten'], ['wegeunfall', 'Wegeunfall']]], ['Rechtsschutzversicherung', [['rsv', 'Rechtsschutzversicherung vorhanden'], ['rsvName', 'Name der RSV'], ['rsvSchein', 'Versicherungsschein-Nr.'], ['rsvNehmer', 'Versicherungsnehmer'], ['rsvSchaden', 'Schaden-Nr.'], ['selbstbeteiligung', 'Selbstbeteiligung'], ['selbstbeteiligungBetrag', 'Höhe Selbstbeteiligung']]], ['Einwilligungen', [['datenStr', 'Speicherung der Daten gem. Hinweisen'], ['emailConsent', 'Unverschlüsselte E-Mail-/Fax-Kommunikation'], ['sofortLeistung', 'Sofortiger Leistungsbeginn (Verzicht Widerruf)'], ['datenschutz', 'Datenschutzerklärung']]]];
 function jaNein(v) {
   return v === true ? 'Ja' : v === false ? '' : v;
 }
@@ -360,6 +360,8 @@ function mount() {
     begutachtet: '',
     begutachtetDetail: '',
     fahrbereit: '',
+    repariert: '',
+    vorschaden: '',
     // II. Unfallgegner
     gKennzeichen: '',
     gFahrer: '',
@@ -611,7 +613,7 @@ function mount() {
       style: {
         color: 'var(--crimson)'
       }
-    }, "*"), " gekennzeichnet. Rechnungen und sonstige Belege reichen wir sp\xE4ter gemeinsam mit Ihnen nach."), /*#__PURE__*/React.createElement("form", {
+    }, "*"), " gekennzeichnet. Rechnungen und sonstige Belege reichen Sie uns gerne per Mail nach."), /*#__PURE__*/React.createElement("form", {
       onSubmit: handleSubmit,
       noValidate: true,
       style: {
@@ -919,6 +921,16 @@ function mount() {
     }, /*#__PURE__*/React.createElement(YesNo, {
       value: form.fahrbereit,
       onChange: set('fahrbereit')
+    })), /*#__PURE__*/React.createElement(Field, {
+      label: "Soll das Fahrzeug repariert/weitergenutzt werden?"
+    }, /*#__PURE__*/React.createElement(YesNo, {
+      value: form.repariert,
+      onChange: set('repariert')
+    })), /*#__PURE__*/React.createElement(Field, {
+      label: "Hatte das Fahrzeug bereits zuvor einen Unfallschaden (Haftpflicht oder Kasko)?"
+    }, /*#__PURE__*/React.createElement(YesNo, {
+      value: form.vorschaden,
+      onChange: set('vorschaden')
     }))), /*#__PURE__*/React.createElement("div", {
       style: {
         height: 26
