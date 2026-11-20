@@ -1552,10 +1552,6 @@ function FragebogenScreen() {
     cta: 'Fahrverbotfragebogen ausfüllen',
     href: 'fahrverbotfragebogen.html',
     online: true
-  }, {
-    text: /*#__PURE__*/React.createElement(React.Fragment, null, "Sie m\xF6chten uns Unterlagen (Fotos, Gutachten, Rechnungen, \u2026) zukommen lassen?"),
-    cta: 'Unterlagen Upload',
-    disabled: true
   }];
   return /*#__PURE__*/React.createElement("main", {
     style: {

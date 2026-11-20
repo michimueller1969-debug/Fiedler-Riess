@@ -613,7 +613,32 @@ function mount() {
       style: {
         color: 'var(--crimson)'
       }
-    }, "*"), " gekennzeichnet. Rechnungen und sonstige Belege reichen Sie uns gerne per Mail nach."), /*#__PURE__*/React.createElement("form", {
+    }, "*"), " gekennzeichnet. Rechnungen und sonstige Belege reichen Sie uns gerne per Mail nach.", /*#__PURE__*/React.createElement("a", {
+      className: "fr-contact-icon",
+      href: "mailto:s.riess@fiedler-riess.de",
+      title: "E-Mail",
+      "aria-label": "E-Mail",
+      style: {
+        width: 28,
+        height: 28,
+        border: '1px solid var(--green)',
+        color: 'var(--green)',
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        verticalAlign: 'middle',
+        marginLeft: 10
+      }
+    }, /*#__PURE__*/React.createElement("svg", {
+      viewBox: "0 0 20 20",
+      style: {
+        width: 13,
+        height: 13,
+        fill: 'currentColor'
+      }
+    }, /*#__PURE__*/React.createElement("path", {
+      d: "M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884zM18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"
+    })))), /*#__PURE__*/React.createElement("form", {
       onSubmit: handleSubmit,
       noValidate: true,
       style: {
